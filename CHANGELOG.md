@@ -4,6 +4,7 @@
 * opcode OFFSET was deleted, use BINARY :add instead
 * add SIZEOF opcode
 * add opcode TO, and RET, STORE, BINARY, CALL use it to auto safe cast
+* added mycc, remove python c compiler
 
 ## 0.2.0 (24.06.2026)
 * Added linter for auto-annotating stack state (beautify --annotate)
