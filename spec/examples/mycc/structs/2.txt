@@ -1,1 +1,3 @@
-saf
+point: 10 20
+modified point: 30 20
+wtf point: 22 12 22

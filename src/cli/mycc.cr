@@ -2,8 +2,6 @@ require "../myc"
 require "../mycc"
 require "../mycc/all"
 
-# ./mycc test.c | ./myc-llvm r --release
-
 filename = ARGV[0]?
 unless filename
   puts "Usage: mycc INPUT"

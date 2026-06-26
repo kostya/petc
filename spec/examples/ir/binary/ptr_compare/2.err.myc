@@ -1,0 +1,7 @@
+FUNC :main 
+BODY
+	PUSH 0 :ptr<void>
+	PUSH 0 :ptr<i32>
+	BINARY :eq
+	INSPECT
+ENDFUNC

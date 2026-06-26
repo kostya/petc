@@ -1,0 +1,1 @@
+incompatible types ptr<i32> Eq ptr<void>

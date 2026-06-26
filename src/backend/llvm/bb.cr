@@ -151,12 +151,16 @@ class Myc::Backend::Llvm::BB < Myc::Backend::AbstractBB
       case ltype
       when Type::IntType, Type::BoolType
         wrap_res(@llvm_builder.icmp(LLVM::IntPredicate::EQ, l, r), typer.bool, lhs.pp)
+      when Type::PtrType
+        wrap_res(@llvm_builder.icmp(LLVM::IntPredicate::EQ, l, r), typer.bool, lhs.pp)
       when Type::FloatType
         wrap_res(@llvm_builder.fcmp(LLVM::RealPredicate::OEQ, l, r), typer.bool, lhs.pp)
       end
     in .not_eq?
       case ltype
       when Type::IntType, Type::BoolType
+        wrap_res(@llvm_builder.icmp(LLVM::IntPredicate::NE, l, r), typer.bool, lhs.pp)
+      when Type::PtrType
         wrap_res(@llvm_builder.icmp(LLVM::IntPredicate::NE, l, r), typer.bool, lhs.pp)
       when Type::FloatType
         wrap_res(@llvm_builder.fcmp(LLVM::RealPredicate::ONE, l, r), typer.bool, lhs.pp)

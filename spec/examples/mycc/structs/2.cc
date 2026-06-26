@@ -3,19 +3,9 @@ struct Point {
     int y;
 };
 
-struct Rect {
-    struct Point origin;
-    int width;
-    int height;
-};
-
 void test_structs() {
     struct Point p = {10, 20};
-    struct Rect r = {{0, 0}, 100, 200};
-    
     printf("point: %d %d\n", p.x, p.y);
-    printf("rect: %d %d %d %d\n", 
-           r.origin.x, r.origin.y, r.width, r.height);
     
     p.x = 30;
     printf("modified point: %d %d\n", p.x, p.y);

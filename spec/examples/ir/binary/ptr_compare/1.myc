@@ -1,0 +1,12 @@
+FUNC :main 
+BODY
+	PUSH 0 :ptr<void>
+	PUSH 0 :ptr<void>
+	BINARY :eq
+	INSPECT
+
+	PUSH 0 :ptr<void>
+	PUSH 0 :ptr<void>
+	BINARY :not_eq
+	INSPECT
+ENDFUNC

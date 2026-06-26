@@ -32,34 +32,35 @@ class Myc::Mycc::Builder
     Myc.debug(:myc) { puts "VISIT: `#{cursor.inspect}`" }
 
     case cursor.kind
-    when .function_decl?        then visit_func_def(cursor)
-    when .compound_stmt?        then visit_children(cursor, in_statement: true)
-    when .call_expr?            then visit_call(cursor)
-    when .decl_stmt?            then visit_children(cursor)
-    when .var_decl?             then visit_var_decl(cursor)
-    when .binary_operator?      then visit_binary(cursor)
-    when .integer_literal?      then visit_int_literal(cursor)
-    when .string_literal?       then visit_string_literal(cursor)
-    when .decl_ref_expr?        then visit_id(cursor)
-    when .return_stmt?          then visit_return(cursor)
-    when .if_stmt?              then visit_if(cursor)
-    when .while_stmt?           then visit_while(cursor)
-    when .for_stmt?             then visit_for(cursor)
-    when .unary_operator?       then visit_unary(cursor, in_statement: in_statement)
-    when .unary_expr?           then visit_builtin_expr(cursor)
-    when .break_stmt?           then visit_break(cursor)
-    when .continue_stmt?        then visit_continue(cursor)
-    when .member_ref_expr?      then visit_field(cursor)
-    when .struct_decl?          then visit_struct_decl(cursor)
-    when .switch_stmt?          then visit_switch(cursor)
-    when .case_stmt?            then visit_case(cursor)
-    when .default_stmt?         then visit_default(cursor)
-    when .floating_literal?     then visit_float_literal(cursor)
-    when .character_literal?    then visit_char_literal(cursor)
-    when .c_style_cast_expr?    then visit_cast(cursor)
-    when .init_list_expr?       then visit_init_list_expr(cursor)
-    when .array_subscript_expr? then visit_subscript(cursor)
-    when .paren_expr?           then visit_children(cursor)
+    when .function_decl?            then visit_func_def(cursor)
+    when .compound_stmt?            then visit_children(cursor, in_statement: true)
+    when .call_expr?                then visit_call(cursor, in_statement: in_statement)
+    when .decl_stmt?                then visit_children(cursor)
+    when .var_decl?                 then visit_var_decl(cursor)
+    when .binary_operator?          then visit_binary(cursor)
+    when .integer_literal?          then visit_int_literal(cursor)
+    when .string_literal?           then visit_string_literal(cursor)
+    when .decl_ref_expr?            then visit_id(cursor)
+    when .return_stmt?              then visit_return(cursor)
+    when .if_stmt?                  then visit_if(cursor)
+    when .compound_assign_operator? then visit_compound_assign(cursor)
+    when .while_stmt?               then visit_while(cursor)
+    when .for_stmt?                 then visit_for(cursor)
+    when .unary_operator?           then visit_unary(cursor, in_statement: in_statement)
+    when .unary_expr?               then visit_builtin_expr(cursor)
+    when .break_stmt?               then visit_break(cursor)
+    when .continue_stmt?            then visit_continue(cursor)
+    when .member_ref_expr?          then visit_field(cursor)
+    when .struct_decl?              then visit_struct_decl(cursor)
+    when .switch_stmt?              then visit_switch(cursor)
+    when .case_stmt?                then visit_case(cursor)
+    when .default_stmt?             then visit_default(cursor)
+    when .floating_literal?         then visit_float_literal(cursor)
+    when .character_literal?        then visit_char_literal(cursor)
+    when .c_style_cast_expr?        then visit_cast(cursor)
+    when .init_list_expr?           then visit_init_list_expr(cursor)
+    when .array_subscript_expr?     then visit_subscript(cursor)
+    when .paren_expr?               then visit_children(cursor)
     else
       Myc.debug(:myc) { puts "  SKIP: #{cursor.kind}" }
       visit_children(cursor)
@@ -86,18 +87,25 @@ class Myc::Mycc::Builder
     clear
     func_name = cursor.spelling
 
+    has_body = false
+    cursor.visit_children do |child|
+      if child.kind.compound_stmt?
+        has_body = true
+      end
+      Clang::ChildVisitResult::Continue
+    end
+
     emit("FUNC :#{func_name}")
     @indent += 1
 
     children = collect_children(cursor)
     params = children.select(&.kind.parm_decl?)
-
     unless params.empty?
       emit("ARGS")
       @indent += 1
       params.each_with_index do |param, idx|
         param_name = param.spelling
-        @params[param_name] = idx
+        @params[param_name] = idx if has_body
         param_type = get_type(param.type)
         emit("  TYPE :#{param_type}")
       end
@@ -112,12 +120,14 @@ class Myc::Mycc::Builder
       @indent -= 1
     end
 
-    emit("BODY")
-    @indent += 1
-    @stack << Scope::FuncBody
-    visit_children(cursor)
-    @stack.pop
-    @indent -= 1
+    if has_body
+      emit("BODY")
+      @indent += 1
+      @stack << Scope::FuncBody
+      visit_children(cursor)
+      @stack.pop
+      @indent -= 1
+    end
 
     emit("ENDFUNC")
     @indent -= 1
@@ -129,7 +139,8 @@ class Myc::Mycc::Builder
     @vars[var_name] = var_type
 
     children = collect_children(cursor)
-    init = children.find { |c| !c.kind.decl_ref_expr? }
+
+    init = children.find { |c| !c.kind.decl_ref_expr? && !c.kind.type_ref? }
 
     if init
       if init.kind.init_list_expr?
@@ -142,11 +153,6 @@ class Myc::Mycc::Builder
         emit("LOCAL :#{var_name} :#{var_type}")
         emit("STORE")
       end
-    else
-      zero = default_zero(var_type)
-      emit("PUSH #{zero}")
-      emit("LOCAL :#{var_name} :#{var_type}")
-      emit("STORE")
     end
   end
 
@@ -174,9 +180,10 @@ class Myc::Mycc::Builder
     emit("ENDSTRUCT")
   end
 
-  def visit_call(cursor : Clang::Cursor)
+  def visit_call(cursor : Clang::Cursor, in_statement : Bool = false)
     func_name = cursor.spelling
     args = cursor.arguments
+    ret_type = get_type(cursor.type)
 
     case func_name
     when "printf"
@@ -185,12 +192,12 @@ class Myc::Mycc::Builder
     when "malloc"
       args.reverse.each { |arg| visit(arg) }
       emit("CALL :malloc")
-    when "free"
-      args.reverse.each { |arg| visit(arg) }
-      emit("CALL :free")
     else
       args.reverse.each { |arg| visit(arg) }
       emit("CALL :#{func_name}")
+      if ret_type != "void" && in_statement
+        emit("STACK :drop")
+      end
     end
   end
 
@@ -213,7 +220,16 @@ class Myc::Mycc::Builder
 
   def visit_assignment(cursor : Clang::Cursor)
     children = collect_children(cursor)
+
     visit(children[1])
+
+    left_type = get_type(cursor.type)
+    right_type = get_type(children[1].type)
+
+    if left_type != right_type && !left_type.includes?("dependent")
+      emit("AS :#{left_type}")
+    end
+
     visit(children[0])
     emit("STORE")
   end
@@ -281,8 +297,18 @@ class Myc::Mycc::Builder
       emit_unless_empty(children) { visit(children[0]) }
       emit("UNARY :neg")
     when "!"
-      emit_unless_empty(children) { visit(children[0]) }
-      emit("UNARY :lnot")
+      if children.size > 0
+        child = children[0]
+        child_type = get_type(child.type)
+        if child_type.starts_with?("ptr<")
+          visit(child)
+          emit("PUSH 0 :#{child_type}")
+          emit("BINARY :eq")
+        else
+          emit_unless_empty(children) { visit(children[0]) }
+          emit("UNARY :lnot")
+        end
+      end
     when "~"
       emit_unless_empty(children) { visit(children[0]) }
       emit("UNARY :bnot")
@@ -339,42 +365,57 @@ class Myc::Mycc::Builder
 
     case op
     when "sizeof" then visit_sizeof(cursor)
-      # when "alignof" then visit_alignof(cursor)
-    else visit_children(cursor)
-    end
-  end
-
-  def visit_sizeof(cursor : Clang::Cursor)
-    children = collect_children(cursor)
-    if children.size == 1 && children[0].kind.unexposed_expr?
-      emit("PUSH 8 :i32")
-    else
-      type_name = get_type(cursor.type)
-      emit("SIZEOF :#{type_name}")
-      emit("AS :i32")
+    else               visit_children(cursor)
     end
   end
 
   def visit_field(cursor : Clang::Cursor)
-    obj_name = cursor.spelling
-    field_name = ""
+    field_name = cursor.spelling
 
-    is_arrow = cursor.type.kind.pointer? || false
+    children = collect_children(cursor)
 
-    if @vars.has_key?(obj_name)
-      var_type = @vars[obj_name]
-      emit("LOCAL :#{obj_name} :#{var_type}")
+    if children.size > 0
+      obj = children[0]
+
+      obj_name = extract_var_name(obj)
+
+      visit(obj)
+
+      is_arrow = cursor.type.kind.pointer? || obj.type.kind.pointer?
 
       if is_arrow
         emit("DEREF")
       end
 
-      struct_name = extract_struct_name(var_type)
-      if fields = @structs[struct_name]?
-        if idx = fields.index { |name, _| name == field_name }
-          emit("FIELD #{idx}")
+      if obj_name && @vars.has_key?(obj_name)
+        var_type = @vars[obj_name]
+        struct_name = extract_struct_name(var_type)
+
+        if fields = @structs[struct_name]?
+          if idx = fields.index { |name, _| name == field_name }
+            emit("FIELD #{idx}")
+          end
         end
       end
+    end
+  end
+
+  private def extract_var_name(obj : Clang::Cursor) : String?
+    case obj.kind
+    when .decl_ref_expr?
+      obj.spelling
+    when .paren_expr?, .unary_operator?
+      children = collect_children(obj)
+      if child = children[0]?
+        extract_var_name(child)
+      end
+    when .first_expr?
+      children = collect_children(obj)
+      if child = children[0]?
+        extract_var_name(child)
+      end
+    else
+      obj.spelling
     end
   end
 
@@ -610,6 +651,21 @@ class Myc::Mycc::Builder
     children.reverse.each { |child| visit(child) }
   end
 
+  def visit_compound_assign(cursor : Clang::Cursor)
+    op = cursor.spelling
+    children = collect_children(cursor)
+
+    visit(children[1])
+    visit(children[0])
+
+    bin_op = op[0].to_s
+    op_name = BINARY_MAP[bin_op]? || bin_op
+    emit("BINARY :#{op_name}")
+
+    visit(children[0])
+    emit("STORE")
+  end
+
   def get_type(type : Clang::Type) : String
     canonical = type.canonical_type
 
@@ -627,7 +683,9 @@ class Myc::Mycc::Builder
     when .pointer?
       "ptr<#{get_type(canonical.pointee_type)}>"
     when .record?, .enum?
-      canonical.spelling
+      name = canonical.spelling
+      name = name.sub("struct ", "")
+      name
     when .constant_array?
       element = get_type(canonical.array_element_type)
       size = canonical.array_size
@@ -647,19 +705,10 @@ class Myc::Mycc::Builder
   end
 
   private def extract_struct_name(var_type : String) : String
-    var_type.sub("ptr<", "").sub(">", "")
-  end
-
-  private def default_zero(var_type : String) : String
-    case var_type
-    when .starts_with?("array<") then "0 :#{var_type}"
-    when .starts_with?("ptr")    then "0 :ptr<void>"
-    when "u8"                    then "0 :u8"
-    when "i64"                   then "0 :i64"
-    when "f32"                   then "0.0 :f32"
-    when "f64"                   then "0.0 :f64"
-    else                              "0 :i32"
-    end
+    var_type
+      .sub("ptr<", "")
+      .sub(">", "")
+      .sub("struct ", "")
   end
 
   private def emit_unary_update(cursor, op)
