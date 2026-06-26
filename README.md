@@ -11,7 +11,7 @@
 * Compiles to native code via LLVM, QBE, or C. 
 * Fast compilation, zero overhead. 
 * ~6500 lines in Crystal.
-* Includes a C-subset compiler in ~230 lines of Python as a demo.
+* Includes mycc: a C subset compiler using mycIR as backend and libclang for C parsing.
 
 
 ### Why?
@@ -60,13 +60,13 @@ Requires [Crystal](https://crystal-lang.org) to compile the myc compiler.
 
 Quick Start (compile and run first program).
 
-```
+```sh
 echo 'FUNC main BODY PUSH "Hello myc\n" PRINTF 0 ENDFUNC' | crystal src/cli/llvm.cr r
 ```
 
 ### Build
 
-```bash
+```sh
 git clone https://github.com/kostya/myc
 cd myc
 
@@ -91,37 +91,38 @@ All opcodes [self documented](https://github.com/kostya/myc/tree/master/src/opco
 * 6 Control flow: IF/THEN/ELSE, LOOP/INIT/COND/BODY/STEP, SWITCH/CASE, BREAK, NEXT, RET
 * Types: STRUCT, ENUM/VARIANT, FLAT + void, bool, i8..i64, u8..u64, f32, f64, ptr<T>
 
+## mycc: a C subset compiler
+
+~700 lines of Crystal. Uses mycIR as backend and libclang for C parsing.
+
+```sh
+# Build
+shards install; crystal build src/cli/mycc.cr -o ./mycc
+
+# Show mycIR output
+./mycc spec/examples/mycc/complex/loop.cc
+
+# Build and run (LLVM backend)
+./mycc spec/examples/mycc/complex/loop.cc | ./myc-llvm r --release
+
+# Show LLVM IR dump
+./mycc spec/examples/mycc/complex/loop.cc | ./myc-llvm d
+
+# Show optimized LLVM IR dump
+./mycc spec/examples/mycc/complex/loop.cc | ./myc-llvm d --release
+```
 
 ### Compile and run examples
 
-```
+```sh
 ./myc-llvm run --release examples/ir/mandel.myc
 ./myc-llvm run --release examples/ir/bf.myc
 ./myc-llvm run --release examples/ir/fact.myc
 ```
 
-### Example: C compiler (small subset) with myc IR.
-
-~230 lines of Python. Compiles a subset of C to myc IR via pycparser.
-```
-cd examples/c2myc/
-python3 -m venv py
-source py/bin/activate
-pip install pycparser
-
-# run
-python c2myc.py tests/03-loop.cc | ../../myc-llvm run --release 
-
-# show llvm dump
-python c2myc.py tests/03-loop.cc | ../../myc-llvm d
-
-# show llvm optimized dump
-python c2myc.py tests/03-loop.cc | ../../myc-llvm d --release
-```
-
 ### Example: Brainfuck compiler with myc IR.
 
-```
+```sh
 cd benchmark/brainfuck-compiler
 python3 bf2myc.py mandel.bf | ../../myc-llvm run --release
 ```
@@ -330,7 +331,7 @@ Commands:
              ;   ./myc-llvm d --release file.myc
              ;   cat file.myc | ./myc-llvm d --release
 
-  beautify|b ; format, validate, and add auto-comments to .myc files (--annotate adds stack state comments)
+  beautify|b ; format, validate, and add auto-comments(--annotate) to .myc files
              ;   ./#{cli_name} b .
              ;   ./#{cli_name} b --annotate src/
              ;   ./#{cli_name} b file1.myc file2.myc
@@ -352,3 +353,4 @@ Licensed under the Apache License, Version 2.0.
 - [Crystal language](https://crystal-lang.org)
 - [QBE](https://c9x.me/compile/)
 - [LLVM](https://llvm.org/)
+- [clang.cr](https://github.com/crystal-lang/clang.cr)

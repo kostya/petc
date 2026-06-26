@@ -1,0 +1,6 @@
+and: 8
+or: 14
+xor: 6
+not: -11
+shl: 40
+shr: 5

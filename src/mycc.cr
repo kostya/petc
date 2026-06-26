@@ -1,0 +1,2 @@
+module Myc::Mycc
+end

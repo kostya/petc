@@ -1,0 +1,6 @@
+add: 13
+sub: 7
+mul: 30
+div: 3
+rem: 1
+neg: -10

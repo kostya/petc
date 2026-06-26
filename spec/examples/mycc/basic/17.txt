@@ -1,0 +1,3 @@
+ptr value: 42
+ptr to ptr: 42
+modified: 100

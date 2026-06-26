@@ -37,7 +37,6 @@ run_step "SPEC" crystal spec
 run_step "BUILD" sh build.sh
 run_step "BENCHMARK" bash -c "cd benchmark/ && ruby run.rb"
 run_step "BENCHMARK BF COMPILER" bash -c "cd benchmark/brainfuck-compiler && ruby run.rb"
-run_step "TESTS C COMPILER" bash -c "cd examples/c2myc/tests && source ../py/bin/activate && ruby run.rb"
 
 if [ $BUILD_STATUS -eq 0 ]; then
     echo -e "${GREEN}ALL STEPS PASSED!${NC}"

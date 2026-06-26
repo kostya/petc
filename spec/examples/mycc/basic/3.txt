@@ -1,0 +1,7 @@
+check1 1
+check2 2
+check3 2
+4 called
+check4 0
+5 called
+check5 0

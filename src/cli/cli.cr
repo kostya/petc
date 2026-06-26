@@ -161,7 +161,7 @@ Commands:
 
 OPTIONS:
   --release ; compile in performance mode (optimizations enabled)
-  --target=TARGET   (TARGET: arm64, x86_64, x86, wasm32, ...; default: native)
+  --target=TARGET   (TARGET: arm64, x86_64, x86, ...; default: native)
 USAGE
   end
 

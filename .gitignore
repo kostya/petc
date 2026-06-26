@@ -5,7 +5,7 @@ myc-llvm
 myc-c
 myc-qbe
 myc-test
-mycc
+/mycc
 
 bin_*
 *.o
