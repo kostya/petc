@@ -97,6 +97,7 @@ All opcodes [self documented](https://github.com/kostya/myc/tree/master/src/opco
 
 ```sh
 # Build
+# sudo apt install llvm-20 libclang-20-dev
 shards install; crystal build src/cli/mycc.cr -o ./mycc
 
 # Show mycIR output
