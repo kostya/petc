@@ -1,0 +1,10 @@
+FUNC :main
+  BODY
+    PUSH 42
+    STACK :dup
+    INSPECT
+    PUSH 2
+    BINARY :sub
+    INSPECT
+ENDFUNC
+

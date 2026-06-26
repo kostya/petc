@@ -1,0 +1,13 @@
+STRUCT :Point
+  TYPE :i32
+  TYPE :i64
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    SIZEOF :Point
+    INSPECT
+    SIZEOF :ptr<Point>
+    INSPECT
+ENDFUNC
+

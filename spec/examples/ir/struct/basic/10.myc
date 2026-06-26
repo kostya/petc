@@ -1,0 +1,45 @@
+STRUCT :Point
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :create_point
+  RETURN
+    TYPE :ptr<Point>
+  BODY
+    PUSH 1
+    MALLOC :Point
+    LOCAL :p :ptr<Point>
+    STORE
+    PUSH 123
+    LOCAL :p
+    DEREF
+    FIELD 0
+    STORE
+    PUSH 456
+    LOCAL :p
+    DEREF
+    FIELD 1
+    STORE
+    LOCAL :p
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    CALL :create_point
+    LOCAL :p :ptr<Point>
+    STORE
+    LOCAL :p
+    DEREF
+    FIELD 0
+    INSPECT
+    LOCAL :p
+    DEREF
+    FIELD 1
+    INSPECT
+    LOCAL :p
+    AS :ptr<void>
+    CALL :free
+ENDFUNC
+

@@ -1,0 +1,33 @@
+STRUCT :A
+  TYPE :B
+ENDSTRUCT
+
+STRUCT :B
+  TYPE :C
+ENDSTRUCT
+
+STRUCT :C
+  TYPE :ptr<A>
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 0 :ptr<A>
+    LOCAL :aptr :ptr<A>
+    STORE
+    LOCAL :aptr
+    LOCAL :c :C
+    FIELD 0
+    STORE
+    LOCAL :c
+    LOCAL :b :B
+    FIELD 0
+    STORE
+    LOCAL :b
+    LOCAL :a :A
+    FIELD 0
+    STORE
+    PUSH :ok
+    INSPECT
+ENDFUNC
+

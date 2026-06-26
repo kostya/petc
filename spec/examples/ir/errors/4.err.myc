@@ -1,0 +1,3 @@
+FUNC main BODY
+  IF PUSH 1
+ENDFUNC

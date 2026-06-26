@@ -1,0 +1,13 @@
+ENUM :bla
+  VARIANT :A
+    TYPE :i32
+ENDENUM
+
+FUNC :main
+  BODY
+    PUSH 42
+    LOCAL :x :bla
+    FIELD 1
+    STORE
+ENDFUNC
+

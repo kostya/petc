@@ -1,0 +1,3 @@
+Outer::Box(Inner::Some(42))
+Outer::Box(Inner::None())
+Outer::Empty()

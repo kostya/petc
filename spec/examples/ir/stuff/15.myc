@@ -1,0 +1,26 @@
+STRUCT :Point
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH true
+    IF
+      THEN
+        PUSH 20
+        PUSH 10
+        CREATE :Point
+        LOCAL :result :Point
+        STORE
+      ELSE
+        PUSH 40
+        PUSH 30
+        CREATE :Point
+        LOCAL :result
+        STORE
+    ENDIF
+    LOCAL :result
+    INSPECT
+ENDFUNC
+

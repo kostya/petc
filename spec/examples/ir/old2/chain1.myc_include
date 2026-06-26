@@ -1,0 +1,34 @@
+STRUCT :C
+  TYPE :i32
+ENDSTRUCT
+
+STRUCT :B
+  TYPE :C
+ENDSTRUCT
+
+STRUCT :A
+  TYPE :B
+ENDSTRUCT
+
+FUNC :init_A
+  ARGS
+    TYPE :i32
+  RETURN
+    TYPE :A
+  BODY
+    PARAM 0
+    LOCAL :c :C
+    FIELD 0
+    STORE
+    LOCAL :c
+    LOCAL :b :B
+    FIELD 0
+    STORE
+    LOCAL :b
+    LOCAL :a :A
+    FIELD 0
+    STORE
+    LOCAL :a
+    RET
+ENDFUNC
+

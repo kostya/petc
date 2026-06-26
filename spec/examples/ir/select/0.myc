@@ -1,0 +1,24 @@
+FUNC :main
+  BODY
+    PUSH 1
+    PUSH 2
+    PUSH true
+    SELECT
+    INSPECT
+    PUSH 1
+    PUSH 2
+    PUSH false
+    SELECT
+    INSPECT
+    PUSH :right
+    PUSH :left
+    PUSH true
+    SELECT
+    INSPECT
+    PUSH :right
+    PUSH :left
+    PUSH false
+    SELECT
+    INSPECT
+ENDFUNC
+

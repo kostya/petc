@@ -1,0 +1,9 @@
+FUNC :main
+  BODY
+    PUSH true
+    LOCAL :flag :bool
+    STORE
+    LOCAL :flag
+    INSPECT
+ENDFUNC
+

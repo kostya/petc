@@ -1,0 +1,1 @@
+Node(42, ptr<Node>(0x0))

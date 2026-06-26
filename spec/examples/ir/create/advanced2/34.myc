@@ -1,0 +1,26 @@
+ENUM :Option
+  VARIANT :None
+  VARIANT :Some
+    TYPE :i32
+ENDENUM
+
+FUNC :main
+  BODY
+    PUSH 1
+    MALLOC :Option
+    LOCAL :x :ptr<Option>
+    STORE
+    PUSH 42
+    CREATE :Option::Some
+    AS :Option
+    LOCAL :x
+    DEREF
+    STORE
+    LOCAL :x
+    DEREF
+    INSPECT
+    LOCAL :x
+    AS :ptr<void>
+    CALL :free
+ENDFUNC
+

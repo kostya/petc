@@ -1,0 +1,27 @@
+FUNC :main
+  BODY
+    PUSH 15
+    PUSH 1
+    BINARY :add
+    INSPECT
+    PUSH 15
+    AS :u32
+    PUSH 1
+    AS :u32
+    BINARY :sub
+    INSPECT
+    PUSH false
+    PUSH true
+    BINARY :and
+    INSPECT
+    PUSH false
+    PUSH true
+    BINARY :or
+    INSPECT
+    PUSH 6.0
+    PUSH 5
+    AS :f64
+    BINARY :add
+    INSPECT
+ENDFUNC
+

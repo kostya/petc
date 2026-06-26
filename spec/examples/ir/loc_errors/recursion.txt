@@ -1,0 +1,4 @@
+STRUCT :bla TYPE :bla ENDSTRUCT
+^
+struct cycle detected: bla > bla > bla (use ptr<...> to break recursion)
+(at

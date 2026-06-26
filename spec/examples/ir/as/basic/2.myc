@@ -1,0 +1,8 @@
+FUNC :main
+  BODY
+    PUSH 258
+    AS :i32
+    AS :u8
+    INSPECT
+ENDFUNC
+

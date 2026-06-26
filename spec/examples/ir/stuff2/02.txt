@@ -1,0 +1,2 @@
+Object(1, Shape::Point(Vec2(10, 20)))
+Object(2, Shape::Circle(3.5000000))

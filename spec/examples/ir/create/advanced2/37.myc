@@ -1,0 +1,31 @@
+ENUM :Shape
+  VARIANT :Circle
+    TYPE :f64
+  VARIANT :Rect
+    TYPE :f64
+    TYPE :f64
+ENDENUM
+
+FUNC :area
+  ARGS
+    TYPE :Shape::Rect
+  RETURN
+    TYPE :f64
+  BODY
+    PARAM 0
+    FIELD 1
+    PARAM 0
+    FIELD 2
+    BINARY :mul
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 5.0
+    PUSH 3.0
+    CREATE :Shape::Rect
+    CALL :area
+    INSPECT
+ENDFUNC
+

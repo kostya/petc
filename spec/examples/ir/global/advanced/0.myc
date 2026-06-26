@@ -1,0 +1,22 @@
+GLOBAL :ptr_storage
+  TYPE :ptr<i32>
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    PUSH 1
+    MALLOC :i32
+    GLOBAL :ptr_storage
+    STORE
+    PUSH 42
+    GLOBAL :ptr_storage
+    DEREF
+    STORE
+    GLOBAL :ptr_storage
+    DEREF
+    INSPECT
+    GLOBAL :ptr_storage
+    AS :ptr<void>
+    CALL :free
+ENDFUNC
+

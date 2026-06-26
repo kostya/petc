@@ -1,0 +1,21 @@
+STRUCT :Point
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :origin
+  RETURN
+    TYPE :Point
+  BODY
+    PUSH 0
+    PUSH 0
+    CREATE :Point
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    CALL :origin
+    INSPECT
+ENDFUNC
+

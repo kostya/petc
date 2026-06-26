@@ -1,0 +1,1 @@
+EnumTest::StructWithPtrEnum(StructWithPtrEnum(19, ptr<EnumTest>(EnumTest::TypedField(...))))

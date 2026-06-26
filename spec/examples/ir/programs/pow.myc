@@ -1,0 +1,42 @@
+FUNC :power
+  ARGS
+    TYPE :i32
+    TYPE :i32
+  RETURN
+    TYPE :i32
+  BODY
+    PUSH 1
+    LOCAL :result :i32
+    STORE
+    PUSH 0
+    LOCAL :i :i32
+    STORE
+    LOOP
+      COND
+        PARAM 1
+        LOCAL :i
+        BINARY :less
+      BODY
+        LOCAL :result
+        PARAM 0
+        BINARY :mul
+        LOCAL :result
+        STORE
+        LOCAL :i
+        PUSH 1
+        BINARY :add
+        LOCAL :i
+        STORE
+    ENDLOOP
+    LOCAL :result
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 3
+    PUSH 2
+    CALL :power
+    INSPECT
+ENDFUNC
+

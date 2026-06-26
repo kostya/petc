@@ -1,0 +1,41 @@
+FLAT :flat
+  TYPE :u8
+  COUNT 16
+ENDFLAT
+
+STRUCT :Node
+  TYPE :i32
+  TYPE :flat
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 1
+    MALLOC :Node
+    LOCAL :n :ptr<Node>
+    STORE
+    PUSH 42
+    LOCAL :n
+    DEREF
+    FIELD 1
+    AS :i32
+    STORE
+    PUSH 0
+    LOCAL :n
+    DEREF
+    FIELD 0
+    STORE
+    LOCAL :n
+    DEREF
+    FIELD 0
+    INSPECT
+    LOCAL :n
+    DEREF
+    FIELD 1
+    AS :i32
+    INSPECT
+    LOCAL :n
+    AS :ptr<void>
+    CALL :free
+ENDFUNC
+

@@ -1,0 +1,26 @@
+{{common.myc_include}}
+
+FUNC :main
+  BODY
+    LOOP
+      INIT
+        PUSH 0
+        LOCAL :x :i32
+        STORE
+      COND
+        PUSH 6
+        LOCAL :x
+        BINARY :less
+      BODY
+        LOCAL :x
+        CALL :SimpleEnum_new
+        INSPECT
+      STEP
+        PUSH 1
+        LOCAL :x
+        BINARY :add
+        LOCAL :x
+        STORE
+    ENDLOOP
+ENDFUNC
+

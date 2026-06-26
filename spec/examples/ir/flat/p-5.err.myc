@@ -1,0 +1,26 @@
+FLAT :bla
+  TYPE :i32
+  COUNT 3
+ENDFLAT
+
+FUNC :test
+  ARGS
+    TYPE :bla
+  BODY
+    PUSH 42
+    PARAM 0
+    FIELD 1
+    STORE
+    PARAM 0
+    INSPECT
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 3
+    PUSH 2
+    PUSH 1
+    CREATE :bla
+    CALL :test
+ENDFUNC
+

@@ -1,0 +1,13 @@
+GLOBAL :global_test
+  TYPE :i32
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    PUSH 10
+    GLOBAL :global_test
+    STORE
+    GLOBAL :global_test
+    INSPECT
+ENDFUNC
+

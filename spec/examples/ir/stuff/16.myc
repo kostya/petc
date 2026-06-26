@@ -1,0 +1,22 @@
+STRUCT :Inner
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+STRUCT :Outer
+  TYPE :Inner
+  TYPE :Inner
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 4
+    PUSH 3
+    CREATE :Inner
+    PUSH 2
+    PUSH 1
+    CREATE :Inner
+    CREATE :Outer
+    INSPECT
+ENDFUNC
+

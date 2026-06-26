@@ -1,0 +1,32 @@
+ENUM :Option
+  VARIANT :None
+  VARIANT :Some
+    TYPE :i32
+ENDENUM
+
+FUNC :make_some
+  ARGS
+    TYPE :ptr<Option>
+  BODY
+    PUSH 1
+    PARAM 0
+    DEREF
+    FIELD 0
+    STORE
+    PUSH 42
+    PARAM 0
+    DEREF
+    AS :Option::Some
+    FIELD 1
+    STORE
+ENDFUNC
+
+FUNC :main
+  BODY
+    LOCAL :x :Option
+    ADDR
+    CALL :make_some
+    LOCAL :x
+    INSPECT
+ENDFUNC
+

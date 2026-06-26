@@ -1,0 +1,19 @@
+{{general.myc_include}}
+
+FUNC :main
+  BODY
+    PUSH 4
+    CALL :EnumTest_create
+    LOCAL :var :EnumTest
+    STORE
+    PUSH 27
+    LOCAL :var
+    AS :EnumTest::SimpleStructPtrMulti
+    FIELD 1
+    DEREF
+    FIELD 1
+    STORE
+    LOCAL :var
+    INSPECT
+ENDFUNC
+

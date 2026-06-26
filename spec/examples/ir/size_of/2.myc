@@ -1,0 +1,12 @@
+FUNC :main
+  BODY
+    PUSH 1 :i32
+    SIZEOF
+    INSPECT
+    PUSH 1
+    PUSH 0 :ptr<i32>
+    BINARY :add
+    SIZEOF
+    INSPECT
+ENDFUNC
+

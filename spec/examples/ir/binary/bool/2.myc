@@ -1,0 +1,8 @@
+FUNC :main
+  BODY
+    PUSH true
+    PUSH false
+    BINARY :xor
+    INSPECT
+ENDFUNC
+

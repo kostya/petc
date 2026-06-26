@@ -1,0 +1,45 @@
+FUNC :bla
+  ARGS
+    TYPE :i32
+  RETURN
+    TYPE :i32
+  BODY
+    PARAM 0
+    LOCAL :var :i32
+    STORE
+    PUSH 0
+    LOCAL :result :i32
+    STORE
+    PUSH 10
+    LOCAL :var
+    BINARY :eq
+    IF
+      THEN
+        PUSH 1
+        RET
+      ELSE
+        PUSH 2
+        LOCAL :result
+        STORE
+    ENDIF
+    PUSH 3
+    LOCAL :result
+    BINARY :add
+    LOCAL :result
+    STORE
+    LOCAL :result
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 10
+    CALL :bla
+    PUSH "Get value1 %d\n"
+    PRINTF 1
+    PUSH 11
+    CALL :bla
+    PUSH "Get value2 %d\n"
+    PRINTF 1
+ENDFUNC
+

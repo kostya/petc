@@ -1,0 +1,13 @@
+GLOBAL :answer
+  TYPE :i32
+  INITIAL 42
+  CONSTANT
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    PUSH 99
+    GLOBAL :answer
+    STORE
+ENDFUNC
+

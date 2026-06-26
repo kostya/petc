@@ -1,0 +1,26 @@
+{{common.myc_include}}
+
+FUNC :test_get_call
+  BODY
+    PUSH 19
+    CALL :init_A
+    FIELD 0
+    DEREF
+    FIELD 0
+    DEREF
+    FIELD 0
+    DEREF
+    FIELD 0
+    PUSH 1
+    STACK :swap2
+    BINARY :add
+    DEREF
+    FIELD 0
+    INSPECT
+ENDFUNC
+
+FUNC :main
+  BODY
+    CALL :test_get_call
+ENDFUNC
+

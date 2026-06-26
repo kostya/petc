@@ -1,0 +1,13 @@
+GLOBAL :g
+  TYPE :i32
+  INITIAL 0
+  CONSTANT
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    GLOBAL :g
+    PUSH "%d\n"
+    PRINTF 1
+ENDFUNC
+

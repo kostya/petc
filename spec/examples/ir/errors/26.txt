@@ -1,0 +1,1 @@
+bad arg 0 type, expected: ptr<u8>, got: i32

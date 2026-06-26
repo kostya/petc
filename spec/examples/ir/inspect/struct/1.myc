@@ -1,0 +1,24 @@
+STRUCT :Mixed
+  TYPE :i32
+  TYPE :f64
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 42
+    LOCAL :m :Mixed
+    FIELD 0
+    STORE
+    PUSH 3.14
+    LOCAL :m
+    FIELD 1
+    STORE
+    PUSH 99
+    LOCAL :m
+    FIELD 2
+    STORE
+    LOCAL :m
+    INSPECT
+ENDFUNC
+

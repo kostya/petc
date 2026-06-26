@@ -1,0 +1,11 @@
+FUNC :main
+  BODY
+    PUSH 42
+    LOCAL :x :i32
+    ADDR
+    DEREF
+    STORE
+    LOCAL :x
+    INSPECT
+ENDFUNC
+

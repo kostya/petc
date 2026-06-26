@@ -1,0 +1,29 @@
+FUNC :main
+  BODY
+    PUSH 0
+    LOCAL :i :i32
+    STORE
+    LOOP
+      COND
+        PUSH 4
+        LOCAL :i
+        BINARY :less
+      BODY
+        PUSH 1
+        LOCAL :i
+        BINARY :eq
+        IF
+          THEN
+            NEXT
+        ENDIF
+        LOCAL :i
+        INSPECT
+      STEP
+        PUSH 1
+        LOCAL :i
+        BINARY :add
+        LOCAL :i
+        STORE
+    ENDLOOP
+ENDFUNC
+

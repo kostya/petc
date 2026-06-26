@@ -1,0 +1,7 @@
+FUNC :main
+  BODY
+    PUSH true
+    PUSH "val = %d\n"
+    PRINTF 1
+ENDFUNC
+

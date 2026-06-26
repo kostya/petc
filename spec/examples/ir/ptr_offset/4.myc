@@ -1,0 +1,28 @@
+STRUCT :Obj
+  TYPE :ptr<i32>
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 10
+    PUSH 3
+    MALLOC :i32
+    CREATE :Obj
+    LOCAL :o :Obj
+    STORE
+    PUSH 42
+    PUSH 1
+    LOCAL :o
+    FIELD 0
+    BINARY :add
+    DEREF
+    STORE
+    PUSH 1
+    LOCAL :o
+    FIELD 0
+    BINARY :add
+    DEREF
+    INSPECT
+ENDFUNC
+

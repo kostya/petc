@@ -1,0 +1,1 @@
+ptr<struct<i32, i32>>(struct<i32, i32>(10, 42))

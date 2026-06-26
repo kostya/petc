@@ -1,0 +1,7 @@
+FUNC :main
+  BODY
+    PUSH :kostya
+    PUSH "Hello %s from myc\n"
+    PRINTF 1
+ENDFUNC
+

@@ -1,0 +1,8 @@
+FUNC :main
+  BODY
+    PUSH 3
+    PUSH 5
+    BINARY :and
+    INSPECT
+ENDFUNC
+

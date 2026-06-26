@@ -1,0 +1,53 @@
+ENUM :SimpleEnum
+  VARIANT :A
+  VARIANT :B
+    TYPE :i32
+  VARIANT :C
+    TYPE :f64
+  VARIANT :D
+    TYPE :bool
+ENDENUM
+
+FUNC :SimpleEnum_new
+  ARGS
+    TYPE :i32
+  RETURN
+    TYPE :SimpleEnum
+  BODY
+    PARAM 0
+    LOCAL :var :SimpleEnum
+    FIELD 0
+    STORE
+    PARAM 0
+    SWITCH
+      CASE 0
+      CASE 1
+        PUSH 25
+        LOCAL :var
+        AS :SimpleEnum::B
+        FIELD 1
+        STORE
+      CASE 2
+        PUSH 2.5
+        LOCAL :var
+        AS :SimpleEnum::C
+        FIELD 1
+        STORE
+      CASE 3
+        PUSH true
+        LOCAL :var
+        AS :SimpleEnum::D
+        FIELD 1
+        STORE
+    ENDSWITCH
+    LOCAL :var
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 1
+    CALL :SimpleEnum_new
+    INSPECT
+ENDFUNC
+

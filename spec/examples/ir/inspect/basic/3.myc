@@ -1,0 +1,6 @@
+FUNC :main
+  BODY
+    PUSH :hello
+    INSPECT
+ENDFUNC
+

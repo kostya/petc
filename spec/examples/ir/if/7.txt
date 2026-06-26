@@ -1,0 +1,7 @@
+FUNC :main
+  BODY
+    PUSH true       ; [val(bool:Co)]
+    IF
+      THEN
+        PUSH 1      < stack balance: expected 0, got 1: [val(i32:Co)]
+                    (at

@@ -1,0 +1,24 @@
+STRUCT :Point
+  TYPE :i32
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 10
+    LOCAL :p :Point
+    FIELD 0
+    STORE
+    PUSH 20
+    LOCAL :p
+    FIELD 1
+    STORE
+    PUSH 30
+    LOCAL :p
+    FIELD 2
+    STORE
+    LOCAL :p
+    INSPECT
+ENDFUNC
+

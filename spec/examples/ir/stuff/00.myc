@@ -1,0 +1,13 @@
+STRUCT :Node
+  TYPE :i32
+  TYPE :ptr<Node>
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 0 :ptr<Node>
+    PUSH 42
+    CREATE :Node
+    INSPECT
+ENDFUNC
+

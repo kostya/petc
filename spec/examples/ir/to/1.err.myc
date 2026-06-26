@@ -1,0 +1,6 @@
+FUNC :main
+  BODY
+    PUSH 1 :i64
+    TO :i32
+ENDFUNC
+

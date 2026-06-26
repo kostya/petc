@@ -1,0 +1,21 @@
+GLOBAL :src
+  TYPE :i32
+  INITIAL 77
+ENDGLOBAL
+
+GLOBAL :dst
+  TYPE :i32
+  INITIAL 0
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    GLOBAL :src
+    GLOBAL :dst
+    STORE
+    GLOBAL :dst
+    INSPECT
+    GLOBAL :src
+    INSPECT
+ENDFUNC
+

@@ -1,0 +1,9 @@
+FUNC :main
+  BODY
+    PUSH 3.14
+    LOCAL :f :f64
+    STORE
+    LOCAL :f
+    INSPECT
+ENDFUNC
+

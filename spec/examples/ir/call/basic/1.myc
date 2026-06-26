@@ -1,0 +1,19 @@
+FUNC :double_it
+  ARGS
+    TYPE :i32
+  RETURN
+    TYPE :i32
+  BODY
+    PARAM 0
+    PUSH 2
+    BINARY :mul
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 21
+    CALL :double_it
+    INSPECT
+ENDFUNC
+

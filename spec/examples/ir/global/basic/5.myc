@@ -1,0 +1,16 @@
+GLOBAL :flag
+  TYPE :bool
+  INITIAL true
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    GLOBAL :flag
+    INSPECT
+    PUSH false
+    GLOBAL :flag
+    STORE
+    GLOBAL :flag
+    INSPECT
+ENDFUNC
+

@@ -1,0 +1,26 @@
+FLAT :bla
+  TYPE :i32
+  COUNT 3
+ENDFLAT
+
+FUNC :main
+  BODY
+    PUSH 3
+    PUSH 2
+    PUSH 1
+    CREATE :bla
+    LOCAL :x :bla
+    STORE
+    LOCAL :x
+    INSPECT
+    LOCAL :x
+    FIELD 2
+    INSPECT
+    PUSH 42
+    LOCAL :x
+    FIELD 1
+    STORE
+    LOCAL :x
+    INSPECT
+ENDFUNC
+

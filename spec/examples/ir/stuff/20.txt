@@ -1,0 +1,2 @@
+Tree::Leaf(42)
+Tree::Leaf(55)

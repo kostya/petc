@@ -1,0 +1,8 @@
+FUNC :main
+  BODY
+    PUSH 1.5
+    PUSH 1.5
+    BINARY :more_eq
+    INSPECT
+ENDFUNC
+

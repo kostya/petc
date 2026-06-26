@@ -1,0 +1,43 @@
+FUNC :main
+  BODY
+    PUSH 4
+    MALLOC :u8
+    LOCAL :p :ptr<u8>
+    STORE
+    PUSH 1
+    AS :u8
+    PUSH 0
+    LOCAL :p
+    BINARY :add
+    DEREF
+    STORE
+    PUSH 2
+    AS :u8
+    PUSH 1
+    LOCAL :p
+    BINARY :add
+    DEREF
+    STORE
+    PUSH 3
+    AS :u8
+    PUSH 2
+    LOCAL :p
+    BINARY :add
+    DEREF
+    STORE
+    PUSH 4
+    AS :u8
+    PUSH 3
+    LOCAL :p
+    BINARY :add
+    DEREF
+    STORE
+    LOCAL :p
+    AS :ptr<i32>
+    DEREF
+    INSPECT
+    LOCAL :p
+    AS :ptr<void>
+    CALL :free
+ENDFUNC
+

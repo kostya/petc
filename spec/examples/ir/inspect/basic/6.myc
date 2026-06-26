@@ -1,0 +1,6 @@
+FUNC :main
+  BODY
+    PUSH 0
+    INSPECT
+ENDFUNC
+

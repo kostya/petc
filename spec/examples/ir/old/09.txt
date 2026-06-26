@@ -1,0 +1,7 @@
+Before check
+Got ELSE1 branch
+Before check2
+Got IF2 branch
+Escape IF2
+Escape IF1 ELSE
+Finish builder

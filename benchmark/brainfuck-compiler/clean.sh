@@ -1,0 +1,1 @@
+rm *.o *.ssa *.ll *.c *.myc *.s ./bin* 

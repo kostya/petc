@@ -1,0 +1,82 @@
+ENUM :Triple
+  VARIANT :A
+    TYPE :i32
+  VARIANT :B
+    TYPE :f64
+  VARIANT :C
+    TYPE :ptr<i32>
+ENDENUM
+
+FUNC :make
+  ARGS
+    TYPE :i32
+  RETURN
+    TYPE :Triple
+  BODY
+    PARAM 0
+    LOCAL :v :Triple
+    FIELD 0
+    STORE
+    PARAM 0
+    SWITCH
+      CASE 0
+        PUSH 42
+        LOCAL :v
+        AS :Triple::A
+        FIELD 1
+        STORE
+      CASE 1
+        PUSH 3.14
+        LOCAL :v
+        AS :Triple::B
+        FIELD 1
+        STORE
+      CASE 2
+        PUSH 1
+        MALLOC :i32
+        LOCAL :p :ptr<i32>
+        STORE
+        PUSH 99
+        LOCAL :p
+        DEREF
+        STORE
+        LOCAL :p
+        LOCAL :v
+        AS :Triple::C
+        FIELD 1
+        STORE
+    ENDSWITCH
+    LOCAL :v
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 0
+    CALL :make
+    INSPECT
+    PUSH 1
+    CALL :make
+    INSPECT
+    PUSH 2
+    CALL :make
+    LOCAL :x :Triple
+    STORE
+    LOCAL :x
+    AS :Triple::C
+    FIELD 1
+    DEREF
+    INSPECT
+    PUSH 33
+    LOCAL :x
+    AS :Triple::C
+    FIELD 1
+    DEREF
+    STORE
+    LOCAL :x
+    AS :Triple::C
+    FIELD 1
+    DEREF
+    INSPECT
+ENDFUNC
+

@@ -1,0 +1,5 @@
+FUNC :main
+  BODY
+    CALL :nonexistent_func
+ENDFUNC
+

@@ -1,0 +1,27 @@
+FUNC :main
+  BODY
+    PUSH 0
+    LOCAL :i :i32
+    STORE
+    PUSH "before\n"
+    PRINTF 0
+    LOOP
+      COND
+        PUSH 5
+        LOCAL :i
+        BINARY :less
+      BODY
+        LOCAL :i
+        PUSH "got %d\n"
+        PRINTF 1
+      STEP
+        PUSH 1
+        LOCAL :i
+        BINARY :add
+        LOCAL :i
+        STORE
+    ENDLOOP
+    PUSH "after\n"
+    PRINTF 0
+ENDFUNC
+

@@ -1,0 +1,9 @@
+FUNC :main
+  BODY
+    PUSH 3
+    PUSH 2
+    PUSH 1
+    CREATE "flat<i32, 3>"
+    INSPECT
+ENDFUNC
+

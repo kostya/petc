@@ -1,0 +1,37 @@
+GLOBAL :buffer
+  TYPE :ptr<i32>
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    PUSH 3
+    MALLOC :i32
+    GLOBAL :buffer
+    STORE
+    PUSH 100
+    PUSH 0
+    GLOBAL :buffer
+    BINARY :add
+    DEREF
+    STORE
+    PUSH 300
+    PUSH 2
+    GLOBAL :buffer
+    BINARY :add
+    DEREF
+    STORE
+    PUSH 0
+    GLOBAL :buffer
+    BINARY :add
+    DEREF
+    INSPECT
+    PUSH 2
+    GLOBAL :buffer
+    BINARY :add
+    DEREF
+    INSPECT
+    GLOBAL :buffer
+    AS :ptr<void>
+    CALL :free
+ENDFUNC
+

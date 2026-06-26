@@ -1,0 +1,15 @@
+FLAT :Vec3
+  TYPE :i32
+  COUNT 3
+ENDFLAT
+
+FUNC :main
+  BODY
+    PUSH 30
+    PUSH 20
+    PUSH 10
+    CREATE :Vec3
+    FIELD 1
+    INSPECT
+ENDFUNC
+

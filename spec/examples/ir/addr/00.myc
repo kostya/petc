@@ -1,0 +1,25 @@
+FUNC :increment
+  ARGS
+    TYPE :ptr<i32>
+  BODY
+    PUSH 1
+    PARAM 0
+    DEREF
+    BINARY :add
+    PARAM 0
+    DEREF
+    STORE
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 42
+    LOCAL :x :i32
+    STORE
+    LOCAL :x
+    ADDR
+    CALL :increment
+    LOCAL :x
+    INSPECT
+ENDFUNC
+

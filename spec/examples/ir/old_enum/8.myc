@@ -1,0 +1,9 @@
+{{general.myc_include}}
+
+FUNC :main
+  BODY
+    PUSH 7
+    CALL :EnumTest_create
+    INSPECT
+ENDFUNC
+

@@ -1,0 +1,19 @@
+{{chain_enum.myc_include}}
+
+FUNC :main
+  BODY
+    PUSH 0
+    CALL :init_A
+    LOCAL :a :A
+    STORE
+    PUSH 9
+    LOCAL :a
+    AS :A::X1
+    FIELD 1
+    DEREF
+    FIELD 0
+    STORE
+    LOCAL :a
+    INSPECT
+ENDFUNC
+

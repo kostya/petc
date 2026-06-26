@@ -1,0 +1,11 @@
+GLOBAL :g
+  TYPE :i32
+  CONSTANT
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    GLOBAL :g
+    INSPECT
+ENDFUNC
+

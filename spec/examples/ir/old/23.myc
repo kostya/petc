@@ -1,0 +1,83 @@
+STRUCT :Tuple_i32_i32
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :get_tuple_sum
+  ARGS
+    TYPE :Tuple_i32_i32
+  RETURN
+    TYPE :i32
+  BODY
+    PARAM 0
+    FIELD 0
+    PARAM 0
+    FIELD 1
+    BINARY :add
+    RET
+ENDFUNC
+
+FUNC :create_tuples_array
+  RETURN
+    TYPE :ptr<Tuple_i32_i32>
+  BODY
+    PUSH 3
+    MALLOC :Tuple_i32_i32
+    LOCAL :res :ptr<Tuple_i32_i32>
+    STORE
+    PUSH 10
+    LOCAL :res
+    DEREF
+    FIELD 0
+    STORE
+    PUSH 1
+    LOCAL :res
+    DEREF
+    FIELD 1
+    STORE
+    PUSH 10
+    PUSH 1
+    LOCAL :res
+    BINARY :add
+    DEREF
+    FIELD 0
+    STORE
+    PUSH 2
+    PUSH 1
+    LOCAL :res
+    BINARY :add
+    DEREF
+    FIELD 1
+    STORE
+    PUSH 10
+    PUSH 2
+    LOCAL :res
+    BINARY :add
+    DEREF
+    FIELD 0
+    STORE
+    PUSH 3
+    PUSH 2
+    LOCAL :res
+    BINARY :add
+    DEREF
+    FIELD 1
+    STORE
+    LOCAL :res
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    CALL :create_tuples_array
+    LOCAL :res :ptr<Tuple_i32_i32>
+    STORE
+    PUSH 2
+    LOCAL :res
+    BINARY :add
+    DEREF
+    CALL :get_tuple_sum
+    PUSH "result %d\n"
+    PRINTF 1
+ENDFUNC
+

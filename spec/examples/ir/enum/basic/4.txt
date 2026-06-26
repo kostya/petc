@@ -1,0 +1,6 @@
+ptr<SimpleEnum>(SimpleEnum::V0())
+ptr<SimpleEnum>(SimpleEnum::V1(25))
+ptr<SimpleEnum>(SimpleEnum::V2(2.5000000))
+ptr<SimpleEnum>(SimpleEnum::V3(true))
+ptr<SimpleEnum>(SimpleEnum::V4(1.5000000, 15))
+ptr<SimpleEnum>(SimpleEnum::V5(false, 16, 3.5000000))

@@ -1,0 +1,31 @@
+FLAT :Vec2
+  TYPE :i32
+  COUNT 2
+ENDFLAT
+
+FUNC :sum
+  ARGS
+    TYPE :Vec2
+  RETURN
+    TYPE :i32
+  BODY
+    PARAM 0
+    FIELD 0
+    PARAM 0
+    FIELD 1
+    BINARY :add
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 7
+    PUSH 5
+    CREATE :Vec2
+    LOCAL :v :Vec2
+    STORE
+    LOCAL :v
+    CALL :sum
+    INSPECT
+ENDFUNC
+

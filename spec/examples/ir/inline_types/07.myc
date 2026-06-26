@@ -1,0 +1,21 @@
+FUNC :main
+  BODY
+    PUSH 1
+    MALLOC "struct<i32, f64>"
+    LOCAL :p "ptr<struct<i32, f64>>"
+    STORE
+    PUSH 42
+    LOCAL :p
+    DEREF
+    FIELD 0
+    STORE
+    PUSH 3.14
+    LOCAL :p
+    DEREF
+    FIELD 1
+    STORE
+    LOCAL :p
+    DEREF
+    INSPECT
+ENDFUNC
+

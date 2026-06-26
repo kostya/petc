@@ -1,0 +1,12 @@
+FUNC :main
+  BODY
+    PUSH 1
+    INSPECT
+    PUSH :haha
+    INSPECT
+    PUSH 1.5
+    INSPECT
+    PUSH true
+    INSPECT
+ENDFUNC
+

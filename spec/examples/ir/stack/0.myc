@@ -1,0 +1,9 @@
+FUNC :main
+  BODY
+    PUSH 10
+    PUSH 20
+    STACK :swap2
+    INSPECT
+    INSPECT
+ENDFUNC
+

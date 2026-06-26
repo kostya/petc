@@ -1,0 +1,6 @@
+FUNC :shared_func
+  BODY
+    PUSH 42
+    INSPECT
+ENDFUNC
+

@@ -1,0 +1,26 @@
+FUNC :getu8
+  ARGS
+    TYPE :ptr<u8>
+  BODY
+    PUSH 43 :u8
+    PARAM 0
+    DEREF
+    STORE
+ENDFUNC
+
+FUNC :main
+  BODY
+    LOCAL :x :u8
+    ADDR
+    CALL :getu8
+    LOCAL :x
+    SWITCH
+      CASE 43
+        PUSH :yes
+        INSPECT
+      ELSE
+        PUSH :no
+        INSPECT
+    ENDSWITCH
+ENDFUNC
+

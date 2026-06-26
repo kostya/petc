@@ -1,0 +1,24 @@
+FUNC :main
+  BODY
+    PUSH true
+    IF
+      THEN
+        PUSH true
+        IF
+          THEN
+            PUSH "inner yes"
+            INSPECT
+          ELSE
+            PUSH "inner no"
+            INSPECT
+        ENDIF
+        PUSH "after inner"
+        INSPECT
+      ELSE
+        PUSH "outer no"
+        INSPECT
+    ENDIF
+    PUSH "after outer"
+    INSPECT
+ENDFUNC
+

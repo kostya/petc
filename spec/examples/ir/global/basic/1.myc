@@ -1,0 +1,14 @@
+GLOBAL :counter
+  TYPE :i32
+  INITIAL 0
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    PUSH 99
+    GLOBAL :counter
+    STORE
+    GLOBAL :counter
+    INSPECT
+ENDFUNC
+

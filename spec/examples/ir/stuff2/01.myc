@@ -1,0 +1,30 @@
+ENUM :Inner
+  VARIANT :None
+  VARIANT :Some
+    TYPE :i32
+ENDENUM
+
+ENUM :Outer
+  VARIANT :Empty
+  VARIANT :Box
+    TYPE :Inner
+ENDENUM
+
+FUNC :main
+  BODY
+    PUSH 42
+    CREATE :Inner::Some
+    AS :Inner
+    CREATE :Outer::Box
+    AS :Outer
+    INSPECT
+    CREATE :Inner::None
+    AS :Inner
+    CREATE :Outer::Box
+    AS :Outer
+    INSPECT
+    CREATE :Outer::Empty
+    AS :Outer
+    INSPECT
+ENDFUNC
+

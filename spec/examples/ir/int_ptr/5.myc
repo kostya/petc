@@ -1,0 +1,9 @@
+FUNC :main
+  BODY
+    PUSH 1234
+    AS :ptr<i32>
+    AS :i64
+    AS :ptr<i32>
+    INSPECT
+ENDFUNC
+

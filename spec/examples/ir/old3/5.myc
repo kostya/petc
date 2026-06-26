@@ -1,0 +1,58 @@
+{{common.myc_include}}
+
+FUNC :test_set_alloca
+  BODY
+    PUSH 13
+    CALL :init_A
+    LOCAL :a :A
+    STORE
+    PUSH 15
+    LOCAL :a
+    FIELD 0
+    DEREF
+    FIELD 0
+    DEREF
+    FIELD 0
+    DEREF
+    FIELD 0
+    PUSH 0
+    STACK :swap2
+    BINARY :add
+    DEREF
+    FIELD 0
+    STORE
+    LOCAL :a
+    FIELD 0
+    DEREF
+    FIELD 0
+    DEREF
+    FIELD 0
+    DEREF
+    FIELD 0
+    PUSH 0
+    STACK :swap2
+    BINARY :add
+    DEREF
+    FIELD 0
+    INSPECT
+    LOCAL :a
+    FIELD 0
+    DEREF
+    FIELD 0
+    DEREF
+    FIELD 0
+    DEREF
+    FIELD 0
+    PUSH 1
+    STACK :swap2
+    BINARY :add
+    DEREF
+    FIELD 0
+    INSPECT
+ENDFUNC
+
+FUNC :main
+  BODY
+    CALL :test_set_alloca
+ENDFUNC
+

@@ -1,0 +1,14 @@
+FUNC :void_func
+  BODY
+    PUSH :before
+    INSPECT
+    RET
+    PUSH :after
+    INSPECT
+ENDFUNC
+
+FUNC :main
+  BODY
+    CALL :void_func
+ENDFUNC
+

@@ -1,0 +1,13 @@
+ENUM :Option
+  VARIANT :None
+  VARIANT :Some
+    TYPE :i32
+ENDENUM
+
+FUNC :main
+  BODY
+    PUSH 42
+    CREATE :Option::Some
+    INSPECT
+ENDFUNC
+

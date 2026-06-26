@@ -1,0 +1,6 @@
+FUNC :main
+  BODY
+    GLOBAL :pi
+    INSPECT
+ENDFUNC
+

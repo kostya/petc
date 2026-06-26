@@ -1,0 +1,30 @@
+STRUCT :Tuple_i32_i32
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :Create_tuple
+  ARGS
+    TYPE :i32
+  RETURN
+    TYPE :Tuple_i32_i32
+  BODY
+    PUSH 10
+    LOCAL :res :Tuple_i32_i32
+    FIELD 0
+    STORE
+    PARAM 0
+    LOCAL :res
+    FIELD 1
+    STORE
+    LOCAL :res
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 15
+    CALL :Create_tuple
+    INSPECT
+ENDFUNC
+

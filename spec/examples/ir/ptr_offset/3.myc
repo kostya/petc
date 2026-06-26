@@ -1,0 +1,14 @@
+GLOBAL :g
+  TYPE "flat<i32, 3>"
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    PUSH 42
+    GLOBAL :g
+    FIELD 1
+    STORE
+    GLOBAL :g
+    INSPECT
+ENDFUNC
+

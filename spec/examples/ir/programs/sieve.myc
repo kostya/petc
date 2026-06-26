@@ -1,0 +1,120 @@
+FUNC :sieve_simple
+  RETURN
+    TYPE :i32
+  BODY
+    PUSH 1001
+    MALLOC :u8
+    LOCAL :flags :ptr<u8>
+    STORE
+    PUSH 2
+    LOCAL :i :i32
+    STORE
+    LOOP
+      COND
+        PUSH 1001
+        LOCAL :i
+        BINARY :less
+      BODY
+        PUSH 1 :u8
+        LOCAL :i
+        LOCAL :flags
+        BINARY :add
+        DEREF
+        STORE
+        LOCAL :i
+        PUSH 1
+        BINARY :add
+        LOCAL :i
+        STORE
+    ENDLOOP
+    PUSH 2
+    LOCAL :i
+    STORE
+    LOOP
+      COND
+        PUSH 1001
+        LOCAL :i
+        LOCAL :i
+        BINARY :mul
+        BINARY :less
+      BODY
+        LOCAL :i
+        LOCAL :flags
+        BINARY :add
+        DEREF
+        PUSH 1 :u8
+        BINARY :eq
+        IF
+          THEN
+            LOCAL :i
+            LOCAL :i
+            BINARY :mul
+            LOCAL :j :i32
+            STORE
+            LOOP
+              COND
+                PUSH 1001
+                LOCAL :j
+                BINARY :less
+              BODY
+                PUSH 0 :u8
+                LOCAL :j
+                LOCAL :flags
+                BINARY :add
+                DEREF
+                STORE
+                LOCAL :j
+                LOCAL :i
+                BINARY :add
+                LOCAL :j
+                STORE
+            ENDLOOP
+        ENDIF
+        LOCAL :i
+        PUSH 1
+        BINARY :add
+        LOCAL :i
+        STORE
+    ENDLOOP
+    PUSH 0
+    LOCAL :count :i32
+    STORE
+    PUSH 2
+    LOCAL :i
+    STORE
+    LOOP
+      COND
+        PUSH 1001
+        LOCAL :i
+        BINARY :less
+      BODY
+        LOCAL :i
+        LOCAL :flags
+        BINARY :add
+        DEREF
+        PUSH 1 :u8
+        BINARY :eq
+        IF
+          THEN
+            LOCAL :count
+            PUSH 1
+            BINARY :add
+            LOCAL :count
+            STORE
+        ENDIF
+        LOCAL :i
+        PUSH 1
+        BINARY :add
+        LOCAL :i
+        STORE
+    ENDLOOP
+    LOCAL :count
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    CALL :sieve_simple
+    INSPECT
+ENDFUNC
+

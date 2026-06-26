@@ -1,0 +1,4 @@
+FUNC :main BODY LOCAL ENDFUNC
+                ^
+                LOCAL should have at least 1 value
+                (at

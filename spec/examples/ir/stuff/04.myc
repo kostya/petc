@@ -1,0 +1,41 @@
+STRUCT :Inner
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+STRUCT :Outer
+  TYPE :Inner
+  TYPE :f64
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 1
+    MALLOC :Outer
+    LOCAL :p :ptr<Outer>
+    STORE
+    PUSH 3.14
+    LOCAL :p
+    DEREF
+    FIELD 1
+    STORE
+    PUSH 20
+    LOCAL :p
+    DEREF
+    FIELD 0
+    FIELD 1
+    STORE
+    PUSH 10
+    LOCAL :p
+    DEREF
+    FIELD 0
+    FIELD 0
+    STORE
+    LOCAL :p
+    DEREF
+    INSPECT
+    LOCAL :p
+    AS :ptr<void>
+    CALL :free
+ENDFUNC
+

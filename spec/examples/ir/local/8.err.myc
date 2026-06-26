@@ -1,0 +1,8 @@
+FUNC :main
+  BODY
+    LOCAL :x :i32
+    LOCAL :y :i32
+    BINARY :add
+    INSPECT
+ENDFUNC
+

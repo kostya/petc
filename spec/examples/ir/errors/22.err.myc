@@ -1,0 +1,6 @@
+FUNC :test
+  BODY
+    PUSH 1
+    RET
+ENDFUNC
+

@@ -1,0 +1,46 @@
+FLAT :flat
+  TYPE :u8
+  COUNT 8
+ENDFLAT
+
+STRUCT :Option
+  TYPE :i32
+  TYPE :flat
+ENDSTRUCT
+
+FUNC :is_some
+  ARGS
+    TYPE :Option
+  RETURN
+    TYPE :bool
+  BODY
+    PARAM 0
+    FIELD 0
+    PUSH 0
+    BINARY :not_eq
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 99
+    LOCAL :x :Option
+    FIELD 1
+    AS :i32
+    STORE
+    PUSH 1
+    LOCAL :x
+    FIELD 0
+    STORE
+    LOCAL :x
+    CALL :is_some
+    INSPECT
+    PUSH 0
+    LOCAL :x
+    FIELD 0
+    STORE
+    LOCAL :x
+    CALL :is_some
+    INSPECT
+ENDFUNC
+

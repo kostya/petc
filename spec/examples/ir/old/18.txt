@@ -1,0 +1,6 @@
+bla0.a == 10
+bla1.a == 11
+bla2.a == 12
+bla0.a == 25
+bla1.a == 26
+bla2.a == 27

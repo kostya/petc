@@ -1,0 +1,35 @@
+FLAT :Vec2
+  TYPE :i32
+  COUNT 2
+ENDFLAT
+
+ENUM :Shape
+  VARIANT :Point
+    TYPE :Vec2
+  VARIANT :Circle
+    TYPE :f64
+ENDENUM
+
+STRUCT :Object
+  TYPE :i32
+  TYPE :Shape
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 20
+    PUSH 10
+    CREATE :Vec2
+    CREATE :Shape::Point
+    AS :Shape
+    PUSH 1
+    CREATE :Object
+    INSPECT
+    PUSH 3.5
+    CREATE :Shape::Circle
+    AS :Shape
+    PUSH 2
+    CREATE :Object
+    INSPECT
+ENDFUNC
+

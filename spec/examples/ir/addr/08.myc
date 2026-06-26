@@ -1,0 +1,8 @@
+FUNC :main
+  BODY
+    PUSH 42
+    ADDR
+    DEREF
+    INSPECT
+ENDFUNC
+

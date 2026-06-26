@@ -1,0 +1,23 @@
+GLOBAL :counter
+  TYPE :i32
+  INITIAL 0
+ENDGLOBAL
+
+FUNC :increment
+  BODY
+    PUSH 1
+    GLOBAL :counter
+    BINARY :add
+    GLOBAL :counter
+    STORE
+ENDFUNC
+
+FUNC :main
+  BODY
+    CALL :increment
+    CALL :increment
+    CALL :increment
+    GLOBAL :counter
+    INSPECT
+ENDFUNC
+

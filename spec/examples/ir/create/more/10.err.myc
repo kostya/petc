@@ -1,0 +1,12 @@
+STRUCT :Point
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 3.14
+    PUSH 42
+    CREATE :Point
+ENDFUNC
+

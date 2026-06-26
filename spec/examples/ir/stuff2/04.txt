@@ -1,0 +1,1 @@
+List::Cons(1, ptr<List>(List::Cons(2, ptr<List>(...))))

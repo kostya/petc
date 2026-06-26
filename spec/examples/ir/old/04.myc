@@ -1,0 +1,13 @@
+FUNC :main
+  BODY
+    PUSH true
+    UNARY :lnot
+    INSPECT
+    PUSH 1.5
+    UNARY :neg
+    INSPECT
+    PUSH 1234
+    UNARY :neg
+    INSPECT
+ENDFUNC
+

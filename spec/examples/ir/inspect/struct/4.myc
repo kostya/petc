@@ -1,0 +1,19 @@
+STRUCT :Node
+  TYPE :i32
+  TYPE :ptr<Node>
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 5
+    LOCAL :n :Node
+    FIELD 0
+    STORE
+    PUSH 0 :ptr<Node>
+    LOCAL :n
+    FIELD 1
+    STORE
+    LOCAL :n
+    INSPECT
+ENDFUNC
+

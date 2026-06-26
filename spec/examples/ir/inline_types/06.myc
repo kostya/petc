@@ -1,0 +1,20 @@
+FUNC :make_point
+  RETURN
+    TYPE "struct<i32, i32>"
+  BODY
+    PUSH 20
+    PUSH 10
+    CREATE "struct<i32, i32>"
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    CALL :make_point
+    FIELD 0
+    INSPECT
+    CALL :make_point
+    FIELD 1
+    INSPECT
+ENDFUNC
+

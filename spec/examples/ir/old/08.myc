@@ -1,0 +1,26 @@
+FUNC :main
+  BODY
+    PUSH 10
+    LOCAL :var :i32
+    STORE
+    LOCAL :var
+    SWITCH
+      CASE 5
+        PUSH "Got b1\n"
+        PRINTF 0
+      CASE 10
+        PUSH "Got b2\n"
+        PRINTF 0
+      CASE 20
+        PUSH "Got b3\n"
+        PRINTF 0
+      ELSE
+        PUSH "Got Else\n"
+        PRINTF 0
+    ENDSWITCH
+    PUSH "Escape Switch\n"
+    PRINTF 0
+    PUSH "Finish builder\n"
+    PRINTF 0
+ENDFUNC
+

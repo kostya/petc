@@ -1,0 +1,59 @@
+FLAT :bla
+  TYPE :i32
+  COUNT 3
+ENDFLAT
+
+STRUCT :Container
+  TYPE :i32
+  TYPE :bla
+ENDSTRUCT
+
+FUNC :update_container
+  ARGS
+    TYPE :ptr<Container>
+  BODY
+    PUSH 99
+    PARAM 0
+    DEREF
+    FIELD 0
+    STORE
+    PUSH 42
+    PARAM 0
+    DEREF
+    FIELD 1
+    FIELD 1
+    STORE
+    PUSH 77
+    PARAM 0
+    DEREF
+    FIELD 1
+    FIELD 2
+    STORE
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 3
+    PUSH 2
+    PUSH 1
+    CREATE :bla
+    PUSH 10
+    LOCAL :c :Container
+    FIELD 0
+    STORE
+    LOCAL :c
+    FIELD 1
+    STORE
+    PUSH "Before: "
+    PRINTF 0
+    LOCAL :c
+    INSPECT
+    LOCAL :c
+    ADDR
+    CALL :update_container
+    PUSH "After:  "
+    PRINTF 0
+    LOCAL :c
+    INSPECT
+ENDFUNC
+

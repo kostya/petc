@@ -1,0 +1,32 @@
+FUNC :main
+  BODY
+    PUSH 0
+    LOCAL :i :i32
+    STORE
+    PUSH "before\n"
+    PRINTF 0
+    LOOP
+      COND
+        PUSH true
+      BODY
+        LOCAL :i
+        PUSH "got %d\n"
+        PRINTF 1
+        PUSH 4
+        LOCAL :i
+        BINARY :more_eq
+        IF
+          THEN
+            BREAK
+        ENDIF
+      STEP
+        PUSH 1
+        LOCAL :i
+        BINARY :add
+        LOCAL :i
+        STORE
+    ENDLOOP
+    PUSH "after\n"
+    PRINTF 0
+ENDFUNC
+

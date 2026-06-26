@@ -1,0 +1,8 @@
+FUNC :main
+  BODY
+    PUSH 10
+    LOCAL :x :i32
+    FIELD 0
+    STORE
+ENDFUNC
+

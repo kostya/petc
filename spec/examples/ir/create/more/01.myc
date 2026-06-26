@@ -1,0 +1,15 @@
+STRUCT :Mixed
+  TYPE :i32
+  TYPE :f64
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 99
+    PUSH 3.14
+    PUSH 42
+    CREATE :Mixed
+    INSPECT
+ENDFUNC
+

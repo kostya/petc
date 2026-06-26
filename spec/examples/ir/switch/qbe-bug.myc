@@ -1,0 +1,21 @@
+FUNC :getu8
+  RETURN
+    TYPE :u8
+  BODY
+    PUSH 43 :u8
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    CALL :getu8
+    SWITCH
+      CASE 43
+        PUSH :yes
+        INSPECT
+      ELSE
+        PUSH :no
+        INSPECT
+    ENDSWITCH
+ENDFUNC
+

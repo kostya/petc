@@ -1,0 +1,30 @@
+FLAT :flat
+  TYPE :u8
+  COUNT 8
+ENDFLAT
+
+STRUCT :Option
+  TYPE :i32
+  TYPE :flat
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 42
+    LOCAL :x :Option
+    FIELD 1
+    AS :i32
+    STORE
+    PUSH 1
+    LOCAL :x
+    FIELD 0
+    STORE
+    LOCAL :x
+    FIELD 0
+    INSPECT
+    LOCAL :x
+    FIELD 1
+    AS :i32
+    INSPECT
+ENDFUNC
+

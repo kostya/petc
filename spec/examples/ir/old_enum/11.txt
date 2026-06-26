@@ -1,0 +1,1 @@
+EnumTest::AnotherEnumPtr(ptr<AnotherEnumTest>(AnotherEnumTest::TypedField(22)))

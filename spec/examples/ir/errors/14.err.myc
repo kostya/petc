@@ -1,0 +1,7 @@
+FUNC :main
+  BODY
+    PUSH 1
+    PUSH :2
+    BINARY :eq
+ENDFUNC
+

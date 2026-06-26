@@ -1,0 +1,2 @@
+ptr<A>(A::X1(ptr<B>(B(15))))
+ptr<A>(A::X2(ptr<C>(C(0, 16))))

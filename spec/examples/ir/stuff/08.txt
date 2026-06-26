@@ -1,0 +1,1 @@
+Single::Only(42)

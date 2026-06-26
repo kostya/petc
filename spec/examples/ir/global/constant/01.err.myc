@@ -1,0 +1,18 @@
+STRUCT :Point
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+GLOBAL :p
+  TYPE :Point
+  CONSTANT
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    PUSH 42
+    GLOBAL :p
+    FIELD 0
+    STORE
+ENDFUNC
+

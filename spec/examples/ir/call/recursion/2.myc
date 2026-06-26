@@ -1,0 +1,41 @@
+FUNC :fact_iter
+  ARGS
+    TYPE :i32
+  RETURN
+    TYPE :i32
+  BODY
+    PUSH 1
+    LOCAL :result :i32
+    STORE
+    PUSH 1
+    LOCAL :i :i32
+    STORE
+    LOOP
+      COND
+        PARAM 0
+        LOCAL :i
+        BINARY :less_eq
+      BODY
+        LOCAL :i
+        LOCAL :result
+        BINARY :mul
+        LOCAL :result
+        STORE
+      STEP
+        PUSH 1
+        LOCAL :i
+        BINARY :add
+        LOCAL :i
+        STORE
+    ENDLOOP
+    LOCAL :result
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 6
+    CALL :fact_iter
+    INSPECT
+ENDFUNC
+

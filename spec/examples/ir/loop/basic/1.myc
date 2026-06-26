@@ -1,0 +1,23 @@
+FUNC :main
+  BODY
+    LOOP
+      INIT
+        PUSH 10
+        LOCAL :x :i32
+        STORE
+      COND
+        PUSH 0
+        LOCAL :x
+        BINARY :more
+      BODY
+        LOCAL :x
+        INSPECT
+      STEP
+        PUSH 1
+        LOCAL :x
+        BINARY :sub
+        LOCAL :x
+        STORE
+    ENDLOOP
+ENDFUNC
+

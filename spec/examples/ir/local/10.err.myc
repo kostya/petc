@@ -1,0 +1,12 @@
+FUNC :bla
+  ARGS
+    TYPE :i32
+  BODY
+ENDFUNC
+
+FUNC :main
+  BODY
+    LOCAL :x :i32
+    CALL :bla
+ENDFUNC
+

@@ -1,0 +1,22 @@
+FUNC :main
+  BODY
+    PUSH 0
+    LOCAL :x :i32
+    STORE
+    LOCAL :x
+    SWITCH
+      CASE 0
+        PUSH :first
+        INSPECT
+      CASE 1
+        PUSH :second
+        INSPECT
+      CASE 2
+        PUSH :third
+        INSPECT
+      ELSE
+        PUSH :else
+        INSPECT
+    ENDSWITCH
+ENDFUNC
+

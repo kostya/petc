@@ -1,0 +1,31 @@
+STRUCT :Triple
+  TYPE :i32
+  TYPE :f64
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 42
+    LOCAL :t :Triple
+    FIELD 0
+    STORE
+    PUSH 3.14
+    LOCAL :t
+    FIELD 1
+    STORE
+    PUSH 99
+    LOCAL :t
+    FIELD 2
+    STORE
+    LOCAL :t
+    FIELD 0
+    INSPECT
+    LOCAL :t
+    FIELD 1
+    INSPECT
+    LOCAL :t
+    FIELD 2
+    INSPECT
+ENDFUNC
+

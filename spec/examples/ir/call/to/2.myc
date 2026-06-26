@@ -1,0 +1,17 @@
+FUNC :bla
+  ARGS
+    TYPE :i32
+  RETURN
+    TYPE :i32
+  BODY
+    PARAM 0
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 1 :u8
+    CALL :bla
+    INSPECT
+ENDFUNC
+

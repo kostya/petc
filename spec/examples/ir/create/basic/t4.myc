@@ -1,0 +1,9 @@
+STRUCT :empty
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    CREATE :empty
+    INSPECT
+ENDFUNC
+

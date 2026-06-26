@@ -1,0 +1,34 @@
+ENUM :Option
+  VARIANT :None
+  VARIANT :Some
+    TYPE :i32
+ENDENUM
+
+FUNC :fill
+  ARGS
+    TYPE :ptr<Option>
+    TYPE :i32
+  BODY
+    PUSH 1
+    PARAM 0
+    DEREF
+    FIELD 0
+    STORE
+    PARAM 1
+    PARAM 0
+    DEREF
+    AS :Option::Some
+    FIELD 1
+    STORE
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 42
+    LOCAL :x :Option
+    ADDR
+    CALL :fill
+    LOCAL :x
+    INSPECT
+ENDFUNC
+

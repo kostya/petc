@@ -1,0 +1,64 @@
+STRUCT :Bla
+  TYPE :u8
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :bla_get_a
+  ARGS
+    TYPE :ptr<Bla>
+  RETURN
+    TYPE :i32
+  BODY
+    PARAM 0
+    DEREF
+    FIELD 1
+    RET
+ENDFUNC
+
+FUNC :bla_set_a
+  ARGS
+    TYPE :ptr<Bla>
+    TYPE :i32
+  BODY
+    PARAM 1
+    PARAM 0
+    DEREF
+    FIELD 1
+    STORE
+ENDFUNC
+
+FUNC :Bla_new
+  RETURN
+    TYPE :ptr<Bla>
+  BODY
+    PUSH 1
+    MALLOC :Bla
+    LOCAL :res :ptr<Bla>
+    STORE
+    PUSH 10
+    LOCAL :res
+    DEREF
+    FIELD 1
+    STORE
+    LOCAL :res
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    CALL :Bla_new
+    LOCAL :bla :ptr<Bla>
+    STORE
+    LOCAL :bla
+    CALL :bla_get_a
+    PUSH "bla.a == %d\n"
+    PRINTF 1
+    PUSH 25
+    LOCAL :bla
+    CALL :bla_set_a
+    LOCAL :bla
+    CALL :bla_get_a
+    PUSH "bla.a == %d\n"
+    PRINTF 1
+ENDFUNC
+

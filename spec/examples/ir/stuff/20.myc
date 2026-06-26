@@ -1,0 +1,56 @@
+ENUM :Tree
+  VARIANT :Leaf
+    TYPE :i32
+  VARIANT :Node
+    TYPE :ptr<Tree>
+    TYPE :ptr<Tree>
+ENDENUM
+
+FUNC :main
+  BODY
+    PUSH 1
+    MALLOC :Tree
+    LOCAL :left :ptr<Tree>
+    STORE
+    PUSH 1
+    MALLOC :Tree
+    LOCAL :right :ptr<Tree>
+    STORE
+    PUSH 42
+    CREATE :Tree::Leaf
+    AS :Tree
+    LOCAL :left
+    DEREF
+    STORE
+    PUSH 55
+    CREATE :Tree::Leaf
+    AS :Tree
+    LOCAL :right
+    DEREF
+    STORE
+    LOCAL :right
+    LOCAL :left
+    CREATE :Tree::Node
+    AS :Tree
+    LOCAL :tree :Tree
+    STORE
+    LOCAL :tree
+    AS :Tree::Node
+    FIELD 1
+    DEREF
+    AS :Tree::Leaf
+    INSPECT
+    LOCAL :tree
+    AS :Tree::Node
+    FIELD 2
+    DEREF
+    AS :Tree::Leaf
+    INSPECT
+    LOCAL :left
+    AS :ptr<void>
+    CALL :free
+    LOCAL :right
+    AS :ptr<void>
+    CALL :free
+ENDFUNC
+

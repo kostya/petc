@@ -1,0 +1,32 @@
+ENUM :List
+  VARIANT :Nil
+  VARIANT :Cons
+    TYPE :i32
+    TYPE :ptr<List>
+ENDENUM
+
+FUNC :main
+  BODY
+    PUSH 1
+    MALLOC :List
+    LOCAL :list :ptr<List>
+    STORE
+    CREATE :List::Nil
+    AS :List
+    LOCAL :list
+    DEREF
+    STORE
+    LOCAL :list
+    PUSH 1
+    CREATE :List::Cons
+    AS :List
+    LOCAL :x :List
+    STORE
+    LOCAL :x
+    AS :List::Nil
+    INSPECT
+    LOCAL :list
+    AS :ptr<void>
+    CALL :free
+ENDFUNC
+

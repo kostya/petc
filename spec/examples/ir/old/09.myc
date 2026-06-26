@@ -1,0 +1,39 @@
+FUNC :main
+  BODY
+    PUSH 10
+    LOCAL :var :i32
+    STORE
+    PUSH 11
+    LOCAL :var
+    BINARY :eq
+    PUSH "Before check\n"
+    PRINTF 0
+    IF
+      THEN
+        PUSH "Got IF1 branch\n"
+        PRINTF 0
+      ELSE
+        PUSH "Got ELSE1 branch\n"
+        PRINTF 0
+        PUSH 10
+        LOCAL :var
+        BINARY :eq
+        PUSH "Before check2\n"
+        PRINTF 0
+        IF
+          THEN
+            PUSH "Got IF2 branch\n"
+            PRINTF 0
+          ELSE
+            PUSH "Got ELSE2 branch\n"
+            PRINTF 0
+        ENDIF
+        PUSH "Escape IF2\n"
+        PRINTF 0
+    ENDIF
+    PUSH "Escape IF1 ELSE\n"
+    PRINTF 0
+    PUSH "Finish builder\n"
+    PRINTF 0
+ENDFUNC
+

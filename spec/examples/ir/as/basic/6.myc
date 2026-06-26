@@ -1,0 +1,7 @@
+FUNC :main
+  BODY
+    PUSH true
+    AS :i32
+    INSPECT
+ENDFUNC
+

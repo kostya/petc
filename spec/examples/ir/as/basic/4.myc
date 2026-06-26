@@ -1,0 +1,7 @@
+FUNC :main
+  BODY
+    PUSH 3.14
+    AS :i32
+    INSPECT
+ENDFUNC
+

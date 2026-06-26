@@ -1,0 +1,28 @@
+ENUM :Option
+  VARIANT :None
+  VARIANT :Some
+    TYPE :i32
+ENDENUM
+
+GLOBAL :g
+  TYPE :Option
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    PUSH 42
+    CREATE :Option::Some
+    AS :Option
+    GLOBAL :g
+    STORE
+    GLOBAL :g
+    INSPECT
+    PUSH 99
+    GLOBAL :g
+    AS :Option::Some
+    FIELD 1
+    STORE
+    GLOBAL :g
+    INSPECT
+ENDFUNC
+

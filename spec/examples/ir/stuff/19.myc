@@ -1,0 +1,44 @@
+STRUCT :Data
+  TYPE :i32
+  TYPE :ptr<u8>
+  TYPE :f64
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 1
+    MALLOC :Data
+    LOCAL :d :ptr<Data>
+    STORE
+    PUSH 42
+    LOCAL :d
+    DEREF
+    FIELD 0
+    STORE
+    PUSH :hello
+    LOCAL :d
+    DEREF
+    FIELD 1
+    STORE
+    PUSH 3.14
+    LOCAL :d
+    DEREF
+    FIELD 2
+    STORE
+    LOCAL :d
+    DEREF
+    FIELD 0
+    INSPECT
+    LOCAL :d
+    DEREF
+    FIELD 1
+    INSPECT
+    LOCAL :d
+    DEREF
+    FIELD 2
+    INSPECT
+    LOCAL :d
+    AS :ptr<void>
+    CALL :free
+ENDFUNC
+

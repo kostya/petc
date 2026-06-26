@@ -1,0 +1,17 @@
+FLAT :Vec3
+  TYPE :i32
+  COUNT 3
+ENDFLAT
+
+FUNC :main
+  BODY
+    PUSH 3
+    PUSH 2
+    PUSH 1
+    CREATE :Vec3
+    LOCAL :v :Vec3
+    STORE
+    LOCAL :v
+    INSPECT
+ENDFUNC
+

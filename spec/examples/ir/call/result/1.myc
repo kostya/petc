@@ -1,0 +1,20 @@
+FUNC :test
+  RETURN
+    TYPE :i32
+  BODY
+    PUSH 10
+    LOCAL :x :i32
+    STORE
+    PUSH 20
+    LOCAL :x
+    STORE
+    LOCAL :x
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    CALL :test
+    INSPECT
+ENDFUNC
+

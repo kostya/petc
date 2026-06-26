@@ -1,0 +1,278 @@
+STRUCT :SimpleStruct
+  TYPE :u8
+  TYPE :i32
+ENDSTRUCT
+
+ENUM :EnumTest
+  VARIANT :EmptyField
+  VARIANT :TypedField
+    TYPE :i32
+  VARIANT :SimpleStructValue
+    TYPE :SimpleStruct
+  VARIANT :SimpleStructPtr
+    TYPE :ptr<SimpleStruct>
+  VARIANT :SimpleStructPtrMulti
+    TYPE :ptr<SimpleStruct>
+  VARIANT :SelfPtr
+    TYPE :ptr<EnumTest>
+  VARIANT :StructWithDirectEnumPtr
+    TYPE :ptr<StructWithDirectEnum>
+  VARIANT :StructWithPtrEnum
+    TYPE :StructWithPtrEnum
+  VARIANT :StructWithPtrEnumPtr
+    TYPE :ptr<StructWithPtrEnum>
+  VARIANT :AnotherEnum
+    TYPE :AnotherEnumTest
+  VARIANT :AnotherEnumPtr
+    TYPE :ptr<AnotherEnumTest>
+ENDENUM
+
+STRUCT :StructWithDirectEnum
+  TYPE :i32
+  TYPE :EnumTest
+ENDSTRUCT
+
+STRUCT :StructWithPtrEnum
+  TYPE :i32
+  TYPE :ptr<EnumTest>
+ENDSTRUCT
+
+ENUM :AnotherEnumTest
+  VARIANT :EmptyField
+  VARIANT :TypedField
+    TYPE :i32
+ENDENUM
+
+FUNC :Create_SimpleStruct
+  ARGS
+    TYPE :i32
+  RETURN
+    TYPE :SimpleStruct
+  BODY
+    PUSH 10
+    AS :u8
+    LOCAL :var :SimpleStruct
+    FIELD 0
+    STORE
+    PARAM 0
+    LOCAL :var
+    FIELD 1
+    STORE
+    LOCAL :var
+    RET
+ENDFUNC
+
+FUNC :Create_StructWithDirectEnum
+  ARGS
+    TYPE :i32
+  RETURN
+    TYPE :StructWithDirectEnum
+  BODY
+    PARAM 0
+    LOCAL :var :StructWithDirectEnum
+    FIELD 0
+    STORE
+    PUSH 1
+    CALL :EnumTest_create
+    LOCAL :var
+    FIELD 1
+    STORE
+    LOCAL :var
+    RET
+ENDFUNC
+
+FUNC :Create_StructWithPtrEnum
+  ARGS
+    TYPE :i32
+  RETURN
+    TYPE :StructWithPtrEnum
+  BODY
+    PUSH 1
+    MALLOC :EnumTest
+    LOCAL :ptr :ptr<EnumTest>
+    STORE
+    PARAM 0
+    LOCAL :var :StructWithPtrEnum
+    FIELD 0
+    STORE
+    PUSH 1
+    CALL :EnumTest_create
+    LOCAL :ptr
+    DEREF
+    STORE
+    LOCAL :ptr
+    LOCAL :var
+    FIELD 1
+    STORE
+    LOCAL :var
+    RET
+ENDFUNC
+
+FUNC :Create_AnotherEnumTest
+  ARGS
+    TYPE :i32
+  RETURN
+    TYPE :AnotherEnumTest
+  BODY
+    PUSH 1
+    LOCAL :var :AnotherEnumTest
+    FIELD 0
+    STORE
+    PARAM 0
+    LOCAL :var
+    AS :AnotherEnumTest::TypedField
+    FIELD 1
+    STORE
+    LOCAL :var
+    RET
+ENDFUNC
+
+FUNC :EnumTest_create
+  ARGS
+    TYPE :i32
+  RETURN
+    TYPE :EnumTest
+  BODY
+    PARAM 0
+    LOCAL :var :EnumTest
+    FIELD 0
+    STORE
+    PARAM 0
+    SWITCH
+      CASE 0
+      CASE 1
+        PUSH 25
+        LOCAL :var
+        AS :EnumTest::TypedField
+        FIELD 1
+        STORE
+      CASE 2
+        PUSH 95
+        CALL :Create_SimpleStruct
+        LOCAL :var
+        AS :EnumTest::SimpleStructValue
+        FIELD 1
+        STORE
+      CASE 3
+        PUSH 1
+        MALLOC :SimpleStruct
+        LOCAL :ptr3 :ptr<SimpleStruct>
+        STORE
+        PUSH 125
+        CALL :Create_SimpleStruct
+        LOCAL :ptr3
+        DEREF
+        STORE
+        LOCAL :ptr3
+        LOCAL :var
+        AS :EnumTest::SimpleStructPtr
+        FIELD 1
+        STORE
+      CASE 4
+        PUSH 3
+        MALLOC :SimpleStruct
+        LOCAL :ptr :ptr<SimpleStruct>
+        STORE
+        PUSH 1125
+        CALL :Create_SimpleStruct
+        LOCAL :ptr
+        DEREF
+        STORE
+        PUSH 1126
+        CALL :Create_SimpleStruct
+        PUSH 1
+        LOCAL :ptr
+        BINARY :add
+        DEREF
+        STORE
+        PUSH 1127
+        CALL :Create_SimpleStruct
+        PUSH 2
+        LOCAL :ptr
+        BINARY :add
+        DEREF
+        STORE
+        LOCAL :ptr
+        LOCAL :var
+        AS :EnumTest::SimpleStructPtrMulti
+        FIELD 1
+        STORE
+      CASE 5
+        PUSH 1
+        MALLOC :EnumTest
+        LOCAL :ptr_self :ptr<EnumTest>
+        STORE
+        PUSH 1
+        CALL :EnumTest_create
+        LOCAL :ptr_self
+        DEREF
+        STORE
+        LOCAL :ptr_self
+        LOCAL :var
+        AS :EnumTest::SelfPtr
+        FIELD 1
+        STORE
+      CASE 6
+        PUSH 1
+        MALLOC :StructWithDirectEnum
+        LOCAL :ptr6 :ptr<StructWithDirectEnum>
+        STORE
+        PUSH 18
+        CALL :Create_StructWithDirectEnum
+        LOCAL :ptr6
+        DEREF
+        STORE
+        LOCAL :ptr6
+        LOCAL :var
+        AS :EnumTest::StructWithDirectEnumPtr
+        FIELD 1
+        STORE
+      CASE 7
+        PUSH 19
+        CALL :Create_StructWithPtrEnum
+        LOCAL :var
+        AS :EnumTest::StructWithPtrEnum
+        FIELD 1
+        STORE
+      CASE 8
+        PUSH 1
+        MALLOC :StructWithPtrEnum
+        LOCAL :ptr8 :ptr<StructWithPtrEnum>
+        STORE
+        PUSH 20
+        CALL :Create_StructWithPtrEnum
+        LOCAL :ptr8
+        DEREF
+        STORE
+        LOCAL :ptr8
+        LOCAL :var
+        AS :EnumTest::StructWithPtrEnumPtr
+        FIELD 1
+        STORE
+      CASE 9
+        PUSH 21
+        CALL :Create_AnotherEnumTest
+        LOCAL :var
+        AS :EnumTest::AnotherEnum
+        FIELD 1
+        STORE
+      CASE 10
+        PUSH 1
+        MALLOC :AnotherEnumTest
+        LOCAL :ptr10 :ptr<AnotherEnumTest>
+        STORE
+        PUSH 22
+        CALL :Create_AnotherEnumTest
+        LOCAL :ptr10
+        DEREF
+        STORE
+        LOCAL :ptr10
+        LOCAL :var
+        AS :EnumTest::AnotherEnumPtr
+        FIELD 1
+        STORE
+    ENDSWITCH
+    LOCAL :var
+    RET
+ENDFUNC
+

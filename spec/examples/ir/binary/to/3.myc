@@ -1,0 +1,16 @@
+FUNC :main
+  BODY
+    PUSH 5 :i32
+    PUSH 3.14 :f64
+    BINARY :add
+    INSPECT
+    PUSH 10 :u8
+    PUSH 20 :i64
+    BINARY :add
+    INSPECT
+    PUSH 3.0 :f32
+    PUSH 2.0 :f64
+    BINARY :mul
+    INSPECT
+ENDFUNC
+

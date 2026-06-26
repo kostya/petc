@@ -1,0 +1,5 @@
+FUNC :main
+  BODY
+    BREAK
+ENDFUNC
+

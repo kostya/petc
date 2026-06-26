@@ -1,0 +1,8 @@
+FUNC :main
+  BODY
+    PUSH 1
+    MALLOC :i32
+    AS :ptr<void>
+    CALL :free
+ENDFUNC
+

@@ -1,0 +1,13 @@
+FUNC :main
+  BODY
+    PUSH true
+    SWITCH
+      CASE 0
+        PUSH :zero
+        INSPECT
+      CASE 1
+        PUSH :one
+        INSPECT
+    ENDSWITCH
+ENDFUNC
+

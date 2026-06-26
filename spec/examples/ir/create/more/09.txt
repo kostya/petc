@@ -1,0 +1,1 @@
+Cant create enum directly, just create variant and cast with AS

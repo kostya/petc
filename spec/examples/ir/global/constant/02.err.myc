@@ -1,0 +1,13 @@
+GLOBAL :g
+  TYPE :ptr<i32>
+  CONSTANT
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    PUSH 42
+    GLOBAL :g
+    DEREF
+    STORE
+ENDFUNC
+

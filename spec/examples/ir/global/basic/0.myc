@@ -1,0 +1,11 @@
+GLOBAL :counter
+  TYPE :i32
+  INITIAL 42
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    GLOBAL :counter
+    INSPECT
+ENDFUNC
+

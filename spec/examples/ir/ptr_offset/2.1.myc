@@ -1,0 +1,19 @@
+FUNC :main
+  BODY
+    PUSH 3
+    MALLOC :i32
+    LOCAL :arr :ptr<i32>
+    STORE
+    PUSH 42
+    PUSH -1
+    LOCAL :arr
+    BINARY :sub
+    DEREF
+    STORE
+    PUSH -1
+    LOCAL :arr
+    BINARY :sub
+    DEREF
+    INSPECT
+ENDFUNC
+

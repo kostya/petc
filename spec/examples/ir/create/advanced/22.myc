@@ -1,0 +1,23 @@
+STRUCT :Inner
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+STRUCT :Outer
+  TYPE :Inner
+  TYPE :f64
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 2.5
+    PUSH 2
+    PUSH 1
+    CREATE :Inner
+    CREATE :Outer
+    LOCAL :o :Outer
+    STORE
+    LOCAL :o
+    INSPECT
+ENDFUNC
+

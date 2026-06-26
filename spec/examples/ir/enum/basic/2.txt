@@ -1,0 +1,6 @@
+SimpleEnum::V0()
+SimpleEnum::V1(25)
+SimpleEnum::V2(2.5000000)
+SimpleEnum::V3(true)
+SimpleEnum::V4(1.5000000, 15)
+SimpleEnum::V5(false, 16, 3.5000000)

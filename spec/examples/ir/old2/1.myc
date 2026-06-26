@@ -1,0 +1,9 @@
+{{chain1.myc_include}}
+
+FUNC :main
+  BODY
+    PUSH 11
+    CALL :init_A
+    INSPECT
+ENDFUNC
+

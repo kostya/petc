@@ -1,0 +1,29 @@
+FLAT :Vec3
+  TYPE :i32
+  COUNT 3
+ENDFLAT
+
+STRUCT :Obj
+  TYPE :Vec3
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 10
+    PUSH 3
+    PUSH 2
+    PUSH 1
+    CREATE :Vec3
+    CREATE :Obj
+    LOCAL :o :Obj
+    STORE
+    PUSH 42
+    LOCAL :o
+    FIELD 0
+    FIELD 1
+    STORE
+    LOCAL :o
+    INSPECT
+ENDFUNC
+

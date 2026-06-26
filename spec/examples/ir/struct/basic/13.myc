@@ -1,0 +1,24 @@
+STRUCT :Mixed
+  TYPE :u8
+  TYPE :i64
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 255 :u8
+    LOCAL :m :Mixed
+    FIELD 0
+    STORE
+    PUSH 9999999999
+    LOCAL :m
+    FIELD 1
+    STORE
+    LOCAL :m
+    FIELD 0
+    AS :i32
+    INSPECT
+    LOCAL :m
+    FIELD 1
+    INSPECT
+ENDFUNC
+

@@ -1,0 +1,40 @@
+FUNC :test_to_coercion
+  BODY
+    PUSH 42 :u8
+    TO :i32
+    INSPECT
+    PUSH -128 :i8
+    TO :i32
+    INSPECT
+    PUSH 1000 :i16
+    TO :i64
+    INSPECT
+    PUSH 42 :i32
+    TO :i64
+    INSPECT
+    PUSH 42 :i32
+    TO :f64
+    INSPECT
+    PUSH -17 :i32
+    TO :f64
+    INSPECT
+    PUSH 7 :u8
+    TO :f64
+    INSPECT
+    PUSH 3.0 :f32
+    TO :f64
+    INSPECT
+    PUSH 0 :ptr<i32>
+    TO :ptr<void>
+    INSPECT
+    PUSH 42 :u8
+    TO :i32
+    TO :f64
+    INSPECT
+ENDFUNC
+
+FUNC :main
+  BODY
+    CALL :test_to_coercion
+ENDFUNC
+

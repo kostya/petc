@@ -1,0 +1,16 @@
+FUNC :main
+  BODY
+    PUSH 1
+    LOCAL :x :i32
+    STORE
+    LOCAL :x
+    SWITCH
+      CASE 0
+        PUSH "selected zero"
+        INSPECT
+      CASE 1
+        PUSH "selected one"
+        INSPECT
+    ENDSWITCH
+ENDFUNC
+

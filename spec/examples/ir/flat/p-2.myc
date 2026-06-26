@@ -1,0 +1,25 @@
+FLAT :bla
+  TYPE :i32
+  COUNT 3
+ENDFLAT
+
+FUNC :ret_flat
+  RETURN
+    TYPE :bla
+  BODY
+    PUSH 3
+    PUSH 2
+    PUSH 1
+    CREATE :bla
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    CALL :ret_flat
+    INSPECT
+    CALL :ret_flat
+    FIELD 2
+    INSPECT
+ENDFUNC
+

@@ -1,0 +1,9 @@
+FUNC :main
+  BODY
+    PUSH :hello
+    PUSH :world
+    STACK :swap2
+    INSPECT
+    INSPECT
+ENDFUNC
+

@@ -1,0 +1,7 @@
+{{shared.myc_include}}
+
+FUNC :main
+  BODY
+    CALL :shared_func
+ENDFUNC
+

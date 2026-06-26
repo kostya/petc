@@ -1,0 +1,20 @@
+FLAT :Vec2
+  TYPE :i32
+  COUNT 2
+ENDFLAT
+
+GLOBAL :gv
+  TYPE :Vec2
+  INITIAL 0
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    PUSH 99
+    GLOBAL :gv
+    FIELD 1
+    STORE
+    GLOBAL :gv
+    INSPECT
+ENDFUNC
+

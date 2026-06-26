@@ -1,0 +1,1 @@
+Line(ptr<Point>(0x0), ptr<Point>(0x0))

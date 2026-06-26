@@ -1,0 +1,15 @@
+FUNC :print_arg
+  ARGS
+    TYPE :ptr<u8>
+  BODY
+    PARAM 0
+    PUSH "arg: %s\n"
+    PRINTF 1
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH :test
+    CALL :print_arg
+ENDFUNC
+

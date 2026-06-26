@@ -1,0 +1,24 @@
+STRUCT :Point
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+STRUCT :Line
+  TYPE :ptr<Point>
+  TYPE :ptr<Point>
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 0 :ptr<Point>
+    LOCAL :l :Line
+    FIELD 0
+    STORE
+    PUSH 0 :ptr<Point>
+    LOCAL :l
+    FIELD 1
+    STORE
+    LOCAL :l
+    INSPECT
+ENDFUNC
+

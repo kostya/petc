@@ -1,0 +1,13 @@
+{{general.myc_include}}
+
+FUNC :main
+  BODY
+    PUSH 4
+    CALL :EnumTest_create
+    AS :EnumTest::SimpleStructPtrMulti
+    FIELD 1
+    DEREF
+    FIELD 1
+    INSPECT
+ENDFUNC
+

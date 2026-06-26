@@ -1,0 +1,17 @@
+ENUM :Data
+  VARIANT :Empty
+  VARIANT :Triple
+    TYPE :i32
+    TYPE :f64
+    TYPE :i32
+ENDENUM
+
+FUNC :main
+  BODY
+    PUSH 99
+    PUSH 3.14
+    PUSH 42
+    CREATE :Data::Triple
+    INSPECT
+ENDFUNC
+

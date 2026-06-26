@@ -1,0 +1,28 @@
+{{chain_enum.myc_include}}
+
+FUNC :main
+  BODY
+    PUSH 1
+    CALL :init_A
+    LOCAL :a :A
+    STORE
+    PUSH 11
+    LOCAL :a
+    AS :A::X2
+    FIELD 1
+    PUSH 1
+    STACK :swap2
+    BINARY :add
+    DEREF
+    FIELD 1
+    STORE
+    LOCAL :a
+    AS :A::X2
+    FIELD 1
+    PUSH 1
+    STACK :swap2
+    BINARY :add
+    DEREF
+    INSPECT
+ENDFUNC
+

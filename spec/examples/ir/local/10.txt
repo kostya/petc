@@ -1,0 +1,5 @@
+FUNC :main
+  BODY
+    LOCAL :x :i32   ; [ref(i32:Lu)]
+    CALL :bla       < cant read from uninitialized local `x`
+                    (at

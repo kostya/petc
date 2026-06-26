@@ -1,0 +1,1 @@
+EnumTest::StructWithPtrEnumPtr(ptr<StructWithPtrEnum>(StructWithPtrEnum(20, ptr<EnumTest>(...))))

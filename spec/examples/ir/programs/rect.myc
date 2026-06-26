@@ -1,0 +1,51 @@
+STRUCT :Point
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+STRUCT :Rect
+  TYPE :Point
+  TYPE :Point
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 20
+    PUSH 10
+    CREATE :Point
+    LOCAL :min :Point
+    STORE
+    PUSH 40
+    PUSH 30
+    CREATE :Point
+    LOCAL :max :Point
+    STORE
+    LOCAL :max
+    LOCAL :min
+    CREATE :Rect
+    LOCAL :rect :Rect
+    STORE
+    LOCAL :rect
+    FIELD 1
+    FIELD 0
+    LOCAL :rect
+    FIELD 0
+    FIELD 0
+    BINARY :sub
+    LOCAL :width :i32
+    STORE
+    LOCAL :rect
+    FIELD 1
+    FIELD 1
+    LOCAL :rect
+    FIELD 0
+    FIELD 1
+    BINARY :sub
+    LOCAL :height :i32
+    STORE
+    LOCAL :width
+    LOCAL :height
+    BINARY :mul
+    INSPECT
+ENDFUNC
+

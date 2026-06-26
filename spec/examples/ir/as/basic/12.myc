@@ -1,0 +1,16 @@
+FUNC :main
+  BODY
+    PUSH 1
+    AS :bool
+    INSPECT
+    PUSH 0
+    AS :bool
+    INSPECT
+    PUSH 1.5
+    AS :bool
+    INSPECT
+    PUSH 0.0
+    AS :bool
+    INSPECT
+ENDFUNC
+

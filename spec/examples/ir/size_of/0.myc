@@ -1,0 +1,16 @@
+FUNC :main
+  BODY
+    SIZEOF :i32
+    INSPECT
+    SIZEOF :u8
+    INSPECT
+    SIZEOF :i16
+    INSPECT
+    SIZEOF :u64
+    INSPECT
+    SIZEOF :f32
+    INSPECT
+    SIZEOF :f64
+    INSPECT
+ENDFUNC
+

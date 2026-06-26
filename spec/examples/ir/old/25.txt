@@ -1,0 +1,4 @@
+SimpleEnum::A()
+SimpleEnum::B(25)
+SimpleEnum::C(2.5000000)
+SimpleEnum::D(true)

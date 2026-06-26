@@ -1,0 +1,21 @@
+FLAT :Pair
+  TYPE :f64
+  COUNT 2
+ENDFLAT
+
+FUNC :make_pair
+  RETURN
+    TYPE :Pair
+  BODY
+    PUSH 2.0
+    PUSH 1.0
+    CREATE :Pair
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    CALL :make_pair
+    INSPECT
+ENDFUNC
+

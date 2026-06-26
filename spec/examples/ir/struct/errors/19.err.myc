@@ -1,0 +1,2 @@
+ENUM :Empty ENDENUM
+FUNC :main BODY ENDFUNC

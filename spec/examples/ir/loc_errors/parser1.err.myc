@@ -1,0 +1,3 @@
+FUNC :main BODY
+  PUSH 1 JJ
+ENDFUNC

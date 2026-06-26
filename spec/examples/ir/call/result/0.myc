@@ -1,0 +1,14 @@
+FUNC :answer
+  RETURN
+    TYPE :i32
+  BODY
+    PUSH 42
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    CALL :answer
+    INSPECT
+ENDFUNC
+

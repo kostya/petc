@@ -1,0 +1,11 @@
+GLOBAL :message
+  TYPE :ptr<u8>
+  INITIAL :Hello
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    GLOBAL :message
+    INSPECT
+ENDFUNC
+

@@ -1,0 +1,13 @@
+STRUCT :Point
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 2
+    PUSH 1
+    CREATE :Point
+    INSPECT
+ENDFUNC
+

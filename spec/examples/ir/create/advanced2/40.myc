@@ -1,0 +1,20 @@
+STRUCT :Point
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+GLOBAL :gp
+  TYPE :Point
+  INITIAL 0
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    PUSH 50
+    GLOBAL :gp
+    FIELD 0
+    STORE
+    GLOBAL :gp
+    INSPECT
+ENDFUNC
+

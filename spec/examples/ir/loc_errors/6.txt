@@ -1,0 +1,6 @@
+FUNC :main
+  BODY
+    LOOP
+      COND
+        PUSH 1      < COND must push bool, but found i32
+                    (at

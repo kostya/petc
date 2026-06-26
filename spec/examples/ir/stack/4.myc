@@ -1,0 +1,11 @@
+FUNC :main
+  BODY
+    PUSH 3
+    PUSH 2
+    PUSH 1
+    STACK :rot
+    INSPECT
+    INSPECT
+    INSPECT
+ENDFUNC
+

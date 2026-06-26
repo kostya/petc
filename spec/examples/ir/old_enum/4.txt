@@ -1,0 +1,1 @@
+EnumTest::SimpleStructPtr(ptr<SimpleStruct>(SimpleStruct(10, 125)))

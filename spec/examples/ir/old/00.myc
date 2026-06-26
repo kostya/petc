@@ -1,0 +1,6 @@
+FUNC :main
+  BODY
+    PUSH "Hello from Myc!\n"
+    PRINTF 0
+ENDFUNC
+

@@ -1,0 +1,34 @@
+STRUCT :Pair
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :sum
+  ARGS
+    TYPE :Pair
+  RETURN
+    TYPE :i32
+  BODY
+    PARAM 0
+    FIELD 0
+    PARAM 0
+    FIELD 1
+    BINARY :add
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 10
+    LOCAL :p :Pair
+    FIELD 0
+    STORE
+    PUSH 25
+    LOCAL :p
+    FIELD 1
+    STORE
+    LOCAL :p
+    CALL :sum
+    INSPECT
+ENDFUNC
+

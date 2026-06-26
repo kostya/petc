@@ -1,0 +1,6 @@
+FUNC :main
+  ATTRIBUTES
+    ATTR :bla
+  BODY
+ENDFUNC
+

@@ -1,0 +1,9 @@
+FUNC :main
+  BODY
+    PUSH :hello
+    LOCAL :s :ptr<u8>
+    STORE
+    LOCAL :s
+    INSPECT
+ENDFUNC
+

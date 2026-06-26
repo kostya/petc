@@ -1,0 +1,28 @@
+FUNC :max
+  ARGS
+    TYPE :i32
+    TYPE :i32
+  RETURN
+    TYPE :i32
+  BODY
+    PARAM 1
+    PARAM 0
+    BINARY :more
+    IF
+      THEN
+        PARAM 0
+        RET
+      ELSE
+        PARAM 1
+        RET
+    ENDIF
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 42
+    PUSH 100
+    CALL :max
+    INSPECT
+ENDFUNC
+

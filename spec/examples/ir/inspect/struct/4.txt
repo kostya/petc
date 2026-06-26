@@ -1,0 +1,1 @@
+Node(5, ptr<Node>(0x0))

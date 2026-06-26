@@ -1,0 +1,12 @@
+{{chain1.myc_include}}
+
+FUNC :main
+  BODY
+    PUSH 13
+    CALL :init_A
+    FIELD 0
+    FIELD 0
+    FIELD 0
+    INSPECT
+ENDFUNC
+

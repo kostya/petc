@@ -1,0 +1,15 @@
+ENUM :List
+  VARIANT :Nil
+  VARIANT :Cons
+    TYPE :i32
+    TYPE :ptr<List>
+ENDENUM
+
+FUNC :main
+  BODY
+    PUSH 0 :ptr<List>
+    PUSH 42
+    CREATE :List::Cons
+    INSPECT
+ENDFUNC
+

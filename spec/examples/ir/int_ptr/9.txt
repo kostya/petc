@@ -1,0 +1,1 @@
+ptr<Point>(0x0)

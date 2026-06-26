@@ -1,0 +1,28 @@
+FUNC :main
+  BODY
+    PUSH 5 :i32
+    SIZEOF :i32
+    BINARY :mul
+    CALL :malloc
+    AS :ptr<i32>
+    LOCAL :arr :ptr<i32>
+    STORE
+    PUSH 4 :i32
+    LOCAL :arr
+    BINARY :add
+    LOCAL :p :ptr<i32>
+    STORE
+    PUSH 1 :i32
+    LOCAL :p
+    BINARY :sub
+    LOCAL :p
+    STORE
+    PUSH 42 :i32
+    LOCAL :p
+    DEREF
+    STORE
+    LOCAL :p
+    DEREF
+    INSPECT
+ENDFUNC
+

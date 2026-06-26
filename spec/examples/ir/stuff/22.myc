@@ -1,0 +1,28 @@
+ENUM :Inner
+  VARIANT :A
+  VARIANT :B
+    TYPE :i32
+ENDENUM
+
+STRUCT :Wrap
+  TYPE :Inner
+  TYPE :f64
+ENDSTRUCT
+
+ENUM :Outer
+  VARIANT :X
+  VARIANT :Y
+    TYPE :Wrap
+ENDENUM
+
+FUNC :main
+  BODY
+    PUSH 3.14
+    PUSH 42
+    CREATE :Inner::B
+    AS :Inner
+    CREATE :Wrap
+    CREATE :Outer::Y
+    INSPECT
+ENDFUNC
+

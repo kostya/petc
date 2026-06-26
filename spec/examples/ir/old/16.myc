@@ -1,0 +1,32 @@
+STRUCT :Bla
+  TYPE :u8
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :Bla_new
+  RETURN
+    TYPE :ptr<Bla>
+  BODY
+    PUSH 1
+    MALLOC :Bla
+    LOCAL :res :ptr<Bla>
+    STORE
+    PUSH 10
+    LOCAL :res
+    DEREF
+    FIELD 1
+    STORE
+    LOCAL :res
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    CALL :Bla_new
+    LOCAL :bla :ptr<Bla>
+    STORE
+    LOCAL :bla
+    DEREF
+    INSPECT
+ENDFUNC
+

@@ -1,0 +1,1 @@
+Outer::Y(Inner::B(42))

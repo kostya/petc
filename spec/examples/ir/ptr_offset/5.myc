@@ -1,0 +1,28 @@
+GLOBAL :g
+  TYPE :ptr<i32>
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    PUSH 3
+    MALLOC :i32
+    GLOBAL :g
+    STORE
+    PUSH 42
+    PUSH 1
+    GLOBAL :g
+    BINARY :add
+    DEREF
+    STORE
+    PUSH 0
+    GLOBAL :g
+    BINARY :add
+    DEREF
+    INSPECT
+    PUSH 1
+    GLOBAL :g
+    BINARY :add
+    DEREF
+    INSPECT
+ENDFUNC
+

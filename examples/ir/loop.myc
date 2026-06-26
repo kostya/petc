@@ -1,0 +1,114 @@
+FUNC :test
+  ARGS
+    TYPE :i32
+  RETURN
+    TYPE :i32
+  BODY
+    PUSH 0
+    LOCAL :xargs_flag :i32
+    STORE
+    PUSH 0
+    LOCAL :xargs_buf :i32
+    STORE
+    PUSH 0
+    LOCAL :offset :i32
+    STORE
+    PUSH 0
+    LOCAL :count :i32
+    STORE
+    PUSH 0
+    LOCAL :x :i32
+    STORE
+    PUSH 0
+    LOCAL :z :i32
+    STORE
+    PUSH 0
+    LOCAL :last :i32
+    STORE
+    PUSH 0
+    LOCAL :i :i32
+    STORE
+    LOOP
+      COND
+        PUSH true
+      BODY
+        PUSH 1
+        LOCAL :i
+        BINARY :add
+        LOCAL :x
+        STORE
+        PUSH 2
+        LOCAL :x
+        BINARY :rem
+        PUSH 0
+        BINARY :eq
+        IF
+          THEN
+            PUSH 1
+            LOCAL :xargs_flag
+            BINARY :eq
+            IF
+              THEN
+                PUSH 0
+                LOCAL :xargs_flag
+                STORE
+                LOCAL :x
+                LOCAL :xargs_buf
+                BINARY :add
+                LOCAL :z
+                STORE
+                PUSH 5
+                LOCAL :offset
+                BINARY :more_eq
+                IF
+                  THEN
+                    PARAM 0
+                    LOCAL :count
+                    BINARY :less
+                    IF
+                      THEN
+                        LOCAL :z
+                        LOCAL :last
+                        STORE
+                        PUSH 1
+                        LOCAL :count
+                        BINARY :add
+                        LOCAL :count
+                        STORE
+                      ELSE
+                        BREAK
+                    ENDIF
+                  ELSE
+                    PUSH 1
+                    LOCAL :offset
+                    BINARY :add
+                    LOCAL :offset
+                    STORE
+                ENDIF
+              ELSE
+                PUSH 1
+                LOCAL :xargs_flag
+                STORE
+                LOCAL :x
+                LOCAL :xargs_buf
+                STORE
+            ENDIF
+        ENDIF
+      STEP
+        PUSH 1
+        LOCAL :i
+        BINARY :add
+        LOCAL :i
+        STORE
+    ENDLOOP
+    LOCAL :last
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 100000000
+    CALL :test
+    INSPECT
+ENDFUNC
+

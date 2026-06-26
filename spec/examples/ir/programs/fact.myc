@@ -1,0 +1,30 @@
+FUNC :factorial
+  ARGS
+    TYPE :i32
+  RETURN
+    TYPE :i32
+  BODY
+    PUSH 1
+    PARAM 0
+    BINARY :less_eq
+    IF
+      THEN
+        PUSH 1
+        RET
+    ENDIF
+    PARAM 0
+    PUSH 1
+    PARAM 0
+    BINARY :sub
+    CALL :factorial
+    BINARY :mul
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 5
+    CALL :factorial
+    INSPECT
+ENDFUNC
+

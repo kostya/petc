@@ -1,0 +1,13 @@
+add: 30
+call: 30
+mul: 200
+div: 2
+sub: 10
+rem: 1
+lt
+eq
+neq
+loop: 0
+loop: 1
+loop: 2
+yes

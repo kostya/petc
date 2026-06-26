@@ -1,0 +1,344 @@
+ENUM :Opcode
+  VARIANT :Inc
+    TYPE :i8
+  VARIANT :Move
+    TYPE :i32
+  VARIANT :Print
+  VARIANT :Loop
+    TYPE :Opcodes
+ENDENUM
+
+STRUCT :Opcodes
+  TYPE :i32
+  TYPE :ptr<Opcode>
+ENDSTRUCT
+
+STRUCT :CStrIter
+  TYPE :ptr<u8>
+  TYPE :i64
+  TYPE :i64
+ENDSTRUCT
+
+STRUCT :Program
+  TYPE :ptr<u8>
+  TYPE :Opcodes
+  TYPE :ptr<CStrIter>
+ENDSTRUCT
+
+FUNC :new_cstr_iter
+  ARGS
+    TYPE :ptr<u8>
+  RETURN
+    TYPE :ptr<CStrIter>
+  BODY
+    PUSH 1
+    MALLOC :CStrIter
+    LOCAL :iter :ptr<CStrIter>
+    STORE
+    PARAM 0
+    LOCAL :iter
+    DEREF
+    FIELD 0
+    STORE
+    PUSH 0 :i64
+    LOCAL :iter
+    DEREF
+    FIELD 1
+    STORE
+    PARAM 0
+    CALL :strlen
+    LOCAL :iter
+    DEREF
+    FIELD 2
+    STORE
+    LOCAL :iter
+    RET
+ENDFUNC
+
+FUNC :cstr_iter_not_finished
+  ARGS
+    TYPE :ptr<CStrIter>
+  RETURN
+    TYPE :bool
+  BODY
+    PARAM 0
+    DEREF
+    FIELD 2
+    PARAM 0
+    DEREF
+    FIELD 1
+    BINARY :less
+    RET
+ENDFUNC
+
+FUNC :cstr_iter_next
+  ARGS
+    TYPE :ptr<CStrIter>
+  BODY
+    PUSH 1 :i64
+    PARAM 0
+    DEREF
+    FIELD 1
+    BINARY :add
+    PARAM 0
+    DEREF
+    FIELD 1
+    STORE
+ENDFUNC
+
+FUNC :cstr_iter_current
+  ARGS
+    TYPE :ptr<CStrIter>
+  RETURN
+    TYPE :u8
+  BODY
+    PARAM 0
+    DEREF
+    FIELD 1
+    PARAM 0
+    DEREF
+    FIELD 0
+    BINARY :add
+    DEREF
+    RET
+ENDFUNC
+
+FUNC :new_program
+  ARGS
+    TYPE :ptr<u8>
+  RETURN
+    TYPE :ptr<Program>
+  BODY
+    PUSH 1
+    MALLOC :Program
+    LOCAL :program :ptr<Program>
+    STORE
+    PARAM 0
+    LOCAL :program
+    DEREF
+    FIELD 0
+    STORE
+    PARAM 0
+    CALL :new_cstr_iter
+    LOCAL :program
+    DEREF
+    FIELD 2
+    STORE
+    LOCAL :program
+    CALL :program_parse
+    LOCAL :program
+    RET
+ENDFUNC
+
+FUNC :program_parse
+  ARGS
+    TYPE :ptr<Program>
+  BODY
+    PARAM 0
+    LOCAL :program :ptr<Program>
+    STORE
+    LOCAL :program
+    DEREF
+    FIELD 2
+    LOCAL :iter :ptr<CStrIter>
+    STORE
+    PUSH 10000
+    MALLOC :Opcode
+    LOCAL :stored_loop :ptr<Opcode>
+    STORE
+    PUSH 0
+    LOCAL :stored_size :i32
+    STORE
+    LOOP
+      COND
+        LOCAL :iter
+        CALL :cstr_iter_not_finished
+        LOCAL :iter
+        CALL :cstr_iter_current
+        PUSH 93 :u8
+        BINARY :not_eq
+        BINARY :and
+      BODY
+        LOCAL :op :Opcode
+        ADDR
+        PARAM 0
+        CALL :program_parse_op
+        LOCAL :op
+        INSPECT
+        LOCAL :op
+        LOCAL :stored_loop
+        LOCAL :stored_size
+        STACK :swap2
+        BINARY :add
+        DEREF
+        STORE
+        PUSH 1
+        LOCAL :stored_size
+        BINARY :add
+        LOCAL :stored_size
+        STORE
+      STEP
+        LOCAL :iter
+        CALL :cstr_iter_next
+    ENDLOOP
+    LOCAL :stored_size
+    LOCAL :var_opcodes :Opcodes
+    FIELD 0
+    STORE
+    LOCAL :stored_loop
+    LOCAL :var_opcodes
+    FIELD 1
+    STORE
+    LOCAL :var_opcodes
+    LOCAL :program
+    DEREF
+    FIELD 1
+    STORE
+ENDFUNC
+
+FUNC :program_parse_op
+  ARGS
+    TYPE :ptr<Program>
+    TYPE :ptr<Opcode>
+  BODY
+    PARAM 0
+    DEREF
+    FIELD 2
+    LOCAL :iter :ptr<CStrIter>
+    STORE
+    LOCAL :iter
+    CALL :cstr_iter_current
+    SWITCH
+      CASE 43
+        PUSH 0
+        PARAM 1
+        DEREF
+        FIELD 0
+        STORE
+        PUSH 1 :i8
+        PARAM 1
+        DEREF
+        AS :Opcode::Inc
+        FIELD 1
+        STORE
+        RET
+      CASE 45
+        PUSH 0
+        PARAM 1
+        DEREF
+        FIELD 0
+        STORE
+        PUSH -1 :i8
+        PARAM 1
+        DEREF
+        AS :Opcode::Inc
+        FIELD 1
+        STORE
+        RET
+      CASE 62
+        PUSH 1
+        PARAM 1
+        DEREF
+        FIELD 0
+        STORE
+        PUSH 1
+        PARAM 1
+        DEREF
+        AS :Opcode::Move
+        FIELD 1
+        STORE
+        RET
+      CASE 60
+        PUSH 1
+        PARAM 1
+        DEREF
+        FIELD 0
+        STORE
+        PUSH -1
+        PARAM 1
+        DEREF
+        AS :Opcode::Move
+        FIELD 1
+        STORE
+        RET
+      CASE 46
+        PUSH 2
+        PARAM 1
+        DEREF
+        FIELD 0
+        STORE
+        RET
+      CASE 91
+        LOCAL :iter
+        CALL :cstr_iter_next
+        PUSH 10000
+        MALLOC :Opcode
+        LOCAL :stored_loop :ptr<Opcode>
+        STORE
+        PUSH 0
+        LOCAL :stored_size :i32
+        STORE
+        LOOP
+          COND
+            LOCAL :iter
+            CALL :cstr_iter_not_finished
+            LOCAL :iter
+            CALL :cstr_iter_current
+            PUSH 93 :u8
+            BINARY :not_eq
+            BINARY :and
+          BODY
+            LOCAL :op2 :Opcode
+            ADDR
+            PARAM 0
+            CALL :program_parse_op
+            LOCAL :op2
+            LOCAL :stored_loop
+            LOCAL :stored_size
+            STACK :swap2
+            BINARY :add
+            DEREF
+            STORE
+            PUSH 1
+            LOCAL :stored_size
+            BINARY :add
+            LOCAL :stored_size
+            STORE
+          STEP
+            LOCAL :iter
+            CALL :cstr_iter_next
+        ENDLOOP
+        LOCAL :stored_size
+        LOCAL :var_opcodes :Opcodes
+        FIELD 0
+        STORE
+        LOCAL :stored_loop
+        LOCAL :var_opcodes
+        FIELD 1
+        STORE
+        LOCAL :var_opcodes
+        PARAM 1
+        DEREF
+        AS :Opcode::Loop
+        FIELD 1
+        STORE
+        PUSH 3
+        PARAM 1
+        DEREF
+        FIELD 0
+        STORE
+        RET
+      ELSE
+        LOCAL :iter
+        CALL :cstr_iter_next
+    ENDSWITCH
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH :++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.
+    CALL :new_program
+    LOCAL :program :ptr<Program>
+    STORE
+ENDFUNC
+

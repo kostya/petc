@@ -1,0 +1,11 @@
+FUNC :main
+  BODY
+    PUSH 2.5
+    PUSH 1
+    CREATE "struct<i32, f64>"
+    PUSH 100
+    STACK :swap2
+    CREATE "struct<struct<i32, f64>, i32>"
+    INSPECT
+ENDFUNC
+

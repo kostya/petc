@@ -1,0 +1,19 @@
+STRUCT :Flag
+  TYPE :i32
+  TYPE :bool
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 100
+    LOCAL :f :Flag
+    FIELD 0
+    STORE
+    PUSH true
+    LOCAL :f
+    FIELD 1
+    STORE
+    LOCAL :f
+    INSPECT
+ENDFUNC
+

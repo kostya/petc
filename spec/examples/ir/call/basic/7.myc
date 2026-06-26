@@ -1,0 +1,9 @@
+FUNC :main
+  BODY
+    PUSH :test
+    PUSH 1
+    PUSH "hello %d %s\n"
+    CALL :printf 2
+    STACK :drop
+ENDFUNC
+

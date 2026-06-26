@@ -1,0 +1,4 @@
+FUNC main ARGS TYPE "crab" ENDFUNC
+               ^
+               not found type crab
+               (at

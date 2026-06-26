@@ -1,0 +1,9 @@
+STRUCT :Empty
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    LOCAL :x :Empty
+    INSPECT
+ENDFUNC
+

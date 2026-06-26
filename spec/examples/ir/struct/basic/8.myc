@@ -1,0 +1,60 @@
+STRUCT :Point
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :increment
+  ARGS
+    TYPE :ptr<Point>
+  BODY
+    PUSH 1
+    PARAM 0
+    DEREF
+    FIELD 0
+    BINARY :add
+    PARAM 0
+    DEREF
+    FIELD 0
+    STORE
+    PUSH 1
+    PARAM 0
+    DEREF
+    FIELD 1
+    BINARY :add
+    PARAM 0
+    DEREF
+    FIELD 1
+    STORE
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 1
+    MALLOC :Point
+    LOCAL :p :ptr<Point>
+    STORE
+    PUSH 5
+    LOCAL :p
+    DEREF
+    FIELD 0
+    STORE
+    PUSH 10
+    LOCAL :p
+    DEREF
+    FIELD 1
+    STORE
+    LOCAL :p
+    CALL :increment
+    LOCAL :p
+    DEREF
+    FIELD 0
+    INSPECT
+    LOCAL :p
+    DEREF
+    FIELD 1
+    INSPECT
+    LOCAL :p
+    AS :ptr<void>
+    CALL :free
+ENDFUNC
+

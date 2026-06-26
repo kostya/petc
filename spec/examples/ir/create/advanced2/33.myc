@@ -1,0 +1,25 @@
+FLAT :Vec2
+  TYPE :f64
+  COUNT 2
+ENDFLAT
+
+FUNC :main
+  BODY
+    PUSH 1
+    MALLOC :Vec2
+    LOCAL :v :ptr<Vec2>
+    STORE
+    PUSH 2.0
+    PUSH 1.0
+    CREATE :Vec2
+    LOCAL :v
+    DEREF
+    STORE
+    LOCAL :v
+    DEREF
+    INSPECT
+    LOCAL :v
+    AS :ptr<void>
+    CALL :free
+ENDFUNC
+

@@ -1,0 +1,12 @@
+FUNC :main
+  BODY
+    PUSH 42
+    PUSH 10
+    CREATE "struct<i32, i32>"
+    ADDR
+    LOCAL :p "ptr<struct<i32, i32>>"
+    STORE
+    LOCAL :p
+    INSPECT
+ENDFUNC
+

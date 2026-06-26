@@ -1,0 +1,9 @@
+FUNC :main
+  BODY
+    LOCAL :x :i32
+    LOCAL :y :i32
+    BINARY :add
+    PUSH "val %d\n"
+    PRINTF 1
+ENDFUNC
+

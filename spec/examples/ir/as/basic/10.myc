@@ -1,0 +1,8 @@
+FUNC :main
+  BODY
+    PUSH 3.1415926535
+    AS :f32
+    AS :f64
+    INSPECT
+ENDFUNC
+

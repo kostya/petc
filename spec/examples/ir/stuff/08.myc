@@ -1,0 +1,12 @@
+ENUM :Single
+  VARIANT :Only
+    TYPE :i32
+ENDENUM
+
+FUNC :main
+  BODY
+    PUSH 42
+    CREATE :Single::Only
+    INSPECT
+ENDFUNC
+

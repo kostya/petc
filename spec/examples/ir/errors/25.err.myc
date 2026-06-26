@@ -1,0 +1,7 @@
+FUNC :main
+  BODY
+    PUSH ""
+    CALL :printf 1
+    STACK :drop
+ENDFUNC
+

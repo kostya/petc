@@ -1,0 +1,12 @@
+FUNC :main
+  BODY
+    LOOP
+      COND
+        PUSH true
+      BODY
+        PUSH :once
+        INSPECT
+        BREAK
+    ENDLOOP
+ENDFUNC
+

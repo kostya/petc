@@ -1,0 +1,80 @@
+ENUM :SimpleEnum
+  VARIANT :V0
+  VARIANT :V1
+    TYPE :i32
+  VARIANT :V2
+    TYPE :f64
+  VARIANT :V3
+    TYPE :bool
+  VARIANT :V4
+    TYPE :f64
+    TYPE :i32
+  VARIANT :V5
+    TYPE :bool
+    TYPE :u8
+    TYPE :f32
+ENDENUM
+
+FUNC :SimpleEnum_new
+  ARGS
+    TYPE :i32
+  RETURN
+    TYPE :SimpleEnum
+  BODY
+    PARAM 0
+    LOCAL :var :SimpleEnum
+    FIELD 0
+    STORE
+    PARAM 0
+    SWITCH
+      CASE 0
+      CASE 1
+        PUSH 25
+        LOCAL :var
+        AS :SimpleEnum::V1
+        FIELD 1
+        STORE
+      CASE 2
+        PUSH 2.5
+        LOCAL :var
+        AS :SimpleEnum::V2
+        FIELD 1
+        STORE
+      CASE 3
+        PUSH true
+        LOCAL :var
+        AS :SimpleEnum::V3
+        FIELD 1
+        STORE
+      CASE 4
+        PUSH 1.5
+        LOCAL :var
+        AS :SimpleEnum::V4
+        FIELD 1
+        STORE
+        PUSH 15
+        LOCAL :var
+        AS :SimpleEnum::V4
+        FIELD 2
+        STORE
+      CASE 5
+        PUSH false
+        LOCAL :var
+        AS :SimpleEnum::V5
+        FIELD 1
+        STORE
+        PUSH 16 :u8
+        LOCAL :var
+        AS :SimpleEnum::V5
+        FIELD 2
+        STORE
+        PUSH 3.5 :f32
+        LOCAL :var
+        AS :SimpleEnum::V5
+        FIELD 3
+        STORE
+    ENDSWITCH
+    LOCAL :var
+    RET
+ENDFUNC
+

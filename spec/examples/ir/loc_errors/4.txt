@@ -1,0 +1,6 @@
+FUNC :main
+  BODY
+    LOCAL :x :i32   ; [ref(i32:Lu)]
+    LOCAL :y :i32   ; [ref(i32:Lu), ref(i32:Lu)]
+    BINARY :add     < cant read from uninitialized local `y`
+                    (at

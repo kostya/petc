@@ -1,0 +1,20 @@
+FLAT :Vec2
+  TYPE :f64
+  COUNT 2
+ENDFLAT
+
+GLOBAL :gv
+  TYPE :Vec2
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    PUSH 2.5
+    PUSH 1.5
+    CREATE :Vec2
+    GLOBAL :gv
+    STORE
+    GLOBAL :gv
+    INSPECT
+ENDFUNC
+

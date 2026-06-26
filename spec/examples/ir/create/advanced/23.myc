@@ -1,0 +1,20 @@
+FLAT :Vec2
+  TYPE :i32
+  COUNT 2
+ENDFLAT
+
+STRUCT :Entity
+  TYPE :Vec2
+  TYPE :f64
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 3.14
+    PUSH 2
+    PUSH 1
+    CREATE :Vec2
+    CREATE :Entity
+    INSPECT
+ENDFUNC
+

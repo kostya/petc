@@ -1,0 +1,34 @@
+{{common.myc_include}}
+
+FUNC :test_param
+  ARGS
+    TYPE :SimpleEnum
+  BODY
+    PARAM 0
+    INSPECT
+ENDFUNC
+
+FUNC :main
+  BODY
+    LOOP
+      INIT
+        PUSH 0
+        LOCAL :x :i32
+        STORE
+      COND
+        PUSH 6
+        LOCAL :x
+        BINARY :less
+      BODY
+        LOCAL :x
+        CALL :SimpleEnum_new
+        CALL :test_param
+      STEP
+        PUSH 1
+        LOCAL :x
+        BINARY :add
+        LOCAL :x
+        STORE
+    ENDLOOP
+ENDFUNC
+

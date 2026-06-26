@@ -1,0 +1,9 @@
+{{common.myc_include}}
+
+FUNC :main
+  BODY
+    PUSH 13
+    CALL :init_A_ptr
+    INSPECT
+ENDFUNC
+

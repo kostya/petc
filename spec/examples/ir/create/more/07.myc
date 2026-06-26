@@ -1,0 +1,17 @@
+ENUM :Shape
+  VARIANT :Circle
+    TYPE :f64
+  VARIANT :Rect
+    TYPE :f64
+    TYPE :f64
+ENDENUM
+
+FUNC :main
+  BODY
+    PUSH 20.0
+    PUSH 10.0
+    CREATE :Shape::Rect
+    AS :Shape
+    INSPECT
+ENDFUNC
+

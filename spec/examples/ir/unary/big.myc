@@ -1,0 +1,110 @@
+FUNC :main
+  BODY
+    PUSH 0
+    UNARY :lnot
+    INSPECT
+    PUSH 1
+    UNARY :lnot
+    INSPECT
+    PUSH -1
+    UNARY :lnot
+    INSPECT
+    PUSH 42
+    UNARY :lnot
+    INSPECT
+    PUSH -42
+    UNARY :lnot
+    INSPECT
+    PUSH true
+    UNARY :lnot
+    INSPECT
+    PUSH false
+    UNARY :lnot
+    INSPECT
+    PUSH 0
+    UNARY :lnot
+    UNARY :lnot
+    INSPECT
+    PUSH 1
+    UNARY :lnot
+    UNARY :lnot
+    INSPECT
+    PUSH 0
+    UNARY :bnot
+    INSPECT
+    PUSH 1
+    UNARY :bnot
+    INSPECT
+    PUSH -1
+    UNARY :bnot
+    INSPECT
+    PUSH 42
+    UNARY :bnot
+    INSPECT
+    PUSH -42
+    UNARY :bnot
+    INSPECT
+    PUSH 2147483647
+    UNARY :bnot
+    INSPECT
+    PUSH -2147483648
+    UNARY :bnot
+    INSPECT
+    PUSH 5
+    UNARY :bnot
+    UNARY :bnot
+    INSPECT
+    PUSH 0
+    UNARY :neg
+    INSPECT
+    PUSH 1
+    UNARY :neg
+    INSPECT
+    PUSH -1
+    UNARY :neg
+    INSPECT
+    PUSH 42
+    UNARY :neg
+    INSPECT
+    PUSH -42
+    UNARY :neg
+    INSPECT
+    PUSH 2147483647
+    UNARY :neg
+    INSPECT
+    PUSH -2147483648
+    UNARY :neg
+    INSPECT
+    PUSH 5
+    UNARY :bnot
+    UNARY :neg
+    INSPECT
+    PUSH 5
+    UNARY :neg
+    UNARY :bnot
+    INSPECT
+    PUSH 0
+    UNARY :lnot
+    UNARY :neg
+    INSPECT
+    PUSH 1
+    UNARY :lnot
+    UNARY :bnot
+    INSPECT
+    PUSH 5
+    PUSH 3
+    BINARY :add
+    UNARY :neg
+    INSPECT
+    PUSH 2
+    PUSH 10
+    BINARY :sub
+    UNARY :bnot
+    INSPECT
+    PUSH 4
+    PUSH 2
+    BINARY :mul
+    UNARY :lnot
+    INSPECT
+ENDFUNC
+

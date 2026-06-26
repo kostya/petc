@@ -1,0 +1,6 @@
+FUNC :main
+  BODY
+    LOCAL :x :i32
+    INSPECT
+ENDFUNC
+

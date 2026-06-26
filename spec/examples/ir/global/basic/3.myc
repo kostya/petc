@@ -1,0 +1,10 @@
+GLOBAL :flags
+  TYPE :i32
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    GLOBAL :flags
+    INSPECT
+ENDFUNC
+

@@ -1,0 +1,39 @@
+STRUCT :A
+  TYPE :i32
+  TYPE :ptr<B>
+ENDSTRUCT
+
+STRUCT :B
+  TYPE :f64
+  TYPE :ptr<A>
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 1
+    MALLOC :B
+    LOCAL :b :ptr<B>
+    STORE
+    PUSH 0 :ptr<A>
+    PUSH 3.14
+    CREATE :B
+    LOCAL :b
+    DEREF
+    STORE
+    LOCAL :b
+    PUSH 10
+    CREATE :A
+    LOCAL :a :A
+    STORE
+    LOCAL :a
+    FIELD 0
+    INSPECT
+    LOCAL :a
+    FIELD 1
+    DEREF
+    INSPECT
+    LOCAL :b
+    AS :ptr<void>
+    CALL :free
+ENDFUNC
+

@@ -1,0 +1,14 @@
+FUNC :bla
+  RETURN
+    TYPE :i32
+  BODY
+    PUSH 3 :f32
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    CALL :bla
+    INSPECT
+ENDFUNC
+

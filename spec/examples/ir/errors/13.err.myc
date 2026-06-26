@@ -1,0 +1,6 @@
+ENUM Option
+  VARIANT None
+ENDENUM
+ENUM Option
+  VARIANT Some TYPE i32
+ENDENUM

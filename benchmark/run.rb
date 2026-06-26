@@ -1,0 +1,90 @@
+require 'digest'
+
+FILES = [
+  ["../examples/ir/bf.myc", "c4a8df3a4adfe02e1f55c7717ef3d100"],
+  ["../examples/ir/loop.myc", "da59897b0c689f23ff826998d316436e"],
+  ["../examples/ir/mandel.myc", "005359a040b1689eaf88ac09c2883084"],
+]
+
+BACKENDS = {
+  "myc-llvm"  => "../myc-llvm",
+  "myc-qbe"   => "../myc-qbe",
+  "myc-c"     => "../myc-c",
+}
+
+def measure
+  t = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+  yield
+  Process.clock_gettime(Process::CLOCK_MONOTONIC) - t
+end
+
+RES = {}
+
+ok_count = 0
+fail_count = 0
+
+FILES.each do |file, expected_md5|
+  test_name = File.basename(file, ".myc")
+  puts "%-30s " % "============ #{test_name} ================"
+  
+  BACKENDS.each do |backend_name, backend_cmd|
+    print "%-30s " % "#{backend_name} --release "
+
+    bin_name = "/tmp/myc_test_bench"
+    cmd = "#{backend_cmd} c --release #{file} #{bin_name}"
+    File.delete(bin_name) rescue nil
+    compile_time = measure { `#{cmd}` }
+    sleep 0.5
+    RES[backend_name] ||= {}
+    RES[backend_name][test_name] ||= {}
+    RES[backend_name][test_name][:compile_time] = compile_time
+
+    result = nil
+    runtime = measure do
+      result = Digest::MD5.hexdigest(`#{bin_name}`.strip)
+    end
+
+    sleep 0.5
+    if expected_md5 == result
+      puts "OK"
+      ok_count += 1
+    else
+      puts "ERR #{expected_md5}, got #{result}"
+      fail_count += 1
+    end
+
+    RES[backend_name][test_name][:run_time] = runtime
+  end
+end
+
+def markdown_table(headers, rows)
+  output = []
+  output << "| " + headers.join(" | ") + " |"
+  output << "|" + (":---------:|" * headers.size)
+  rows.each do |row|
+    output << "| " + row.map { |cell| cell.to_s }.join(" | ") + " |"
+  end  
+  output.join("\n")
+end
+
+compilers = RES.keys
+benchmarks = RES[compilers.first].keys
+
+headers = ["Benchmark"]
+compilers.each do |compiler|
+  headers << "#{compiler} compile"
+  headers << "#{compiler} run"
+end
+
+rows = []
+benchmarks.each do |benchmark|
+  row = [benchmark]
+  compilers.each do |compiler|
+    times = RES[compiler][benchmark]
+    row << (times[:compile_time] * 1000).round.to_s + "ms"
+    row << (times[:run_time] * 1000).round.to_s + "ms"
+  end
+  rows << row
+end
+
+puts markdown_table(headers, rows)

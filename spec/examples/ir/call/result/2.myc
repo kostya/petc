@@ -1,0 +1,28 @@
+FUNC :early_return
+  ARGS
+    TYPE :i32
+  RETURN
+    TYPE :i32
+  BODY
+    PUSH 0
+    PARAM 0
+    BINARY :less
+    IF
+      THEN
+        PUSH -1
+        RET
+    ENDIF
+    PUSH 1
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH -5
+    CALL :early_return
+    INSPECT
+    PUSH 5
+    CALL :early_return
+    INSPECT
+ENDFUNC
+

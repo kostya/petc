@@ -1,0 +1,7 @@
+FUNC :main
+  BODY
+    PUSH 1.5
+    PUSH "val = %.3f\n"
+    PRINTF 1
+ENDFUNC
+

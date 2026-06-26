@@ -1,0 +1,11 @@
+GLOBAL :pi
+  TYPE :f64
+  INITIAL 3.14
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    GLOBAL :pi
+    INSPECT
+ENDFUNC
+

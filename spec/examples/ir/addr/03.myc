@@ -1,0 +1,35 @@
+FLAT :Vec3
+  TYPE :i32
+  COUNT 3
+ENDFLAT
+
+FUNC :fill_vec
+  ARGS
+    TYPE :ptr<Vec3>
+  BODY
+    PUSH 1
+    PARAM 0
+    DEREF
+    FIELD 0
+    STORE
+    PUSH 2
+    PARAM 0
+    DEREF
+    FIELD 1
+    STORE
+    PUSH 3
+    PARAM 0
+    DEREF
+    FIELD 2
+    STORE
+ENDFUNC
+
+FUNC :main
+  BODY
+    LOCAL :v :Vec3
+    ADDR
+    CALL :fill_vec
+    LOCAL :v
+    INSPECT
+ENDFUNC
+

@@ -1,0 +1,26 @@
+FUNC :is_true
+  ARGS
+    TYPE :bool
+  RETURN
+    TYPE :i32
+  BODY
+    PARAM 0
+    IF
+      THEN
+        PUSH 1
+        RET
+    ENDIF
+    PUSH 0
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH true
+    CALL :is_true
+    INSPECT
+    PUSH false
+    CALL :is_true
+    INSPECT
+ENDFUNC
+

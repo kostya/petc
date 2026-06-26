@@ -1,0 +1,12 @@
+FUNC :main
+  BODY
+    PUSH false
+    IF
+      THEN
+        PUSH :yes
+        INSPECT
+    ENDIF
+    PUSH "after if"
+    INSPECT
+ENDFUNC
+

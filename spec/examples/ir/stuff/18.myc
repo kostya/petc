@@ -1,0 +1,19 @@
+ENUM :Triple
+  VARIANT :A
+    TYPE :i32
+  VARIANT :B
+    TYPE :f64
+  VARIANT :C
+    TYPE :i32
+    TYPE :i32
+ENDENUM
+
+FUNC :main
+  BODY
+    PUSH 2
+    PUSH 1
+    CREATE :Triple::C
+    AS :Triple
+    INSPECT
+ENDFUNC
+

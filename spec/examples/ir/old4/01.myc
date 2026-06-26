@@ -1,0 +1,12 @@
+{{chain_enum.myc_include}}
+
+FUNC :main
+  BODY
+    PUSH 0
+    CALL :init_A_ptr
+    INSPECT
+    PUSH 1
+    CALL :init_A_ptr
+    INSPECT
+ENDFUNC
+

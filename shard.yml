@@ -1,0 +1,9 @@
+name: myc
+version: '0.3.0-dev'
+
+authors:
+  - Konstantin Makarchev <kostya27@gmail.com>
+
+crystal: '>= 1.19.1'
+
+license: Apache License Version 2.0

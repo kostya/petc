@@ -1,0 +1,20 @@
+STRUCT :Handle
+  TYPE :i32
+  TYPE :ptr<void>
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 1
+    LOCAL :h :Handle
+    FIELD 0
+    STORE
+    PUSH 0
+    AS :ptr<void>
+    LOCAL :h
+    FIELD 1
+    STORE
+    LOCAL :h
+    INSPECT
+ENDFUNC
+

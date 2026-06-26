@@ -1,0 +1,21 @@
+ENUM :Option
+  VARIANT :None
+  VARIANT :Some
+    TYPE :i32
+ENDENUM
+
+GLOBAL :go
+  TYPE :Option
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    PUSH 42
+    CREATE :Option::Some
+    AS :Option
+    GLOBAL :go
+    STORE
+    GLOBAL :go
+    INSPECT
+ENDFUNC
+

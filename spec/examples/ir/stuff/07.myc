@@ -1,0 +1,12 @@
+FLAT :One
+  TYPE :f64
+  COUNT 1
+ENDFLAT
+
+FUNC :main
+  BODY
+    PUSH 3.14
+    CREATE :One
+    INSPECT
+ENDFUNC
+

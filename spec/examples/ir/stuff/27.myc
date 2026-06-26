@@ -1,0 +1,61 @@
+FLAT :Flat
+  TYPE :u8
+  COUNT 8
+ENDFLAT
+
+STRUCT :Result
+  TYPE :i32
+  TYPE :Flat
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 42
+    LOCAL :r :Result
+    FIELD 1
+    AS :i32
+    STORE
+    PUSH 0
+    LOCAL :r
+    FIELD 0
+    STORE
+    LOCAL :r
+    FIELD 1
+    AS :i32
+    INSPECT
+    PUSH 3.14
+    LOCAL :r
+    FIELD 1
+    AS :f64
+    STORE
+    PUSH 1
+    LOCAL :r
+    FIELD 0
+    STORE
+    LOCAL :r
+    FIELD 1
+    AS :f64
+    INSPECT
+    LOCAL :r
+    FIELD 0
+    SWITCH
+      CASE 0
+        PUSH "Ok: "
+        PRINTF 0
+        LOCAL :r
+        FIELD 1
+        AS :i32
+        INSPECT
+      CASE 1
+        PUSH "Err: "
+        PRINTF 0
+        LOCAL :r
+        FIELD 1
+        AS :f64
+        INSPECT
+      ELSE
+        PUSH :Unknown
+        PRINTF 0
+    ENDSWITCH
+ENDFUNC
+

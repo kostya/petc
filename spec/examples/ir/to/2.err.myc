@@ -1,0 +1,6 @@
+FUNC :main
+  BODY
+    PUSH 1 :f64
+    TO :u8
+ENDFUNC
+

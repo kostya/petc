@@ -1,0 +1,21 @@
+ENUM :Option
+  VARIANT :None
+  VARIANT :Some
+    TYPE :i32
+ENDENUM
+
+STRUCT :Wrapper
+  TYPE :i32
+  TYPE :Option
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 42
+    CREATE :Option::Some
+    AS :Option
+    PUSH 10
+    CREATE :Wrapper
+    INSPECT
+ENDFUNC
+

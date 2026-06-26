@@ -1,0 +1,38 @@
+STRUCT :Point
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+GLOBAL :point_ptr
+  TYPE :ptr<Point>
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    PUSH 1
+    MALLOC :Point
+    GLOBAL :point_ptr
+    STORE
+    PUSH 10
+    GLOBAL :point_ptr
+    DEREF
+    FIELD 0
+    STORE
+    PUSH 20
+    GLOBAL :point_ptr
+    DEREF
+    FIELD 1
+    STORE
+    GLOBAL :point_ptr
+    DEREF
+    FIELD 0
+    INSPECT
+    GLOBAL :point_ptr
+    DEREF
+    FIELD 1
+    INSPECT
+    GLOBAL :point_ptr
+    AS :ptr<void>
+    CALL :free
+ENDFUNC
+

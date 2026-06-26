@@ -1,0 +1,15 @@
+GLOBAL :g
+  TYPE :i32
+ENDGLOBAL
+
+FUNC :main
+  BODY
+    PUSH 42
+    GLOBAL :g
+    STORE
+    GLOBAL :g
+    ADDR
+    DEREF
+    INSPECT
+ENDFUNC
+

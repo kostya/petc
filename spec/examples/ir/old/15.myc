@@ -1,0 +1,31 @@
+GLOBAL :global_test
+  TYPE :i32
+ENDGLOBAL
+
+FUNC :bla
+  RETURN
+    TYPE :i32
+  BODY
+    PUSH 1
+    GLOBAL :global_test
+    BINARY :add
+    LOCAL :x :i32
+    STORE
+    PUSH 15
+    GLOBAL :global_test
+    STORE
+    LOCAL :x
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 11
+    GLOBAL :global_test
+    STORE
+    CALL :bla
+    INSPECT
+    GLOBAL :global_test
+    INSPECT
+ENDFUNC
+

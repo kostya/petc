@@ -1,0 +1,82 @@
+ENUM :List
+  VARIANT :Nil
+  VARIANT :Cons
+    TYPE :i32
+    TYPE :ptr<List>
+ENDENUM
+
+FUNC :main
+  BODY
+    CREATE :List::Nil
+    AS :List
+    PUSH 1
+    MALLOC :List
+    LOCAL :n3 :ptr<List>
+    STORE
+    LOCAL :n3
+    DEREF
+    STORE
+    LOCAL :n3
+    PUSH 3
+    CREATE :List::Cons
+    AS :List
+    PUSH 1
+    MALLOC :List
+    LOCAL :n2 :ptr<List>
+    STORE
+    LOCAL :n2
+    DEREF
+    STORE
+    LOCAL :n2
+    PUSH 2
+    CREATE :List::Cons
+    AS :List
+    PUSH 1
+    MALLOC :List
+    LOCAL :n1 :ptr<List>
+    STORE
+    LOCAL :n1
+    DEREF
+    STORE
+    LOCAL :n1
+    PUSH 1
+    CREATE :List::Cons
+    AS :List
+    LOCAL :x :List
+    STORE
+    LOCAL :x
+    INSPECT
+    LOCAL :x
+    AS :List::Cons
+    FIELD 1
+    INSPECT
+    LOCAL :x
+    AS :List::Cons
+    FIELD 2
+    DEREF
+    AS :List::Cons
+    FIELD 1
+    INSPECT
+    LOCAL :x
+    AS :List::Cons
+    FIELD 2
+    DEREF
+    AS :List::Cons
+    FIELD 2
+    DEREF
+    AS :List::Cons
+    FIELD 1
+    INSPECT
+    LOCAL :x
+    AS :List::Cons
+    FIELD 2
+    DEREF
+    AS :List::Cons
+    FIELD 2
+    DEREF
+    AS :List::Cons
+    FIELD 2
+    DEREF
+    INSPECT
+ENDFUNC
+

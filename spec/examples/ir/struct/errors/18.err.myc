@@ -1,0 +1,6 @@
+FUNC :main
+  BODY
+    PUSH 42
+    FIELD 0
+ENDFUNC
+

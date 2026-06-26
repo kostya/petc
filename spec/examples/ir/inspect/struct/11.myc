@@ -1,0 +1,63 @@
+STRUCT :Point
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :sum
+  ARGS
+    TYPE :Point
+    TYPE :Point
+  BODY
+    PARAM 0
+    STACK :dup
+    INSPECT
+    FIELD 0
+    STACK :dup
+    INSPECT
+    PARAM 1
+    STACK :dup
+    INSPECT
+    FIELD 0
+    STACK :dup
+    INSPECT
+    BINARY :add
+    INSPECT
+    PARAM 0
+    STACK :dup
+    INSPECT
+    FIELD 1
+    STACK :dup
+    INSPECT
+    PARAM 1
+    STACK :dup
+    INSPECT
+    FIELD 1
+    STACK :dup
+    INSPECT
+    BINARY :sub
+    INSPECT
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 2
+    STACK :dup
+    INSPECT
+    PUSH 1
+    STACK :dup
+    INSPECT
+    CREATE :Point
+    STACK :dup
+    INSPECT
+    PUSH 5
+    STACK :dup
+    INSPECT
+    PUSH 4
+    STACK :dup
+    INSPECT
+    CREATE :Point
+    STACK :dup
+    INSPECT
+    CALL :sum
+ENDFUNC
+

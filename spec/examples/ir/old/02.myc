@@ -1,0 +1,19 @@
+FUNC :main
+  BODY
+    PUSH 1
+    AS :f64
+    INSPECT
+    PUSH 1.5
+    AS :i32
+    INSPECT
+    PUSH 1234
+    AS :u8
+    INSPECT
+    PUSH 2.3
+    AS :f32
+    INSPECT
+    PUSH true
+    AS :u32
+    INSPECT
+ENDFUNC
+

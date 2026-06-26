@@ -1,0 +1,96 @@
+STRUCT :E
+  TYPE :i32
+ENDSTRUCT
+
+STRUCT :D
+  TYPE :ptr<E>
+ENDSTRUCT
+
+STRUCT :C
+  TYPE :ptr<D>
+ENDSTRUCT
+
+STRUCT :B
+  TYPE :ptr<C>
+ENDSTRUCT
+
+STRUCT :A
+  TYPE :ptr<B>
+ENDSTRUCT
+
+FUNC :init_A_ptr
+  ARGS
+    TYPE :i32
+  RETURN
+    TYPE :ptr<A>
+  BODY
+    PUSH 2
+    MALLOC :E
+    LOCAL :e :ptr<E>
+    STORE
+    PARAM 0
+    LOCAL :e
+    DEREF
+    FIELD 0
+    STORE
+    PUSH 1
+    PARAM 0
+    BINARY :add
+    PUSH 1
+    LOCAL :e
+    BINARY :add
+    DEREF
+    FIELD 0
+    STORE
+    PUSH 1
+    MALLOC :D
+    LOCAL :d :ptr<D>
+    STORE
+    LOCAL :e
+    LOCAL :d
+    DEREF
+    FIELD 0
+    STORE
+    PUSH 1
+    MALLOC :C
+    LOCAL :c :ptr<C>
+    STORE
+    LOCAL :d
+    LOCAL :c
+    DEREF
+    FIELD 0
+    STORE
+    PUSH 1
+    MALLOC :B
+    LOCAL :b :ptr<B>
+    STORE
+    LOCAL :c
+    LOCAL :b
+    DEREF
+    FIELD 0
+    STORE
+    PUSH 1
+    MALLOC :A
+    LOCAL :a :ptr<A>
+    STORE
+    LOCAL :b
+    LOCAL :a
+    DEREF
+    FIELD 0
+    STORE
+    LOCAL :a
+    RET
+ENDFUNC
+
+FUNC :init_A
+  ARGS
+    TYPE :i32
+  RETURN
+    TYPE :A
+  BODY
+    PARAM 0
+    CALL :init_A_ptr
+    DEREF
+    RET
+ENDFUNC
+

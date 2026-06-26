@@ -1,0 +1,8 @@
+STRUCT :Point
+  TYPE :f64
+ENDSTRUCT
+
+STRUCT :Point
+  TYPE :i32
+ENDSTRUCT
+

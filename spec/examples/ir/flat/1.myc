@@ -1,0 +1,14 @@
+FLAT :bla
+  TYPE :i32
+  COUNT 3
+ENDFLAT
+
+FUNC :main
+  BODY
+    PUSH 3
+    PUSH 2
+    PUSH 1
+    CREATE :bla
+    INSPECT
+ENDFUNC
+

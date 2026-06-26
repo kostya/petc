@@ -1,0 +1,56 @@
+FUNC :main
+  BODY
+    PUSH 3
+    MALLOC :i32
+    LOCAL :arr :ptr<i32>
+    STORE
+    PUSH 0
+    LOCAL :i :i32
+    STORE
+    LOOP
+      COND
+        PUSH 3
+        LOCAL :i
+        BINARY :less
+      BODY
+        PUSH 10
+        LOCAL :i
+        BINARY :mul
+        LOCAL :i
+        LOCAL :arr
+        BINARY :add
+        DEREF
+        STORE
+      STEP
+        PUSH 1
+        LOCAL :i
+        BINARY :add
+        LOCAL :i
+        STORE
+    ENDLOOP
+    PUSH 0
+    LOCAL :i
+    STORE
+    LOOP
+      COND
+        PUSH 3
+        LOCAL :i
+        BINARY :less
+      BODY
+        LOCAL :i
+        LOCAL :arr
+        BINARY :add
+        DEREF
+        INSPECT
+      STEP
+        PUSH 1
+        LOCAL :i
+        BINARY :add
+        LOCAL :i
+        STORE
+    ENDLOOP
+    LOCAL :arr
+    AS :ptr<void>
+    CALL :free
+ENDFUNC
+

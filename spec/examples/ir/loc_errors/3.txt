@@ -1,0 +1,6 @@
+FUNC :main
+  BODY
+    PUSH 1          ; [val(i32:Co)]
+    PUSH true       ; [val(bool:Co), val(i32:Co)]
+    BINARY :eq      < incompatible types bool Eq i32
+                    (at

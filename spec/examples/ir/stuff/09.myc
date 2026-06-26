@@ -1,0 +1,16 @@
+ENUM :Option
+  VARIANT :None
+  VARIANT :Some
+    TYPE :i32
+ENDENUM
+
+FUNC :main
+  BODY
+    PUSH 99
+    LOCAL :x :Option
+    FIELD 0
+    STORE
+    LOCAL :x
+    INSPECT
+ENDFUNC
+

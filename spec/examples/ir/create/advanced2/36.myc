@@ -1,0 +1,20 @@
+ENUM :Option
+  VARIANT :None
+  VARIANT :Some
+    TYPE :i32
+ENDENUM
+
+FUNC :main
+  BODY
+    PUSH 42
+    CREATE :Option::Some
+    AS :Option
+    LOCAL :a :Option
+    STORE
+    LOCAL :a
+    LOCAL :b :Option
+    STORE
+    LOCAL :b
+    INSPECT
+ENDFUNC
+

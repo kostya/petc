@@ -1,0 +1,8 @@
+FUNC :main
+  BODY
+    PUSH :MYC_BACKEND
+    PUSH :MYC_FLAGS
+    PUSH "Hello from (myc)MyCompiler (flags = %s, backend = %s)!\n"
+    PRINTF 2
+ENDFUNC
+

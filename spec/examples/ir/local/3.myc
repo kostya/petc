@@ -1,0 +1,17 @@
+FUNC :main
+  BODY
+    PUSH 10
+    LOCAL :a :i32
+    STORE
+    PUSH 20
+    LOCAL :b :i32
+    STORE
+    LOCAL :a
+    LOCAL :b
+    BINARY :add
+    LOCAL :c :i32
+    STORE
+    LOCAL :c
+    INSPECT
+ENDFUNC
+

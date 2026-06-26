@@ -1,0 +1,36 @@
+FUNC :mul
+  ARGS
+    TYPE :i32
+    TYPE :i32
+  RETURN
+    TYPE :i32
+  BODY
+    PARAM 0
+    PARAM 1
+    BINARY :mul
+    RET
+ENDFUNC
+
+FUNC :add
+  ARGS
+    TYPE :i32
+    TYPE :i32
+  RETURN
+    TYPE :i32
+  BODY
+    PARAM 0
+    PARAM 1
+    BINARY :add
+    RET
+ENDFUNC
+
+FUNC :main
+  BODY
+    PUSH 2
+    PUSH 3
+    CALL :mul
+    PUSH 4
+    CALL :add
+    INSPECT
+ENDFUNC
+

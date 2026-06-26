@@ -1,0 +1,16 @@
+STRUCT :Point
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 20
+    PUSH 10
+    CREATE :Point
+    PUSH 20
+    PUSH 10
+    CREATE :Point
+    BINARY :eq
+ENDFUNC
+

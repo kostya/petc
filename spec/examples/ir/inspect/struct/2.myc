@@ -1,0 +1,30 @@
+STRUCT :Inner
+  TYPE :i32
+  TYPE :i32
+ENDSTRUCT
+
+STRUCT :Outer
+  TYPE :Inner
+  TYPE :i32
+ENDSTRUCT
+
+FUNC :main
+  BODY
+    PUSH 1
+    LOCAL :o :Outer
+    FIELD 0
+    FIELD 0
+    STORE
+    PUSH 2
+    LOCAL :o
+    FIELD 0
+    FIELD 1
+    STORE
+    PUSH 3
+    LOCAL :o
+    FIELD 1
+    STORE
+    LOCAL :o
+    INSPECT
+ENDFUNC
+
