@@ -7,15 +7,15 @@ class Myc::Backend::QBE::Backend < Myc::Backend::AbstractBackend
 
   def obj(mod : Mod, output : String)
     self.class.with_tempfile_path("myc", "ssa") do |tmp|
-      Stats.measure("build") do
+      Myc.measure("build") do
         build(mod, tmp)
       end
 
       self.class.with_tempfile_path("myc", "s") do |tmp2|
-        Stats.measure("qbe_ams") do
+        Myc.measure("qbe_ams") do
           self.class.run_cmd(QBE, ["-o", tmp2, tmp])
         end
-        Stats.measure("asm_obj") do
+        Myc.measure("asm_obj") do
           self.class.run_cmd(CC, ["-c", tmp2, "-o", output])
         end
       end
@@ -23,7 +23,7 @@ class Myc::Backend::QBE::Backend < Myc::Backend::AbstractBackend
   end
 
   def dump(mod : Mod, output : String)
-    Stats.measure("build") do
+    Myc.measure("build") do
       build(mod, output)
     end
   end

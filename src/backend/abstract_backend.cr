@@ -155,7 +155,7 @@ abstract class Myc::Backend::AbstractBackend
   protected def validate(input : String) : Mod
     raise data.error("input not found `#{input}`") unless File.exists?(input)
     raise data.error("input not file `#{input}`") unless File.file?(input)
-    Stats.measure("load_mod") do
+    Myc.measure("load_mod") do
       src = File.read(input)
       src = preprocess(src, input)
       tokens = Source::Tokenizer.new(src, input).parse
@@ -171,7 +171,7 @@ abstract class Myc::Backend::AbstractBackend
 
   protected def linker(objs : Array(String), output : String)
     ensure_dir(output)
-    Stats.measure("linker") do
+    Myc.measure("linker") do
       self.class.run_cmd(CC, objs + ["-o", output])
     end
   end

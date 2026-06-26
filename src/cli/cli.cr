@@ -190,6 +190,6 @@ USAGE
     if filename = data.stdin_filename
       File.delete(filename)
     end
-    Myc::Stats.print_timers
+    Myc.print_timers
   end
 end

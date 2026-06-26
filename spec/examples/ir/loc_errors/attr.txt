@@ -1,4 +1,4 @@
-FUNC main ATTRIBUTES ATTR :bla BODY ENDFUNC
+FUNC :main
 ^
 unknown attr bla
 (at

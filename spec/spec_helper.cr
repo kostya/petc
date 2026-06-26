@@ -65,7 +65,7 @@ abstract struct Myc::Source::Token
 end
 
 Spec.after_suite do
-  Myc::Stats.print_timers
+  Myc.print_timers
 end
 
 class SpecRun

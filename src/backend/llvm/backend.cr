@@ -6,13 +6,7 @@ class Myc::Backend::Llvm::Backend < Myc::Backend::AbstractBackend
   def obj(mod : Mod, output : String)
     b = build(mod, output)
 
-    if common_options.release || ENV["LLVM_PASSES"]?
-      Stats.measure("llvm_optimizer") do
-        b.optimize!("O3")
-      end
-    end
-
-    Stats.measure("llvm_generate_obj") do
+    Myc.measure("llvm_generate_obj") do
       b.generate_obj(output)
     end
   end
@@ -20,19 +14,13 @@ class Myc::Backend::Llvm::Backend < Myc::Backend::AbstractBackend
   def dump(mod : Mod, output : String)
     b = build(mod, output)
 
-    if common_options.release || ENV["LLVM_PASSES"]?
-      Stats.measure("llvm_optimizer") do
-        b.optimize!("O3")
-      end
-    end
-
-    Stats.measure("llvm_generate_ll") do
+    Myc.measure("llvm_generate_ll") do
       b.generate_ll(output)
     end
   end
 
   private def build(mod : Mod, output : String) : Builder
-    Stats.measure("build") do
+    Myc.measure("build") do
       layout = Layout.new(common_options.target || Target.from_triple(LLVM.default_target_triple))
       builder = Builder.new(self, layout, mod.name, common_options.release ? LLVM::CodeGenOptLevel::Aggressive : LLVM::CodeGenOptLevel::None)
 
@@ -55,6 +43,13 @@ class Myc::Backend::Llvm::Backend < Myc::Backend::AbstractBackend
       end
 
       builder.verify unless ENV["VERIFY"]? == "0"
+
+      if common_options.release || ENV["LLVM_PASSES"]?
+        Myc.measure("llvm_optimizer") do
+          builder.optimize!("O3")
+        end
+      end
+
       builder
     end
   end

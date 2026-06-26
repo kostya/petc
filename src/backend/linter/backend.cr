@@ -14,7 +14,7 @@ class Myc::Backend::Linter::Backend < Myc::Backend::AbstractBackend
   property notes = Hash(Opcode, String).new
 
   def lint(mod : Mod)
-    Stats.measure(:linter) do
+    Myc.measure(:linter) do
       layout = Layout.new(detect_native_target)
       builder = Builder.new(self, layout)
 

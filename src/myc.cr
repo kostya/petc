@@ -6,3 +6,7 @@ end
 
 require "./*"
 require "./cli/cli"
+
+module Myc
+  extend Stats
+end

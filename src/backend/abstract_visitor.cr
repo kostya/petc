@@ -126,7 +126,7 @@ abstract class Myc::Backend::AbstractVisitor
   end
 
   protected def visit_child(child : Opcode)
-    Stats.debug(:visitor) { "visit #{child.inspect}" }
+    Myc.debug(:visitor) { "visit #{child.inspect}" }
     @current_op = child
     visit(child)
   end

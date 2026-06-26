@@ -9,7 +9,7 @@ class Myc::Backend::C::Backend < Myc::Backend::AbstractBackend
 
   def obj(mod : Mod, output : String)
     self.class.with_tempfile_path("myc", "c") do |tmp|
-      Stats.measure("build") do
+      Myc.measure("build") do
         build(mod, tmp)
       end
       args = ["-c", "-fno-strict-aliasing", "-Wno-main-return-type", "-Wno-pointer-sign", "-Wno-constant-conversion", "-o", output, tmp]
@@ -17,14 +17,14 @@ class Myc::Backend::C::Backend < Myc::Backend::AbstractBackend
       if c_flgs = ENV["C_FLAGS"]?
         args += c_flgs.split(" ")
       end
-      Stats.measure("c_obj") do
+      Myc.measure("c_obj") do
         self.class.run_cmd(CC, args)
       end
     end
   end
 
   def dump(mod : Mod, output : String)
-    Stats.measure("build") do
+    Myc.measure("build") do
       build(mod, output)
     end
   end

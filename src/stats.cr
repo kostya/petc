@@ -1,5 +1,5 @@
-class Myc::Stats
-  def self.debug(subsystem, &)
+module Myc::Stats
+  def debug(subsystem, &)
     {% if !flag?(:release) %}
       if ENV["DEBUG"]? == "1"
         yield
@@ -9,7 +9,7 @@ class Myc::Stats
 
   TIMES = Hash(String, Float64).new(0.0)
 
-  def self.measure(name, &)
+  def measure(name, &)
     name = name.to_s
     t = Time.instant
     res = yield
@@ -23,7 +23,7 @@ class Myc::Stats
     res
   end
 
-  def self.print_timers
+  def print_timers
     if ENV["MYC_TIMERS"]? == "1"
       STDOUT << "{"
       TIMES.each_with_index do |(k, v), i|

@@ -47,7 +47,7 @@ class Myc::Backend::Llvm::Builder < Myc::Backend::AbstractBuilder
   end
 
   def verify
-    Stats.measure(:verify) do
+    Myc.measure(:verify) do
       @llvm_mod.verify
     end
   end
@@ -132,8 +132,8 @@ class Myc::Backend::Llvm::Builder < Myc::Backend::AbstractBuilder
   end
 
   def generate_ll(filename)
-    Stats.measure(:llvm_generate_ll) do
-      Stats.debug(:compile) { "Generate LL #{filename}" }
+    Myc.measure(:llvm_generate_ll) do
+      Myc.debug(:compile) { "Generate LL #{filename}" }
       File.open(filename, "w") { |file| llvm_mod.to_s(file) }
     end
   rescue ex
@@ -141,8 +141,8 @@ class Myc::Backend::Llvm::Builder < Myc::Backend::AbstractBuilder
   end
 
   def generate_obj(filename)
-    Stats.measure(:llvm_generate_obj) do
-      Stats.debug(:compile) { "Generate Obj #{filename}" }
+    Myc.measure(:llvm_generate_obj) do
+      Myc.debug(:compile) { "Generate Obj #{filename}" }
       target_machine.emit_obj_to_file llvm_mod, filename
     end
   rescue ex
@@ -150,7 +150,7 @@ class Myc::Backend::Llvm::Builder < Myc::Backend::AbstractBuilder
   end
 
   def optimize!(mode = "O2")
-    Stats.measure(:llvm_generate_obj) do
+    Myc.measure(:llvm_generate_obj) do
       LLVM::PassBuilderOptions.new do |options|
         LLVM.run_passes(llvm_mod, ENV["LLVM_PASSES"]? || "default<#{mode}>", target_machine, options)
       end
