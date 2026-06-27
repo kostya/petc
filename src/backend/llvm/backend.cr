@@ -3,8 +3,13 @@ class Myc::Backend::Llvm::Backend < Myc::Backend::AbstractBackend
     "LLVM"
   end
 
+  def new_builder : AbstractBuilder
+    layout = Layout.new(common_options.target || Target.from_triple(LLVM.default_target_triple))
+    Builder.new(self, layout, common_options.release ? LLVM::CodeGenOptLevel::Aggressive : LLVM::CodeGenOptLevel::None)
+  end
+
   def obj(mod : Mod, output : String)
-    b = build(mod, output)
+    b = build(mod)
 
     Myc.measure("llvm_generate_obj") do
       b.generate_obj(output)
@@ -12,36 +17,15 @@ class Myc::Backend::Llvm::Backend < Myc::Backend::AbstractBackend
   end
 
   def dump(mod : Mod, output : String)
-    b = build(mod, output)
+    b = build(mod)
 
     Myc.measure("llvm_generate_ll") do
       b.generate_ll(output)
     end
   end
 
-  private def build(mod : Mod, output : String) : Builder
-    Myc.measure("build") do
-      layout = Layout.new(common_options.target || Target.from_triple(LLVM.default_target_triple))
-      builder = Builder.new(self, layout, mod.name, common_options.release ? LLVM::CodeGenOptLevel::Aggressive : LLVM::CodeGenOptLevel::None)
-
-      mod.finalize_enums(layout)
-
-      mod.func_defs.each do |name, func_def|
-        unless func_def.body
-          builder.func_link(name, func_def.type_fn)
-        end
-      end
-
-      mod.global_defs.each do |global|
-        builder.global_register(mod, global)
-      end
-
-      mod.func_defs.each do |_, func_def|
-        if func_def.body
-          builder.new_func(func_def).build
-        end
-      end
-
+  def build(mod : Mod) : Builder
+    build_mod(mod).as(Builder).tap do |builder|
       builder.verify unless ENV["VERIFY"]? == "0"
 
       if common_options.release || ENV["LLVM_PASSES"]?
@@ -49,8 +33,6 @@ class Myc::Backend::Llvm::Backend < Myc::Backend::AbstractBackend
           builder.optimize!("O3")
         end
       end
-
-      builder
     end
   end
 end

@@ -1,5 +1,4 @@
 class Myc::Backend::Llvm::Builder < Myc::Backend::AbstractBuilder
-  getter name : String
   getter context : LLVM::Context
   getter target_machine : LLVM::TargetMachine
   getter type_translator : TypeTranslator
@@ -10,14 +9,14 @@ class Myc::Backend::Llvm::Builder < Myc::Backend::AbstractBuilder
   getter global_links = Hash(String, Value).new
   getter codegen_opt_level : LLVM::CodeGenOptLevel
 
-  def initialize(@backend, @layout, @name, @codegen_opt_level = LLVM::CodeGenOptLevel::None)
+  def initialize(@backend, @layout, @codegen_opt_level = LLVM::CodeGenOptLevel::None)
     super(@backend, @layout)
 
     @context = LLVM::Context.new(LibLLVM.create_context, false)
     @target_machine = create_target_machine(@layout.target.triple)
     @type_translator = TypeTranslator.new(@context, @layout)
 
-    @llvm_mod = @context.new_module(name)
+    @llvm_mod = @context.new_module(AbstractBackend.tmp_name)
     @llvm_mod.target = @target_machine.triple
     @llvm_mod.data_layout = @target_machine.data_layout
   end
@@ -50,6 +49,10 @@ class Myc::Backend::Llvm::Builder < Myc::Backend::AbstractBuilder
     Myc.measure(:verify) do
       @llvm_mod.verify
     end
+  end
+
+  def func_register(name : String, type_fn : Type::Fn)
+    func_link(name, type_fn)
   end
 
   def func_link(name : String, type_fn : Type::Fn) : FuncLink

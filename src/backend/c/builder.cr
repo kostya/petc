@@ -1,10 +1,9 @@
 class Myc::Backend::C::Builder < Myc::Backend::AbstractBuilder
-  getter name : String
   @type_translator : TypeTranslator?
   getter func_links : Hash(String, Type::Fn)
   getter global_links : Hash(String, Value)
 
-  def initialize(@backend, @layout, @name)
+  def initialize(@backend, @layout)
     super(@backend, @layout)
     @func_links = Hash(String, Type::Fn).new
     @global_links = Hash(String, Value).new

@@ -122,14 +122,16 @@ class Myc::Error::ErrorVisitor < Myc::Error
   end
 
   def print(io : IO)
-    f = visitor.builder.new_func(visitor.func_def)
-    v = Myc::Backend::Linter::Visitor.new(visitor.builder, f,
+    linter = Backend::Linter::Backend.new(visitor.builder.backend.data)
+    linter_builder = linter.new_builder
+    f = linter_builder.new_func(visitor.func_def)
+    v = Myc::Backend::Linter::Visitor.new(linter_builder, f,
       f.body_bb, visitor.func_def, visitor.mod, visitor.params)
     begin
       v.visit
     rescue
     end
-    saver = ErrorSaver.new(visitor.mod, v.notes)
+    saver = ErrorSaver.new(visitor.mod, linter_builder.notes)
     saver.finish_opcode = visitor.current_op
 
     _, line_number, line_position = Location.new(visitor.mod.filename, visitor.current_op.offset).load_info
