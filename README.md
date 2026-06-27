@@ -51,7 +51,7 @@ Myc adds zero overhead over LLVM and C backends. QBE is an exception: ~400-700ms
 ```sh
 ./myc-llvm run --release examples/ir/mandel.myc
 ./myc-llvm run --release examples/ir/bf.myc
-./myc-llvm run --release examples/ir/fact.myc
+./myc-llvm run --release examples/ir/loop.myc
 ```
 
 | Benchmark | Backend | Compile | Run |
