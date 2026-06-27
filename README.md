@@ -135,7 +135,7 @@ python3 bf2myc.py mandel.bf | ../../myc-llvm run --release
 ### Example: factorial in mycIR, examples/ir/fact.myc, translation
 
 <details>
-<summary><strong>examples/ir/fact.myc</strong></summary>
+<summary>examples/ir/fact.myc</summary>
 
 ```myc
 FUNC fact
@@ -171,7 +171,7 @@ ENDFUNC
 </details>
 
 <details>
-<summary><strong>LLVM Backend `./myc-llvm dump examples/ir/fact.myc`</strong></summary>
+<summary>LLVM Backend `./myc-llvm dump examples/ir/fact.myc`</summary>
 
 ```
 ; ModuleID = 'fact'
@@ -225,7 +225,7 @@ declare i32 @printf(ptr, ...)
 </details>
 
 <details>
-<summary><strong>QBE Backend `./myc-qbe dump examples/ir/fact.myc`</strong></summary>
+<summary>QBE Backend `./myc-qbe dump examples/ir/fact.myc`</summary>
 
 ```
 data $str_0 = { b "fact(%d) = %d\n", b 0 }
@@ -265,7 +265,7 @@ export function  $main() {
 </details>
 
 <details>
-<summary><strong>C Backend `./myc-c dump examples/ir/fact.myc`</strong></summary>
+<summary>C Backend `./myc-c dump examples/ir/fact.myc`</summary>
 
 ```
 #include <stdio.h>
@@ -316,7 +316,7 @@ crystal spec
 ## Usage
 
 <details>
-<summary><strong>Usage</strong></summary>
+<summary>Usage</summary>
 
 ```
 Usage: ./myc-llvm COMMAND [OPTIONS] INPUT [INPUT]* [OUTPUT]
