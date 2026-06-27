@@ -4,6 +4,7 @@ abstract class Myc::Backend::AbstractBackend
   abstract def name
   abstract def dump(mod : Mod, output : String)
   abstract def obj(mod : Mod, output : String)
+  abstract def new_builder : AbstractBuilder
 
   CC = ENV["CC"]? || "cc"
 
@@ -136,13 +137,13 @@ abstract class Myc::Backend::AbstractBackend
       begin
         print "beautify #{input} "
         mod = validate(input)
-        notes = Hash(Opcode, String).new
-        if data.options["annotate"]?
-          linter = Linter::Backend.new(data)
-          linter.lint(mod)
-          notes = linter.notes
-        end
-        s = Mod::Saver.new(mod, notes)
+        s = if data.options["annotate"]?
+              linter = Linter::Backend.new(data)
+              builder = linter.build_mod(mod).as(Linter::Builder)
+              Mod::Saver.new(mod, builder.notes)
+            else
+              Mod::Saver.new(mod)
+            end
         dom = s.save
         File.open(input, "w") { |f| Myc::Source::Serialize.new(dom, f).serialize }
         puts "ok!".colorize(:green)
@@ -191,9 +192,13 @@ abstract class Myc::Backend::AbstractBackend
   end
 
   def self.tempfile_path(prefix = "", ext = "")
+    File.join(Dir.tempdir, "#{prefix}_#{tmp_name}.#{ext}")
+  end
+
+  def self.tmp_name
     bytes = Bytes.new(10)
     Random::Secure.random_bytes(bytes)
-    File.join(Dir.tempdir, "#{prefix}_#{bytes.hexstring}.#{ext}")
+    bytes.hexstring
   end
 
   def self.with_tempfile_path(prefix, ext, &)
@@ -271,6 +276,29 @@ abstract class Myc::Backend::AbstractBackend
         s << target.arch.to_s
       end
       s << ')'
+    end
+  end
+
+  protected def build_mod(mod : Mod) : AbstractBuilder
+    Myc.measure("build_mod") do
+      builder = new_builder
+      mod.finalize_enums(builder.layout)
+
+      mod.func_defs.each do |name, func_def|
+        builder.func_register(name, func_def.type_fn)
+      end
+
+      mod.global_defs.each do |global|
+        builder.global_register(mod, global)
+      end
+
+      mod.func_defs.each do |_, func_def|
+        if func_def.body
+          builder.new_func(func_def).build
+        end
+      end
+
+      builder
     end
   end
 end

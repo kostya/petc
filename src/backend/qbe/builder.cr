@@ -1,12 +1,11 @@
 class Myc::Backend::QBE::Builder < Myc::Backend::AbstractBuilder
-  getter name : String
   getter func_links : Hash(String, Type::Fn)
   getter global_links : Hash(String, Value)
   getter string_constants : Hash(String, String)
   getter data_io : IO::Memory
   @type_translator : TypeTranslator?
 
-  def initialize(@backend, @layout, @name)
+  def initialize(@backend, @layout)
     super(@backend, @layout)
 
     @data_io = IO::Memory.new
@@ -22,7 +21,7 @@ class Myc::Backend::QBE::Builder < Myc::Backend::AbstractBuilder
     @type_translator ||= TypeTranslator.new(self)
   end
 
-  def func_register(name : String, type_fn : Type::Fn) : Type::Fn
+  def func_register(name : String, type_fn : Type::Fn)
     @func_links[name] = type_fn
   end
 

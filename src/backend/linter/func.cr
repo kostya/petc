@@ -17,9 +17,8 @@ class Myc::Backend::Linter::Func < Myc::Backend::AbstractFunc
     end
   end
 
-  def build : Hash(Opcode, String)
+  def build
     v = new_visitor
     v.visit
-    v.notes
   end
 end

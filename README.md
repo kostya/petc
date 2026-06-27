@@ -48,11 +48,23 @@ Myc adds zero overhead over LLVM and C backends. QBE is an exception: ~400-700ms
 
 ## More benchmarks from examples/
 
-| Benchmark | myc-llvm compile | myc-llvm run | myc-qbe compile | myc-qbe run | myc-c compile | myc-c run |
-|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|
-| bf | 62ms | 1304ms | 116ms | 4033ms | 117ms | 1424ms |
-| loop | 87ms | 359ms | 107ms | 375ms | 112ms | 243ms |
-| mandel | 1105ms | 614ms | 759ms | 787ms | 1459ms | 641ms |
+```sh
+./myc-llvm run --release examples/ir/mandel.myc
+./myc-llvm run --release examples/ir/bf.myc
+./myc-llvm run --release examples/ir/fact.myc
+```
+
+| Benchmark | Backend | Compile | Run |
+|:----------|:-------:|--------:|----:|
+| mandel | myc-llvm | 1031ms | 609ms |
+| | myc-qbe | 905ms | 769ms |
+| | myc-c | 1477ms | 639ms |
+| bf | myc-llvm | 104ms | 1291ms |
+| | myc-qbe | 115ms | 3996ms |
+| | myc-c | 121ms | 1445ms |
+| loop | myc-llvm | 95ms | 338ms |
+| | myc-qbe | 106ms | 377ms |
+| | myc-c | 111ms | 244ms |
 
 ## Install
 
@@ -111,14 +123,6 @@ shards install; crystal build src/cli/mycc.cr -o ./mycc
 
 # Show optimized LLVM IR dump
 ./mycc spec/examples/mycc/complex/loop.cc | ./myc-llvm d --release
-```
-
-### Compile and run examples
-
-```sh
-./myc-llvm run --release examples/ir/mandel.myc
-./myc-llvm run --release examples/ir/bf.myc
-./myc-llvm run --release examples/ir/fact.myc
 ```
 
 ### Example: Brainfuck compiler with myc IR.

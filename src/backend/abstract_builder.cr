@@ -52,4 +52,5 @@ abstract class Myc::Backend::AbstractBuilder
   abstract def constant_value?(value : Source::Token::ArgType, type : Type) : Value?
   abstract def find_global(name : String) : Value?
   abstract def new_func(func_def : Mod::FuncDef) : AbstractFunc
+  abstract def func_register(name : String, type_fn : Type::Fn)
 end

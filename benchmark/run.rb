@@ -1,9 +1,9 @@
 require 'digest'
 
 FILES = [
+  ["../examples/ir/mandel.myc", "005359a040b1689eaf88ac09c2883084"],
   ["../examples/ir/bf.myc", "c4a8df3a4adfe02e1f55c7717ef3d100"],
   ["../examples/ir/loop.myc", "da59897b0c689f23ff826998d316436e"],
-  ["../examples/ir/mandel.myc", "005359a040b1689eaf88ac09c2883084"],
 ]
 
 BACKENDS = {
@@ -57,34 +57,30 @@ FILES.each do |file, expected_md5|
   end
 end
 
-def markdown_table(headers, rows)
+def markdown_table_grouped(compilers, benchmarks)
   output = []
-  output << "| " + headers.join(" | ") + " |"
-  output << "|" + (":---------:|" * headers.size)
-  rows.each do |row|
-    output << "| " + row.map { |cell| cell.to_s }.join(" | ") + " |"
-  end  
+  output << "| Benchmark | Backend | Compile | Run |"
+  output << "|:----------|:-------:|--------:|----:|"
+  
+  benchmarks.each do |benchmark|
+    compilers.each_with_index do |compiler, idx|
+      times = RES[compiler][benchmark]
+      compile = (times[:compile_time] * 1000).round
+      run = (times[:run_time] * 1000).round
+      
+      if idx == 0
+        output << "| #{benchmark} | #{compiler} | #{compile}ms | #{run}ms |"
+      else
+        output << "| | #{compiler} | #{compile}ms | #{run}ms |"
+      end
+    end
+  end
+  
   output.join("\n")
 end
 
 compilers = RES.keys
 benchmarks = RES[compilers.first].keys
 
-headers = ["Benchmark"]
-compilers.each do |compiler|
-  headers << "#{compiler} compile"
-  headers << "#{compiler} run"
-end
-
-rows = []
-benchmarks.each do |benchmark|
-  row = [benchmark]
-  compilers.each do |compiler|
-    times = RES[compiler][benchmark]
-    row << (times[:compile_time] * 1000).round.to_s + "ms"
-    row << (times[:run_time] * 1000).round.to_s + "ms"
-  end
-  rows << row
-end
-
-puts markdown_table(headers, rows)
+puts
+puts markdown_table_grouped(compilers, benchmarks)

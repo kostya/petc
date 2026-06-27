@@ -5,11 +5,14 @@ class Myc::Backend::QBE::Backend < Myc::Backend::AbstractBackend
     "QBE"
   end
 
+  def new_builder : AbstractBuilder
+    layout = Layout.new(common_options.target || detect_native_target)
+    Builder.new(self, layout)
+  end
+
   def obj(mod : Mod, output : String)
     self.class.with_tempfile_path("myc", "ssa") do |tmp|
-      Myc.measure("build") do
-        build(mod, tmp)
-      end
+      build(mod, tmp)
 
       self.class.with_tempfile_path("myc", "s") do |tmp2|
         Myc.measure("qbe_ams") do
@@ -23,33 +26,12 @@ class Myc::Backend::QBE::Backend < Myc::Backend::AbstractBackend
   end
 
   def dump(mod : Mod, output : String)
-    Myc.measure("build") do
-      build(mod, output)
-    end
+    build(mod, output)
   end
 
-  private def build(mod : Mod, output : String)
-    layout = Layout.new(common_options.target || detect_native_target)
-    builder = Builder.new(self, layout, mod.name)
-
-    mod.finalize_enums(layout)
-
-    mod.func_defs.each do |name, func_def|
-      unless func_def.body
-        builder.func_register(name, func_def.type_fn)
-      end
+  def build(mod : Mod, output : String) : Builder
+    build_mod(mod).as(Builder).tap do |builder|
+      builder.save(output)
     end
-
-    mod.global_defs.each do |global|
-      builder.global_register(mod, global)
-    end
-
-    mod.func_defs.each do |_, func_def|
-      if func_def.body
-        builder.new_func(func_def).build
-      end
-    end
-
-    builder.save(output)
   end
 end
