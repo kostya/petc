@@ -173,7 +173,7 @@ abstract class Myc::Backend::AbstractBackend
   protected def linker(objs : Array(String), output : String)
     ensure_dir(output)
     Myc.measure("linker") do
-      self.class.run_cmd(CC, objs + ["-o", output])
+      self.class.run_cmd(CC, objs + ["-lm", "-o", output])
     end
   end
 
