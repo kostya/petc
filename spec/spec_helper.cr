@@ -323,7 +323,7 @@ class MyccSpecRun
     builder = Myc::Mycc::ASTBuilder.new(source, tu)
     ast = builder.build
 
-    c = Myc::Mycc::CodeGenerator.new
+    c = Myc::Mycc::CodeGenerator.new(builder.mod.typer)
     io = c.generate(ast)
 
     Myc::Backend::AbstractBackend.with_tempfile_path("myc_spec", "myc") do |tmp|

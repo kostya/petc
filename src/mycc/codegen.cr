@@ -1,5 +1,6 @@
 class Myc::Mycc::CodeGenerator
   getter io : IO
+  getter typer : Mod::Typer
 
   class VarInfo
     getter type : Type
@@ -10,7 +11,7 @@ class Myc::Mycc::CodeGenerator
     end
   end
 
-  def initialize
+  def initialize(@typer)
     @indent = 0
     @io = IO::Memory.new
     @vars = Hash(String, VarInfo).new
@@ -211,7 +212,11 @@ class Myc::Mycc::CodeGenerator
   end
 
   def generate_expr(expr : TypedAST::IntLiteral)
-    emit("PUSH #{expr.value} #{type_s(expr.type)}")
+    if expr.type.eq?(typer.i32)
+      emit("PUSH #{expr.value}")
+    else
+      emit("PUSH #{expr.value} #{type_s(expr.type)}")
+    end
   end
 
   def generate_expr(expr : TypedAST::FloatLiteral)

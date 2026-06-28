@@ -25,7 +25,7 @@ begin
     p ast
   end
 
-  c = Myc::Mycc::CodeGenerator.new
+  c = Myc::Mycc::CodeGenerator.new(builder.mod.typer)
   io = c.generate(ast)
 
   Myc.debug(:myc) { puts "-" * 50 }
