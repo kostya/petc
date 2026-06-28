@@ -11,8 +11,8 @@
 #     RETURN TYPE :i32
 #     ARGS TYPE :i32 TYPE :i32
 #     BODY
-#       PARAM 0
 #       PARAM 1
+#       PARAM 0
 #       BINARY :add
 #       RET
 #   ENDFUNC

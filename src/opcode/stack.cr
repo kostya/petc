@@ -16,7 +16,7 @@
 #
 #   PUSH 10
 #   PUSH 20
-#   STACK :swap2           ; 20, 10
+#   STACK :swap2           ; 10, 20
 #
 #   PUSH 42
 #   STACK :dup             ; 42, 42

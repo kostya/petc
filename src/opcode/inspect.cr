@@ -12,8 +12,8 @@
 #   STACK :dup
 #   INSPECT                      ; prints "42", stack: [42]
 #
-#   PUSH 10
 #   PUSH 20
+#   PUSH 10
 #   BINARY :add                  ; 10 + 20
 #   INSPECT                      ; prints "30"
 #
