@@ -1,4 +1,6 @@
-## 0.3.0-dev
+## 0.4.0-dev
+
+## 0.3.0 (28.06.2026)
 * UNARY :not was splitted into :lnot, :bnot
 * AS :bool, now can cast from int, float
 * opcode OFFSET was deleted, use BINARY :add instead
