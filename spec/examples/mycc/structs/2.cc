@@ -11,9 +11,9 @@ void test_structs() {
     printf("modified point: %d %d\n", p.x, p.y);
 
     struct Point p2 = {11, 21};
-    &p2->x = 12;
+    (&p2)->x = 12;
     *(int *)((char *)(&p2) + 4) = 22;
-    printf("wtf point: %d %d %d\n", &p2->y, p2.x, p2.y);
+    printf("wtf point: %d %d %d\n", (&p2)->y, p2.x, p2.y);
 }
 
 int main() {

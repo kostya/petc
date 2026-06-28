@@ -22,7 +22,7 @@
 #
 #   ; Usage
 #   PUSH 42
-#   GLOBAL :counter        ; ptr<i32>
+#   GLOBAL :counter        ; i32
 #   STORE                  ; counter = 42
 #
 class Myc::Opcode::Global < Myc::Opcode

@@ -105,7 +105,7 @@ All opcodes [self documented](https://github.com/kostya/myc/tree/master/src/opco
 
 ## mycc: a C subset compiler
 
-~700 lines of Crystal. Uses mycIR as backend and libclang for C parsing. Require LLVM >= 20.
+~1300 lines of Crystal. Uses mycIR as backend and libclang for C parsing. Require LLVM >= 20.
 
 ```sh
 # Build
@@ -113,16 +113,16 @@ All opcodes [self documented](https://github.com/kostya/myc/tree/master/src/opco
 shards install; crystal build src/cli/mycc.cr -o ./mycc
 
 # Show mycIR output
-./mycc spec/examples/mycc/complex/loop.cc
+./mycc examples/mycc/sieve.cc
 
 # Build and run (LLVM backend)
-./mycc spec/examples/mycc/complex/loop.cc | ./myc-llvm r --release
+./mycc examples/mycc/sieve.cc | ./myc-llvm r --release
 
 # Show LLVM IR dump
-./mycc spec/examples/mycc/complex/loop.cc | ./myc-llvm d
+./mycc examples/mycc/sieve.cc | ./myc-llvm d
 
 # Show optimized LLVM IR dump
-./mycc spec/examples/mycc/complex/loop.cc | ./myc-llvm d --release
+./mycc examples/mycc/sieve.cc | ./myc-llvm d --release
 ```
 
 ### Example: Brainfuck compiler with myc IR.

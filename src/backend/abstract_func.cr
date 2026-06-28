@@ -25,7 +25,7 @@ abstract class Myc::Backend::AbstractFunc
     finish(v)
   end
 
-  private def finish(v : AbstractVisitor)
+  def finish(v : AbstractVisitor)
     alloca_bb.jmp(body_bb)
     v.bb.jmp(ret_bb)
     v.bb = ret_bb

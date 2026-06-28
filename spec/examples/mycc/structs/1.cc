@@ -24,7 +24,8 @@ void test_struct2() {
     printf("Point: %d, %d\n", p.x, p.y);
 }
 
-void main() {
+int main() {
     test_struct();
     test_struct2();
+    return 0;
 }

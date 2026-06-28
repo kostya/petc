@@ -1,6 +1,6 @@
 void test_strings() {
     char *s = "Hello";
-    char t[] = "World";
+    char *t = "World";
     
     printf("strings: %s %s\n", s, t);
     printf("char: %c\n", s[0]);

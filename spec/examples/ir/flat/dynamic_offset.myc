@@ -1,0 +1,19 @@
+FUNC :main
+  RETURN
+    TYPE :i32
+  BODY
+    PUSH 30 :i32
+    PUSH 20 :i32
+    PUSH 10 :i32
+    CREATE "flat<i32, 3>"
+    ADDR
+    AS :ptr<i32>
+    PUSH 1
+    STACK :swap2
+    BINARY :add
+    DEREF
+    INSPECT
+    PUSH 0
+    RET
+ENDFUNC
+

@@ -1,1 +1,2 @@
-asfd
+global: 42
+global modified: 100

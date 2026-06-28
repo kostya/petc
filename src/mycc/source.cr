@@ -7,7 +7,7 @@ class Myc::Mycc::Source
   getter content : String
 
   def initialize(@filename)
-    raise Myc::Mycc::Error.new("file not found `#{filename}`") unless File.exists?(filename)
+    raise Exception.new("file not found `#{filename}`") unless File.exists?(filename)
     @content = File.read(filename)
   end
 

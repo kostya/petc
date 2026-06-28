@@ -16,8 +16,8 @@ void test_structs() {
     printf("rect: %d %d %d %d\n", 
            r.origin.x, r.origin.y, r.width, r.height);
 
-    r.p.x = 11;
-    &r->&p->x = 12;
+    r.origin.x = 11;
+    (&((&r)->origin))->x = 12;
     int *wp = &r.width;
     *wp = 101;
     r.height = 202;

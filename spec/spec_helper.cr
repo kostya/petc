@@ -319,10 +319,15 @@ class MyccSpecRun
   def self.run(filename, backend_class : Myc::Backend::AbstractBackend.class, release)
     source = Myc::Mycc::Source.new(filename)
     tu = source.clang_parse
-    builder = Myc::Mycc::Builder.new(source, tu)
-    builder.visit(tu.cursor)
+
+    builder = Myc::Mycc::ASTBuilder.new(source, tu)
+    ast = builder.build
+
+    c = Myc::Mycc::CodeGenerator.new
+    io = c.generate(ast)
+
     Myc::Backend::AbstractBackend.with_tempfile_path("myc_spec", "myc") do |tmp|
-      File.open(tmp, "w") { |f| builder.save(f) }
+      File.open(tmp, "w") { |f| IO.copy(io, f) }
       data = Myc::Cli::Data.new
       data.mode = :run
       data.values << tmp

@@ -1,1 +1,6 @@
-asdf
+array sum: 15
+elem 0 = 1
+elem 1 = 2
+elem 2 = 42
+elem 3 = 43
+elem 4 = 5

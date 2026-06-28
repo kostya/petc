@@ -1,4 +1,5 @@
 ## 0.4.0-dev
+* mycc: rewrite with typed AST + single-pass codegen
 
 ## 0.3.0 (28.06.2026)
 * UNARY :not was splitted into :lnot, :bnot

@@ -18,14 +18,26 @@ begin
   Myc.debug(:myc) { puts "-" * 50; source.debug_ast(tu.cursor) }
 
   Myc.debug(:myc) { puts "-" * 50 }
-  builder = Myc::Mycc::Builder.new(source, tu)
-  builder.visit(tu.cursor)
+
+  builder = Myc::Mycc::ASTBuilder.new(source, tu)
+  ast = builder.build
+  if ENV["DEBUG"]? == "1"
+    p ast
+  end
+
+  c = Myc::Mycc::CodeGenerator.new
+  io = c.generate(ast)
 
   Myc.debug(:myc) { puts "-" * 50 }
-  builder.save(STDOUT)
+
+  IO.copy(io, STDOUT)
 rescue ex : Myc::Mycc::Error
   puts ex.message
   p ex.backtrace
+rescue ex : Myc::Error
+  ex.print(STDOUT)
+  exit(1)
 rescue ex
   p ex
+  p ex.backtrace
 end
