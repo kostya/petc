@@ -37,34 +37,14 @@ Mandelbrot renderer from mandel.bf (by Erik Bosman). All IR represent the same p
 
 | IR | Compiler | IR size, Kb | Compile time | Run time |
 |:---------:|:---------:|:---------:|:---------:|:---------:|
-| llvm-ll | clang(-O3) | 1529 | 1645ms | 619ms |
-| myc | myc-llvm(--release) | 486 | 1555ms | 631ms |
-| qbe-ssa | qbe + clang(as+linker) | 345 | 199ms + 58ms | 807ms |
-| myc | myc-qbe(--release) | 486 | 1038ms | 834ms |
-| c | clang(-O3) | 128 | 1689ms | 643ms |
-| myc | myc-c(--release) | 486 | 1899ms | 618ms |
+| llvm-ll | clang(-O3) | 1529 | 1668ms | 618ms |
+| myc | myc-llvm(--release) | 486 | 1552ms | 632ms |
+| qbe-ssa | qbe + clang(as+linker) | 345 | 197ms + 58ms | 812ms |
+| myc | myc-qbe(--release) | 486 | 1041ms | 833ms |
+| c | clang(-O3) | 128 | 1711ms | 641ms |
+| myc | myc-c(--release) | 486 | 1902ms | 619ms |
 
 Myc adds "zero" overhead over the LLVM and C backends. The myc-qbe backend adds overhead due to suboptimal code generation, which will be addressed by future peephole optimization passes.
-
-## More benchmarks from examples/
-
-```sh
-./myc-llvm run --release examples/ir/mandel.myc
-./myc-llvm run --release examples/ir/bf.myc
-./myc-llvm run --release examples/ir/loop.myc
-```
-
-| Benchmark | Backend | Compile | Run |
-|:----------|:-------:|--------:|----:|
-| mandel | myc-llvm | 1580ms | 636ms |
-| | myc-qbe | 1005ms | 833ms |
-| | myc-c | 1198ms | 672ms |
-| bf | myc-llvm | 57ms | 2566ms |
-| | myc-qbe | 25ms | 4213ms |
-| | myc-c | 174ms | 1309ms |
-| loop | myc-llvm | 42ms | 177ms |
-| | myc-qbe | 23ms | 2437ms |
-| | myc-c | 48ms | 145ms |
 
 ## Install
 
@@ -131,6 +111,32 @@ shards install; crystal build src/cli/mycc.cr -o ./mycc
 cd benchmark/brainfuck-compiler
 python3 bf2myc.py mandel.bf | ../../myc-llvm run --release
 ```
+
+## More benchmarks from examples/
+
+```sh
+./myc-llvm run --release examples/ir/mandel.myc
+./myc-llvm run --release examples/ir/bf.myc
+./myc-llvm run --release examples/ir/loop.myc
+```
+
+| Benchmark | Backend | Compile | Run |
+|:----------|:-------:|--------:|----:|
+| mandel.myc | myc-llvm | 1561ms | 633ms |
+| | myc-qbe | 1048ms | 834ms |
+| | myc-c | 1883ms | 618ms |
+| bf.myc | myc-llvm | 75ms | 2570ms |
+| | myc-qbe | 59ms | 4233ms |
+| | myc-c | 94ms | 2865ms |
+| loop.myc | myc-llvm | 61ms | 169ms |
+| | myc-qbe | 56ms | 2437ms |
+| | myc-c | 75ms | 140ms |
+| loop.cc | myc-llvm | 81ms | 142ms |
+| | myc-qbe | 76ms | 2437ms |
+| | myc-c | 95ms | 127ms |
+| sieve.cc | myc-llvm | 90ms | 439ms |
+| | myc-qbe | 76ms | 449ms |
+| | myc-c | 106ms | 446ms |
 
 ### Example: factorial in mycIR, examples/ir/fact.myc, translation
 
