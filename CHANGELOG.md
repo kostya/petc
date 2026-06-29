@@ -1,3 +1,5 @@
+## 0.5.0-dev
+
 ## 0.4.0 (30.06.2026)
 * mycc: rewrite with typed AST + single-pass codegen
 * AS: remove C specific casts int->bool, float->bool
