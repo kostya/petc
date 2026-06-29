@@ -39,7 +39,7 @@ int sieve_count(int limit) {
 }
 
 int main() {
-  int res = sieve_count(10000000);
+  int res = sieve_count(50000000);
   printf("sieve = %d\n", res);
   return 0;
 }

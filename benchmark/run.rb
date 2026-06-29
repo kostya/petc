@@ -4,6 +4,8 @@ FILES = [
   ["../examples/ir/mandel.myc", "005359a040b1689eaf88ac09c2883084"],
   ["../examples/ir/bf.myc", "c4a8df3a4adfe02e1f55c7717ef3d100"],
   ["../examples/ir/loop.myc", "da59897b0c689f23ff826998d316436e"],
+  ["../examples/mycc/loop.cc", "da59897b0c689f23ff826998d316436e"],
+  ["../examples/mycc/sieve.cc", "650cd81338acca4880c8b92bebcae897"],
 ]
 
 BACKENDS = {
@@ -11,6 +13,8 @@ BACKENDS = {
   "myc-qbe"   => "../myc-qbe",
   "myc-c"     => "../myc-c",
 }
+
+MYCC = "../mycc"
 
 def measure
   t = Process.clock_gettime(Process::CLOCK_MONOTONIC)
@@ -24,16 +28,26 @@ ok_count = 0
 fail_count = 0
 
 FILES.each do |file, expected_md5|
-  test_name = File.basename(file, ".myc")
+  test_name = File.basename(file)
   puts "%-30s " % "============ #{test_name} ================"
   
   BACKENDS.each do |backend_name, backend_cmd|
     print "%-30s " % "#{backend_name} --release "
+    compile_time = 0.0
+    compile_file = file
+    
+    if test_name.end_with?(".cc")
+      tmp_file = "/tmp/mycc-generate.myc"
+      File.delete(tmp_file) rescue nil
+      cmd = "#{MYCC} #{file} > #{tmp_file}"
+      compile_time += measure { `#{cmd}` }
+      compile_file = tmp_file
+    end
 
     bin_name = "/tmp/myc_test_bench"
-    cmd = "#{backend_cmd} c --release #{file} #{bin_name}"
+    cmd = "#{backend_cmd} c --release #{compile_file} #{bin_name}"
     File.delete(bin_name) rescue nil
-    compile_time = measure { `#{cmd}` }
+    compile_time += measure { `#{cmd}` }
     sleep 0.5
     RES[backend_name] ||= {}
     RES[backend_name][test_name] ||= {}
@@ -84,3 +98,7 @@ benchmarks = RES[compilers.first].keys
 
 puts
 puts markdown_table_grouped(compilers, benchmarks)
+
+if fail_count > 0
+  exit(1)
+end
