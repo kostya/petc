@@ -1,0 +1,18 @@
+FUNC :main
+  BODY
+    GOTO :three
+    LABEL :one
+    PUSH 1
+    INSPECT
+    GOTO :end
+    LABEL :two
+    PUSH 2
+    INSPECT
+    GOTO :end
+    LABEL :three
+    PUSH 3
+    INSPECT
+    GOTO :one
+    LABEL :end
+ENDFUNC
+

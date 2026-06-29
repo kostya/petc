@@ -3,6 +3,7 @@
 * AS: remove C specific casts int->bool, float->bool
 * add fn type, INVOKE opcode, function pointers
 * ADDR with arg takes fn address
+* add GOTO and LABEL opcodes
 
 ## 0.3.0 (28.06.2026)
 * UNARY :not was splitted into :lnot, :bnot

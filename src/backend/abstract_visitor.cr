@@ -21,6 +21,8 @@ abstract class Myc::Backend::AbstractVisitor
     @current_op = @func_def.body.not_nil!
     @unique_id = 0_u64
     @was_ret = false
+    @pending_labels = Hash(String, AbstractBB).new
+    @labels = Hash(String, AbstractBB).new
   end
 
   def visit
@@ -918,6 +920,19 @@ abstract class Myc::Backend::AbstractVisitor
     else
       raise error("CREATE only for composite types, not for #{type}")
     end
+  end
+
+  def visit(op : Opcode::Label)
+    raise error("label already defined `#{op.label}`") if @labels[op.label]?
+    new_bb = @pending_labels.delete(op.label) || @bb.next(op.label)
+    @labels[op.label] = new_bb
+    @bb.jmp(new_bb)
+    @bb = new_bb
+  end
+
+  def visit(op : Opcode::Goto)
+    goto_bb = @labels[op.label]? || @pending_labels[op.label]? || (@pending_labels[op.label] = @bb.next(op.label))
+    @bb.jmp(goto_bb)
   end
 
   def visit(op : Opcode)

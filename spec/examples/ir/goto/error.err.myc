@@ -1,0 +1,6 @@
+FUNC :main
+  BODY
+    LABEL :bla
+    LABEL :bla
+ENDFUNC
+

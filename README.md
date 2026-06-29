@@ -6,8 +6,8 @@
 
 * Simple DSL over LLVM/QBE.
 * Your language AST -> mycIR -> [LLVM / QBE / C] -> binary.
-* ~26 stack-based opcodes. 
-* Whole IR spec fits in 15 minutes of reading. 
+* ~28 stack-based opcodes. 
+* Whole IR spec fits in 30 minutes of reading. 
 * Compiles to native code via LLVM, QBE, or C. 
 * Fast compilation, zero overhead. 
 * ~6500 lines in Crystal.
@@ -79,9 +79,9 @@ crystal build src/cli/qbe.cr --release -o myc-qbe
 
 All opcodes [self documented](https://github.com/kostya/myc/tree/master/src/opcode). Also see [examples](https://github.com/kostya/myc/tree/master/examples).
 
-* 20 main opcodes: PUSH, LOCAL, STORE, CALL, PARAM, BINARY, UNARY, FIELD, DEREF, ADDR, AS, SELECT, MALLOC, CREATE, INSPECT, PRINTF, STACK, SIZEOF, TO, INVOKE
-* 6 Control flow: IF/THEN/ELSE, LOOP/INIT/COND/BODY/STEP, SWITCH/CASE, BREAK, NEXT, RET
-* Types: STRUCT, ENUM/VARIANT, FLAT + void, bool, i8..i64, u8..u64, f32, f64, ptr<T>
+* 22 main opcodes: PUSH, LOCAL, STORE, CALL, PARAM, BINARY, UNARY, FIELD, DEREF, ADDR, AS, SELECT, MALLOC, CREATE, INSPECT, PRINTF, STACK, SIZEOF, TO, INVOKE, LABEL, GOTO.
+* 6 Control flow: IF/THEN/ELSE, LOOP/INIT/COND/BODY/STEP, SWITCH/CASE, BREAK, NEXT, RET.
+* Types: STRUCT, ENUM/VARIANT, FLAT + void, bool, i8..i64, u8..u64, f32, f64, ptr<T>.
 
 ## mycc: a C subset compiler
 

@@ -30,6 +30,8 @@ class Myc::Opcode
     SIZEOF
     TO
     INVOKE
+    GOTO
+    LABEL
 
     UNDEF    = 500
     TYPE

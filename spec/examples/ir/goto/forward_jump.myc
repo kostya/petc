@@ -1,0 +1,12 @@
+FUNC :main
+  BODY
+    PUSH "before\n"
+    PRINTF 0
+    GOTO :end
+    PUSH "skipped\n"
+    PRINTF 0
+    LABEL :end
+    PUSH "after\n"
+    PRINTF 0
+ENDFUNC
+

@@ -1,0 +1,35 @@
+FUNC :main
+  BODY
+    PUSH 1
+    LOCAL :x :i32
+    STORE
+    LOCAL :x
+    PUSH 1
+    BINARY :eq
+    IF
+      THEN
+        GOTO :one
+    ENDIF
+    LOCAL :x
+    PUSH 2
+    BINARY :eq
+    IF
+      THEN
+        GOTO :two
+    ENDIF
+    GOTO :default
+    LABEL :one
+    PUSH "one\n"
+    PRINTF 0
+    GOTO :end
+    LABEL :two
+    PUSH "two\n"
+    PRINTF 0
+    GOTO :end
+    LABEL :default
+    PUSH "default\n"
+    PRINTF 0
+    GOTO :end
+    LABEL :end
+ENDFUNC
+

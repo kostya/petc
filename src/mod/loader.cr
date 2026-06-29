@@ -295,6 +295,10 @@ class Myc::Mod::Loader
       end
     when Opcode::Code::TO
       Opcode::To.new(find_type(get_only_one_string_value(node), node)).with_position(node)
+    when Opcode::Code::GOTO
+      Opcode::Goto.new(get_only_one_string_value(node)).with_position(node)
+    when Opcode::Code::LABEL
+      Opcode::Label.new(get_only_one_string_value(node)).with_position(node)
     else
       raise error("unknown opcode #{node.code}", node)
     end

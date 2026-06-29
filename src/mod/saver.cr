@@ -191,6 +191,8 @@ class Myc::Mod::Saver
            when Opcode::Create then opcode(Opcode::Code::CREATE, op.type.id_name)
            when Opcode::Addr   then op.func_name ? opcode(Opcode::Code::ADDR, op.func_name.not_nil!) : opcode(Opcode::Code::ADDR)
            when Opcode::Invoke then op.vaargs_count > 0 ? opcode(Opcode::Code::INVOKE, op.vaargs_count.to_i64) : opcode(Opcode::Code::INVOKE)
+           when Opcode::Goto   then opcode(Opcode::Code::GOTO, op.label)
+           when Opcode::Label  then opcode(Opcode::Code::LABEL, op.label)
            else                     raise "unknown opcode #{op.class}"
            end
 

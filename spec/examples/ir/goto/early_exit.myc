@@ -1,0 +1,26 @@
+FUNC :main
+  BODY
+    PUSH false
+    LOCAL :found :bool
+    STORE
+    PUSH 1
+    PUSH 1
+    BINARY :eq
+    IF
+      THEN
+        PUSH true
+        LOCAL :found
+        STORE
+        GOTO :cleanup
+    ENDIF
+    PUSH "not found\n"
+    PRINTF 0
+    LABEL :cleanup
+    LOCAL :found
+    IF
+      THEN
+        PUSH "found\n"
+        PRINTF 0
+    ENDIF
+ENDFUNC
+
