@@ -17,6 +17,7 @@ class Myc::Mycc::CodeGenerator
     @vars = Hash(String, VarInfo).new
     @params = Hash(String, Int32).new
     @globals = Hash(String, TypedAST::VarDecl).new
+    @local_marks = Set(String).new
     @switch_count = 0
   end
 
@@ -66,6 +67,7 @@ class Myc::Mycc::CodeGenerator
   def generate_function(func : TypedAST::Function)
     @vars.clear
     @params.clear
+    @local_marks.clear
     func.params.each_with_index { |(name, type), idx| @params[name] = idx }
 
     emit("FUNC :#{func.name}")
@@ -120,7 +122,7 @@ class Myc::Mycc::CodeGenerator
       @vars[stmt.name] = VarInfo.new(stmt.var_type)
       if init = stmt.init
         generate_expr(init)
-        emit("LOCAL :#{stmt.name} #{type_s(stmt.var_type)}")
+        emit_local(stmt.name, stmt.var_type)
         emit("STORE")
       end
     end
@@ -244,8 +246,6 @@ class Myc::Mycc::CodeGenerator
         emit("PUSH #{val} :i32")
         generate_expr(stmt.value.dup)
         emit("BINARY :eq")
-        if idx < c.values.size - 1
-        end
       end
 
       (c.values.size - 1).times { emit("BINARY :or") }
@@ -255,9 +255,7 @@ class Myc::Mycc::CodeGenerator
       emit("THEN")
       @indent += 1
       c.body.each { |s| generate_stmt(s) }
-      if c.has_break
-        emit("GOTO \"#{end_label}\"")
-      end
+      emit("GOTO \"#{end_label}\"") if c.has_break
       @indent -= 1
       @indent -= 1
       emit("ENDIF")
@@ -293,7 +291,7 @@ class Myc::Mycc::CodeGenerator
   def generate_expr(expr : TypedAST::VarRef)
     name = expr.name
     if @vars.has_key?(name)
-      emit("LOCAL :#{name} #{type_s(expr.type)}")
+      emit_local(name, expr.type)
     elsif param = @params[name]?
       emit("PARAM #{param}")
     elsif g = @globals[name]?
@@ -336,7 +334,7 @@ class Myc::Mycc::CodeGenerator
         tmp_name = "__tmp_#{@vars.size}"
         @vars[tmp_name] = VarInfo.new(expr.type)
         generate_expr(expr.operand)
-        emit("LOCAL :#{tmp_name} #{type_s(expr.type)}")
+        emit_local(tmp_name, expr.type)
         emit("STORE")
 
         emit("PUSH 1 :i32")
@@ -346,7 +344,7 @@ class Myc::Mycc::CodeGenerator
         generate_expr(expr.operand)
         emit("STORE")
 
-        emit("LOCAL :#{tmp_name} #{type_s(expr.type)}")
+        emit_local(tmp_name, expr.type)
         @vars.delete(tmp_name)
       end
     when :prefix_inc, :prefix_dec
@@ -440,6 +438,15 @@ class Myc::Mycc::CodeGenerator
       "\"#{type.id_name}\""
     else
       ":#{type.id_name}"
+    end
+  end
+
+  private def emit_local(name : String, type : Type)
+    if @local_marks.includes?(name)
+      emit("LOCAL :#{name}")
+    else
+      emit("LOCAL :#{name} #{type_s(type)}")
+      @local_marks << name
     end
   end
 end
