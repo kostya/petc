@@ -10,24 +10,18 @@ class Myc::Backend::Linter::BB < Myc::Backend::AbstractBB
   end
 
   def jmp(other : AbstractBB)
-    return if @dead_end
-    @dead_end = true
   end
 
   def ret(val : Value?)
-    return if @dead_end
-    @dead_end = true
   end
 
   def call(name : String, type_fn : Type::Fn, args : Array(Value)) : Value?
-    return if @dead_end
     unless type_fn.ret.eq?(func_def.mod.typer.void)
       wrap_val(FAKE_VAL, type_fn.ret, Value::PP::CallResult.new(name))
     end
   end
 
   def invoke(fn : Value, type_fn : Type::Fn, args : Array(Value)) : Value?
-    return if @dead_end
     unless type_fn.ret.eq?(func_def.mod.typer.void)
       wrap_val(FAKE_VAL, type_fn.ret, Value::PP::CallResult.new("inkoke"))
     end
@@ -38,8 +32,6 @@ class Myc::Backend::Linter::BB < Myc::Backend::AbstractBB
   end
 
   def cond(cond : Value, then_bb : AbstractBB, else_bb : AbstractBB)
-    return if @dead_end
-    @dead_end = true
   end
 
   def next(name : String) : AbstractBB
@@ -51,22 +43,17 @@ class Myc::Backend::Linter::BB < Myc::Backend::AbstractBB
   end
 
   def store(lhs : Value, rhs : Value)
-    return if @dead_end
   end
 
   def binary(op : Opcode::Binary::Op, lhs : Value, rhs : Value) : Value?
-    return if @dead_end
     wrap_res(FAKE_VAL, op.value >= Opcode::Binary::Op::Eq.value ? func_def.mod.typer.bool : lhs.type, lhs.pp)
   end
 
   def unary(op : Opcode::Unary::Op, rhs : Value) : Value?
-    return if @dead_end
     wrap_res(FAKE_VAL, rhs.type, rhs.pp)
   end
 
   def switch(index : Value, case_values : Array(Value), case_bbs : Array(AbstractBB), default_bb : AbstractBB)
-    return if @dead_end
-    @dead_end = true
   end
 
   def cast?(value : Value, from_type : Type, to_type : Type) : Value?

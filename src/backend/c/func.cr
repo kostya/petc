@@ -47,7 +47,7 @@ class Myc::Backend::C::Func < Myc::Backend::AbstractFunc
 
     @alloca_bb.as(BB).copy_data(body_io, false)
 
-    v.bb.as(BB).emit "goto ret;" unless v.bb.dead_end
+    v.bb.as(BB).emit "goto ret;"
 
     @body_bb.as(BB).copy_data(body_io, false)
     @blocks.each &.copy_data(body_io, true)

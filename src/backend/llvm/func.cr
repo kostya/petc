@@ -26,6 +26,11 @@ class Myc::Backend::Llvm::Func < Myc::Backend::AbstractFunc
     Visitor.new(@builder, self, body_bb, func_def, func_def.mod, params)
   end
 
+  def finish(v : AbstractVisitor)
+    super
+    v.fake_bb.as(BB).llvm_bb.delete
+  end
+
   private def params : Array(Value)
     res = Array(Value).new
     link.llvm_function.params.each_with_index do |param, index|

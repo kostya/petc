@@ -19,26 +19,18 @@ class Myc::Backend::Llvm::BB < Myc::Backend::AbstractBB
   end
 
   def jmp(other : AbstractBB)
-    return if @dead_end
-
     @llvm_builder.br(other.as(BB).llvm_bb)
-    @dead_end = true
   end
 
   def ret(val : Value?)
-    return if @dead_end
-
     if val
       @llvm_builder.ret(llvm_val(val))
     else
       @llvm_builder.ret
     end
-    @dead_end = true
   end
 
   def call(name : String, type_fn : Type::Fn, args : Array(Value)) : Value?
-    return if @dead_end
-
     link = builder.func_link(name, type_fn)
     vals = args.map { |arg| llvm_val(arg) }
     val = @llvm_builder.call(link.llvm_type, link.llvm_function, vals)
@@ -48,8 +40,6 @@ class Myc::Backend::Llvm::BB < Myc::Backend::AbstractBB
   end
 
   def invoke(fn : Value, type_fn : Type::Fn, args : Array(Value)) : Value?
-    return if @dead_end
-
     vals = args.map { |arg| llvm_val(arg) }
     llvm_function = LLVM::Function.new(llvm_val(fn).to_unsafe)
     val = @llvm_builder.call(fn_signature(type_fn), llvm_function, vals)
@@ -66,10 +56,7 @@ class Myc::Backend::Llvm::BB < Myc::Backend::AbstractBB
   end
 
   def cond(cond : Value, then_bb : AbstractBB, else_bb : AbstractBB)
-    return if @dead_end
-
     @llvm_builder.cond(llvm_val(cond), then_bb.as(BB).llvm_bb, else_bb.as(BB).llvm_bb)
-    @dead_end = true
   end
 
   def next(name : String) : AbstractBB
@@ -82,13 +69,10 @@ class Myc::Backend::Llvm::BB < Myc::Backend::AbstractBB
   end
 
   def store(lhs : Value, rhs : Value)
-    return if @dead_end
     @llvm_builder.store(llvm_val(rhs), llvm_val(lhs))
   end
 
   def binary(op : Opcode::Binary::Op, lhs : Value, rhs : Value) : Value?
-    return if @dead_end
-
     ltype = lhs.type
     l = llvm_val(lhs)
     r = llvm_val(rhs)
@@ -215,8 +199,6 @@ class Myc::Backend::Llvm::BB < Myc::Backend::AbstractBB
   end
 
   def unary(op : Opcode::Unary::Op, rhs : Value) : Value?
-    return if @dead_end
-
     v = llvm_val(rhs)
     t = rhs.type
 
@@ -243,14 +225,11 @@ class Myc::Backend::Llvm::BB < Myc::Backend::AbstractBB
   end
 
   def switch(index : Value, case_values : Array(Value), case_bbs : Array(AbstractBB), default_bb : AbstractBB)
-    return if @dead_end
-
     case_map = {} of LLVM::Value => LLVM::BasicBlock
     case_values.each_with_index do |val, i|
       case_map[llvm_val(val)] = case_bbs[i].as(BB).llvm_bb
     end
     @llvm_builder.switch(llvm_val(index), default_bb.as(BB).llvm_bb, case_map)
-    @dead_end = true
   end
 
   def cast?(value : Value, from_type : Type, to_type : Type) : Value?

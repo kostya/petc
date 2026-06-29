@@ -54,9 +54,7 @@ class Myc::Backend::QBE::Func < Myc::Backend::AbstractFunc
 
     emit "  jmp @body\n"
 
-    unless v.bb.dead_end
-      v.bb.as(BB).emit "jmp @ret"
-    end
+    v.bb.as(BB).emit "jmp @ret"
 
     @body_bb.as(BB).copy_data(body_io, true)
     @blocks.each &.copy_data(body_io, true)

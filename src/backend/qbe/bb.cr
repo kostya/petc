@@ -38,24 +38,18 @@ class Myc::Backend::QBE::BB < Myc::Backend::AbstractBB
   end
 
   def jmp(other : AbstractBB)
-    return if @dead_end
     emit "jmp @#{other.name}"
-    @dead_end = true
   end
 
   def ret(val : Value?)
-    return if @dead_end
     if val
       emit "ret #{qbe_val(val)}"
     else
       emit "ret"
     end
-    @dead_end = true
   end
 
   def call(name : String, type_fn : Type::Fn, args : Array(Value)) : Value?
-    return if @dead_end
-
     ret_type = type_fn.ret
 
     arg_str = String.build do |s|
@@ -79,8 +73,6 @@ class Myc::Backend::QBE::BB < Myc::Backend::AbstractBB
   end
 
   def invoke(fn : Value, type_fn : Type::Fn, args : Array(Value)) : Value?
-    return if @dead_end
-
     ret_type = type_fn.ret
     fn_val = qbe_val(fn)
 
@@ -110,9 +102,7 @@ class Myc::Backend::QBE::BB < Myc::Backend::AbstractBB
   end
 
   def cond(cond : Value, then_bb : AbstractBB, else_bb : AbstractBB)
-    return if @dead_end
     emit "jnz #{qbe_val(cond)}, @#{then_bb.name}, @#{else_bb.name}"
-    @dead_end = true
   end
 
   def next(name : String) : AbstractBB
@@ -145,7 +135,6 @@ class Myc::Backend::QBE::BB < Myc::Backend::AbstractBB
   end
 
   def store(lhs : Value, rhs : Value)
-    return if @dead_end
     if lhs.type.needs_blit?
       emit "blit #{qbe_val(rhs)}, #{qbe_val(lhs)}, #{builder.layout.size_of(lhs.type)}"
     else
@@ -167,8 +156,6 @@ class Myc::Backend::QBE::BB < Myc::Backend::AbstractBB
   end
 
   def binary(op : Opcode::Binary::Op, lhs : Value, rhs : Value) : Value?
-    return if @dead_end
-
     l = qbe_val(lhs)
     r = qbe_val(rhs)
     t = new_temp
@@ -253,8 +240,6 @@ class Myc::Backend::QBE::BB < Myc::Backend::AbstractBB
   end
 
   def unary(op : Opcode::Unary::Op, rhs : Value) : Value?
-    return if @dead_end
-
     val = qbe_val(rhs)
     type = rhs.type
     qbe_type = qbe_type(type)
@@ -281,7 +266,6 @@ class Myc::Backend::QBE::BB < Myc::Backend::AbstractBB
   end
 
   def switch(index : Value, case_values : Array(Value), case_bbs : Array(AbstractBB), default_bb : AbstractBB)
-    return if @dead_end
     index_qbe = qbe_val(index)
 
     case_values.each_with_index do |val, i|
@@ -499,7 +483,6 @@ class Myc::Backend::QBE::BB < Myc::Backend::AbstractBB
   end
 
   def emit(str : String)
-    return if @dead_end
     @body_io << "  " << str << '\n'
   end
 

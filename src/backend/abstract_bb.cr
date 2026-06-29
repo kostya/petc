@@ -3,7 +3,6 @@ abstract class Myc::Backend::AbstractBB
   getter builder : AbstractBuilder
   getter func : AbstractFunc
   getter func_def : Mod::FuncDef
-  property dead_end : Bool = false
 
   def initialize(@name, @builder, @func, @func_def)
   end

@@ -14,23 +14,17 @@ class Myc::Backend::C::BB < Myc::Backend::AbstractBB
   end
 
   def jmp(other : AbstractBB)
-    return if @dead_end
     emit "goto #{other.name};"
-    @dead_end = true
   end
 
   def ret(val : Value?)
-    return if @dead_end
     if val
       emit "_result = #{c_val(val)};"
     end
     emit "goto ret;"
-    @dead_end = true
   end
 
   def call(name : String, type_fn : Type::Fn, args : Array(Value)) : Value?
-    return if @dead_end
-
     ret_type = type_fn.ret
     ret_c_type = c_type(ret_type)
 
@@ -47,8 +41,6 @@ class Myc::Backend::C::BB < Myc::Backend::AbstractBB
   end
 
   def invoke(fn : Value, type_fn : Type::Fn, args : Array(Value)) : Value?
-    return if @dead_end
-
     ret_type = type_fn.ret
     ret_c_type = c_type(ret_type)
     fn_val = c_val(fn)
@@ -72,9 +64,7 @@ class Myc::Backend::C::BB < Myc::Backend::AbstractBB
   end
 
   def cond(cond : Value, then_bb : AbstractBB, else_bb : AbstractBB)
-    return if @dead_end
     emit "if (#{c_val(cond)}) goto #{then_bb.name}; else goto #{else_bb.name};"
-    @dead_end = true
   end
 
   def next(name : String) : AbstractBB
@@ -92,7 +82,6 @@ class Myc::Backend::C::BB < Myc::Backend::AbstractBB
   end
 
   def store(lhs : Value, rhs : Value)
-    return if @dead_end
     if lhs.type.needs_blit?
       src_val = if rhs.mm.val? && rhs.type.is_a?(Type::FlatType)
                   c_val(rhs)
@@ -108,8 +97,6 @@ class Myc::Backend::C::BB < Myc::Backend::AbstractBB
   end
 
   def binary(op : Opcode::Binary::Op, lhs : Value, rhs : Value) : Value?
-    return if @dead_end
-
     l = c_val(lhs)
     r = c_val(rhs)
 
@@ -143,8 +130,6 @@ class Myc::Backend::C::BB < Myc::Backend::AbstractBB
   end
 
   def unary(op : Opcode::Unary::Op, rhs : Value) : Value?
-    return if @dead_end
-
     val = c_val(rhs)
     type = rhs.type
     c_type_str = c_type(type)
@@ -169,7 +154,6 @@ class Myc::Backend::C::BB < Myc::Backend::AbstractBB
   end
 
   def switch(index : Value, case_values : Array(Value), case_bbs : Array(AbstractBB), default_bb : AbstractBB)
-    return if @dead_end
     index_c = c_val(index)
 
     case_values.each_with_index do |val, i|
@@ -177,7 +161,6 @@ class Myc::Backend::C::BB < Myc::Backend::AbstractBB
       emit "#{prefix} (#{index_c} == #{c_val(val)}) goto #{case_bbs[i].name};"
     end
     emit "else goto #{default_bb.name};"
-    @dead_end = true
   end
 
   def cast?(value : Value, from_type : Type, to_type : Type) : Value?
@@ -297,7 +280,6 @@ class Myc::Backend::C::BB < Myc::Backend::AbstractBB
   end
 
   def emit(str : String)
-    return if @dead_end
     @body_io << "  " << str << "\n"
   end
 
