@@ -165,6 +165,24 @@ class Myc::Mycc::CodeGenerator
     emit("ENDLOOP")
   end
 
+  def generate_stmt(stmt : TypedAST::DoWhile)
+    emit("LOOP")
+    @indent += 1
+
+    emit("BODY")
+    @indent += 1
+    stmt.body.each { |s| generate_stmt(s) }
+    @indent -= 1
+
+    emit("COND")
+    @indent += 1
+    generate_expr(stmt.condition)
+    @indent -= 1
+
+    @indent -= 1
+    emit("ENDLOOP")
+  end
+
   def generate_stmt(stmt : TypedAST::For)
     if init = stmt.init
       generate_stmt(init)

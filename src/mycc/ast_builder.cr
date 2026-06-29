@@ -157,6 +157,8 @@ class Myc::Mycc::ASTBuilder
       build_if(cursor)
     when .while_stmt?
       build_while(cursor)
+    when .do_stmt?
+      build_do_while(cursor)
     when .for_stmt?
       build_for(cursor)
     when .binary_operator?
@@ -351,6 +353,24 @@ class Myc::Mycc::ASTBuilder
     body = build_stmts(children_list[1])
 
     TypedAST::While.new(condition, body, location(cursor))
+  end
+
+  private def build_do_while(cursor : Clang::Cursor) : TypedAST::DoWhile
+    children_list = children(cursor)
+
+    body = if children_list.size > 0
+             build_stmt_or_stmts(children_list[0])
+           else
+             [] of TypedAST::Stmt
+           end
+
+    condition = if children_list.size > 1
+                  ensure_bool(build_node(children_list[1]).not_nil!)
+                else
+                  TypedAST::IntLiteral.new(1_i64, mod.typer.i32, location(cursor))
+                end
+
+    TypedAST::DoWhile.new(condition, body, location(cursor))
   end
 
   private def build_for(cursor : Clang::Cursor) : TypedAST::For

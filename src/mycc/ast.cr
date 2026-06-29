@@ -328,6 +328,19 @@ module Myc::Mycc::TypedAST
     end
   end
 
+  class DoWhile < Stmt
+    getter condition : Node
+    getter body : Array(Stmt)
+
+    def initialize(@condition, @body, @location); end
+
+    private def inspect_fields(io : IO)
+      condition.inspect(io)
+      io << ", "
+      inspect_array_stmt(io, body)
+    end
+  end
+
   class For < Stmt
     getter init : Stmt?
     getter condition : Node?
