@@ -391,16 +391,10 @@ abstract class Myc::Backend::AbstractVisitor
     when Type::PtrType
       case rtype
       when Type::IntType
-        if op.op.add?
+        if op.op.add? || op.op.sub?
           @stack << rhs
           visit Opcode::To.new(mod.typer.i64)
-          rhs = pop_rhs
-          self << lhs.offset(self, rhs)
-          return
-        elsif op.op.sub?
-          @stack << rhs
-          visit Opcode::To.new(mod.typer.i64)
-          visit Opcode::Unary.new(:neg)
+          visit Opcode::Unary.new(:neg) if op.op.sub?
           rhs = pop_rhs
           self << lhs.offset(self, rhs)
           return
