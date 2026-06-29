@@ -1,4 +1,5 @@
 and: 0
 or: 1
 not: 0
+not not: 1
 complex: 1

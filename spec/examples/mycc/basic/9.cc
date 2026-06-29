@@ -4,6 +4,7 @@ void test_logic() {
     printf("and: %d\n", a && b);
     printf("or: %d\n", a || b);
     printf("not: %d\n", !a);
+    printf("not not: %d\n", !!a);
     printf("complex: %d\n", (a && !b) || (!a && b));
 }
 

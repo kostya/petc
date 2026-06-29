@@ -127,7 +127,6 @@ class Myc::Mycc::CodeGenerator
 
   def generate_stmt(stmt : TypedAST::If)
     generate_expr(stmt.condition)
-    emit("AS :bool")
     emit("IF")
     @indent += 1
 
@@ -154,7 +153,6 @@ class Myc::Mycc::CodeGenerator
     emit("COND")
     @indent += 1
     generate_expr(stmt.condition)
-    emit("AS :bool")
     @indent -= 1
 
     emit("BODY")
@@ -179,7 +177,6 @@ class Myc::Mycc::CodeGenerator
       emit("COND")
       @indent += 1
       generate_expr(cond)
-      emit("AS :bool")
       @indent -= 1
     end
 
@@ -259,7 +256,6 @@ class Myc::Mycc::CodeGenerator
       emit("UNARY :neg")
     when :lnot
       generate_expr(expr.operand)
-      emit("AS :bool")
       emit("UNARY :lnot")
     when :bnot
       generate_expr(expr.operand)

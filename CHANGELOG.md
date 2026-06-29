@@ -1,5 +1,6 @@
 ## 0.4.0-dev
 * mycc: rewrite with typed AST + single-pass codegen
+* AS: remove C specific casts int->bool, float->bool
 
 ## 0.3.0 (28.06.2026)
 * UNARY :not was splitted into :lnot, :bnot

@@ -279,7 +279,7 @@ class Myc::Mycc::ASTBuilder
 
   private def build_if(cursor : Clang::Cursor) : TypedAST::If
     children_list = children(cursor)
-    condition = build_node(children_list[0]).not_nil!
+    condition = ensure_bool(build_node(children_list[0]).not_nil!)
 
     then_body = if children_list.size > 1
                   build_stmt_or_stmts(children_list[1])
@@ -294,6 +294,25 @@ class Myc::Mycc::ASTBuilder
                 end
 
     TypedAST::If.new(condition, then_body, else_body, location(cursor))
+  end
+
+  private def ensure_bool(node : TypedAST::Node) : TypedAST::Node
+    return node if node.type.is_a?(Type::BoolType)
+
+    if node.type.is_a?(Type::PtrType)
+      zero = TypedAST::Cast.new(
+        TypedAST::IntLiteral.new(0_i64, mod.typer.voidp, node.location),
+        node.type,
+        node.location
+      )
+      TypedAST::BinaryOp.new(:not_eq, node, zero, mod.typer.bool, node.location)
+    elsif node.type.is_a?(Type::FloatType)
+      zero = TypedAST::FloatLiteral.new(0.0, node.type, node.location)
+      TypedAST::BinaryOp.new(:not_eq, node, zero, mod.typer.bool, node.location)
+    else
+      zero = TypedAST::IntLiteral.new(0_i64, node.type, node.location)
+      TypedAST::BinaryOp.new(:not_eq, node, zero, mod.typer.bool, node.location)
+    end
   end
 
   private def build_stmt_or_stmts(cursor : Clang::Cursor) : Array(TypedAST::Stmt)
@@ -311,7 +330,7 @@ class Myc::Mycc::ASTBuilder
 
   private def build_while(cursor : Clang::Cursor) : TypedAST::While
     children_list = children(cursor)
-    condition = build_node(children_list[0]).not_nil!
+    condition = ensure_bool(build_node(children_list[0]).not_nil!)
     body = build_stmts(children_list[1])
 
     TypedAST::While.new(condition, body, location(cursor))
@@ -334,7 +353,7 @@ class Myc::Mycc::ASTBuilder
       end
     end
 
-    condition = children_list.size > 1 ? build_node(children_list[1]) : nil
+    condition = children_list.size > 1 ? ensure_bool(build_node(children_list[1]).not_nil!) : nil
     update = children_list.size > 2 ? build_stmt(children_list[2]) : nil
     body = children_list.size > 3 ? build_stmts(children_list[3]) : [] of TypedAST::Stmt
 
@@ -419,11 +438,17 @@ class Myc::Mycc::ASTBuilder
     op_name = BINARY_MAP[op]? || :add
 
     if op == "&&" || op == "||"
-      common = mod.typer.bool
+      left = ensure_bool(left)
+      right = ensure_bool(right)
+      op_name = BINARY_MAP[op]? || :and
+      result = TypedAST::BinaryOp.new(op_name, left, right, mod.typer.bool, location(cursor))
+
+      TypedAST::Cast.new(result, mod.typer.i32, location(cursor))
+    elsif op == "<" || op == ">" || op == "<=" || op == ">=" || op == "==" || op == "!="
+      common = common_type(left.type, right.type)
       left = insert_cast(left, common) if left.type != common
       right = insert_cast(right, common) if right.type != common
-      result = TypedAST::BinaryOp.new(op_name, left, right, common, location(cursor))
-      TypedAST::Cast.new(result, mod.typer.i32, location(cursor))
+      TypedAST::BinaryOp.new(op_name, left, right, mod.typer.bool, location(cursor))
     elsif left.type.is_a?(Type::PtrType) && right.type.is_a?(Type::IntType)
       right = insert_cast(right, mod.typer.i64) if right.type.as(Type::IntType).bytes_count < 8
       TypedAST::BinaryOp.new(op_name, left, right, left.type, location(cursor))
@@ -470,8 +495,11 @@ class Myc::Mycc::ASTBuilder
           location(cursor)
         )
         TypedAST::BinaryOp.new(:eq, operand, zero, mod.typer.bool, location(cursor))
-      else
+      elsif operand && operand.type.is_a?(Type::BoolType)
         TypedAST::UnaryOp.new(:lnot, operand.not_nil!, mod.typer.bool, location(cursor))
+      else
+        zero = TypedAST::IntLiteral.new(0_i64, operand.not_nil!.type, location(cursor))
+        TypedAST::BinaryOp.new(:eq, operand.not_nil!, zero, mod.typer.bool, location(cursor))
       end
     when "~"
       TypedAST::UnaryOp.new(:bnot, operand.not_nil!, operand.not_nil!.type, location(cursor))

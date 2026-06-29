@@ -335,14 +335,6 @@ class Myc::Backend::QBE::BB < Myc::Backend::AbstractBB
         emit "#{t} =l extuw #{temp_bool}"
       end
       wrap_res(t, to_type, value.pp)
-    when {Type::IntType, Type::BoolType}
-      qbe_t = qbe_type(from_type)
-      emit "#{t} =w cne#{qbe_t} #{val}, 0"
-      wrap_res(t, to_type, value.pp)
-    when {Type::FloatType, Type::BoolType}
-      qbe_t = qbe_type(from_type)
-      emit "#{t} =w cne#{qbe_t} #{val}, 0"
-      wrap_res(t, to_type, value.pp)
     when {Type::PtrType, Type::PtrType}
       wrap_res(val, to_type, value.pp)
     when {Type::IntType, Type::PtrType}

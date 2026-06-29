@@ -182,12 +182,6 @@ class Myc::Backend::C::BB < Myc::Backend::AbstractBB
     when {Type::BoolType, Type::IntType}
       emit "#{c_to} #{temp} = (#{c_to})(#{val});"
       wrap_res(temp, to_type, value.pp)
-    when {Type::IntType, Type::BoolType}
-      emit "#{c_to} #{temp} = !!#{val};"
-      wrap_res(temp, to_type, value.pp)
-    when {Type::FloatType, Type::BoolType}
-      emit "#{c_to} #{temp} = (#{val} != 0.0);"
-      wrap_res(temp, to_type, value.pp)
     when {Type::PtrType, Type::PtrType}
       emit "#{c_to} #{temp} = (#{c_to})(#{val});"
       wrap_res(temp, to_type, value.pp)

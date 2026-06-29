@@ -74,10 +74,6 @@ class Myc::Backend::Linter::BB < Myc::Backend::AbstractBB
       wrap_res(FAKE_VAL, to_type, value.pp)
     when {Type::IntType, Type::PtrType}
       wrap_res(FAKE_VAL, to_type, value.pp)
-    when {Type::IntType, Type::BoolType}
-      wrap_res(FAKE_VAL, to_type, value.pp)
-    when {Type::FloatType, Type::BoolType}
-      wrap_res(FAKE_VAL, to_type, value.pp)
     when {Type::PtrType, Type::IntType}
       wrap_res(FAKE_VAL, to_type, value.pp)
     end
