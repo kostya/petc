@@ -236,7 +236,7 @@ class MyccSpecRun
             next
           end
 
-          test_name = "[#{backend_end}#{" --release" if release}] [#{relative_path}] (crystal src/cli/mycc.cr #{relative_path} 2>/dev/null | crystal src/cli/#{backend_end.downcase}.cr r)"
+          test_name = "[#{backend_end}#{" --release" if release}] [#{relative_path}] (crystal src/cli/mycc.cr #{relative_path} | crystal src/cli/#{backend_end.downcase}.cr r)"
 
           it(test_name, path, 0) do
             p relative_path if ENV["FILENAME"]? == "1"
