@@ -6,6 +6,7 @@ class Myc::Mycc::ASTBuilder
   def initialize(@source, @tu)
     @mod = Myc::Mod.new("main", source.filename)
     @structs = Hash(String, Array({String, Type})).new
+    @unions = {} of String => Array({String, Type})
     @current_function_name = ""
     @globals = [] of TypedAST::VarDecl
   end
@@ -14,17 +15,42 @@ class Myc::Mycc::ASTBuilder
     functions = [] of TypedAST::Function
 
     tu.cursor.visit_children do |cursor|
+      if cursor.kind.struct_decl?
+        name = cursor.spelling
+        unless name.empty?
+          struct_type = Type::StructType.new(name)
+          node = cursor_to_node(cursor)
+          unless mod.type_defs[name]?
+            mod.type_defs[name] = Mod::TypeDef.new(node, struct_type)
+          end
+        end
+      elsif cursor.kind.union_decl?
+        name = cursor.spelling
+        unless name.empty?
+          enum_type = Type::EnumType.new(name, mod.typer.i32)
+          node = cursor_to_node(cursor)
+          unless mod.type_defs[name]?
+            mod.type_defs[name] = Mod::TypeDef.new(node, enum_type)
+          end
+        end
+      end
+      Clang::ChildVisitResult::Continue
+    end
+
+    tu.cursor.visit_children do |cursor|
       if cursor.kind.function_decl?
         functions << build_function(cursor)
       elsif cursor.kind.var_decl?
         @globals << build_var_decl(cursor)
       elsif cursor.kind.struct_decl?
         build_struct_decl(cursor)
+      elsif cursor.kind.union_decl?
+        build_union(cursor)
       end
       Clang::ChildVisitResult::Continue
     end
 
-    TypedAST::Program.new(functions, @structs.dup, @globals)
+    TypedAST::Program.new(functions, @structs.dup, @unions.dup, @globals)
   end
 
   private def build_function(cursor : Clang::Cursor) : TypedAST::Function
@@ -52,6 +78,13 @@ class Myc::Mycc::ASTBuilder
     name = cursor.spelling
     return if name.empty?
 
+    struct_type = mod.type_defs[name]?.try(&.type)
+    unless struct_type.is_a?(Type::StructType)
+      struct_type = Type::StructType.new(name)
+      node = cursor_to_node(cursor)
+      mod.type_defs[name] = Mod::TypeDef.new(node, struct_type)
+    end
+
     fields = [] of {String, Type}
     children(cursor).each do |child|
       if child.kind.field_decl?
@@ -62,13 +95,46 @@ class Myc::Mycc::ASTBuilder
     end
     @structs[name] = fields
 
-    struct_type = Type::StructType.new(name)
-    field_types = fields.map { |_, t| t }
-    struct_type.data = field_types
+    struct_type.data = fields.map { |_, t| t }
+  end
+
+  private def build_union(cursor : Clang::Cursor)
+    name = cursor.spelling
+    return if name.empty?
+
+    enum_type = Type::EnumType.new(name, mod.typer.i32)
+
+    fields = [] of {String, Type}
+
+    children(cursor).each do |child|
+      if child.kind.field_decl?
+        field_name = child.spelling
+        field_type = get_type(child, child.type)
+        fields << {field_name, field_type}
+
+        variant = Type::EnumVariantType.new(
+          "#{name}::#{field_name}",
+          field_name,
+          enum_type,
+          enum_type.data.size
+        )
+        variant.value_types << field_type
+        variant.hidden = true
+        enum_type.data[variant.id_name] = variant
+
+        mod.typer.types_cache[variant.id_name] = variant
+
+        ct = Type::StructType.new(variant.id_name + "::__value_type__")
+        ct.hidden = true
+        ct.data = [field_type]
+        variant.composite_value_type = ct
+      end
+    end
 
     node = cursor_to_node(cursor)
-    raise error("type #{name} already defined", cursor) if mod.type_defs[name]?
-    mod.type_defs[name] = Mod::TypeDef.new(node, struct_type)
+    mod.type_defs[name] = Mod::TypeDef.new(node, enum_type)
+
+    @unions[name] = fields
   end
 
   private def build_node(cursor : Clang::Cursor) : TypedAST::Node?
@@ -294,9 +360,13 @@ class Myc::Mycc::ASTBuilder
     field_types = target_type.is_a?(Type::StructType) ? target_type.data : [] of Type
 
     init_list.elements.each_with_index do |elem, idx|
+      expected_type = field_types[idx]?
+
       if elem.is_a?(TypedAST::InitList) && elem.type.id_name == "void"
-        nested_type = field_types[idx]? || target_type
+        nested_type = expected_type || target_type
         elements << resolve_init_list_types(elem, nested_type)
+      elsif expected_type && expected_type.is_a?(Type::PtrType) && elem.is_a?(TypedAST::IntLiteral) && elem.value == 0
+        elements << TypedAST::Cast.new(elem, expected_type, elem.location)
       else
         elements << elem
       end
@@ -692,6 +762,10 @@ class Myc::Mycc::ASTBuilder
         field_idx += 1
       else
         if node = build_node(child)
+          expected_type = field_types[field_idx]?
+          if expected_type && expected_type.is_a?(Type::PtrType) && node.is_a?(TypedAST::IntLiteral) && node.value == 0
+            node = TypedAST::Cast.new(node, expected_type, node.location)
+          end
           elements << node
           field_idx += 1
         end
@@ -721,6 +795,13 @@ class Myc::Mycc::ASTBuilder
 
     field_index = 0
     field_type = struct_type
+
+    if struct_type.is_a?(Type::EnumType)
+      variant_type = mod.typer.find("#{struct_type.id_name}::#{field_name}", location(cursor))
+      casted = TypedAST::Cast.new(obj, variant_type, location(cursor))
+      field_type = struct_type.data[variant_type.id_name]?.try(&.value_types.first?) || struct_type
+      return TypedAST::FieldAccess.new(casted, field_name, 1, field_type, location(cursor))
+    end
 
     if struct_type.is_a?(Type::StructType)
       struct_name = struct_type.id_name
@@ -898,7 +979,16 @@ class Myc::Mycc::ASTBuilder
         mod.typer.to_ptr(get_type(cursor, canonical.pointee_type, count), location(cursor).offset)
       end
     when .record?
-      mod.typer.find(canonical.spelling.sub("struct ", ""), location(cursor))
+      spelling = canonical.spelling
+      if spelling.starts_with?("union ")
+        name = spelling.sub("union ", "")
+        mod.typer.find(name, location(cursor))
+      elsif spelling.starts_with?("struct ")
+        name = spelling.sub("struct ", "")
+        mod.typer.find(name, location(cursor))
+      else
+        mod.typer.find(spelling, location(cursor))
+      end
     when .constant_array?
       mod.typer.find("flat<#{get_type(cursor, canonical.array_element_type, count)}, #{canonical.array_size}>", location(cursor))
     when .incomplete_array?

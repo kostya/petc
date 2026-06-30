@@ -452,9 +452,10 @@ module Myc::Mycc::TypedAST
   class Program
     getter functions : Array(Function)
     getter structs : Hash(String, Array({String, Type}))
+    getter unions : Hash(String, Array({String, Type}))
     getter globals : Array(VarDecl)
 
-    def initialize(@functions, @structs, @globals); end
+    def initialize(@functions, @structs, @unions, @globals); end
 
     def inspect(io : IO)
       io << "Program\n"

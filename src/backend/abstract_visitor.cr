@@ -618,7 +618,7 @@ abstract class Myc::Backend::AbstractVisitor
         if value2 = @bb.to?(value, value.type, res.type)
           value = value2
         else
-          raise error("type mismatch: expected #{res.type}, got #{value.type}") unless res.type.eq?(value.type)
+          raise error("type mismatch: expected #{res.type}, got #{value.type}")
         end
       end
       res.store(self, value)

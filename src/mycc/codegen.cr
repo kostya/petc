@@ -32,12 +32,23 @@ class Myc::Mycc::CodeGenerator
       emit("ENDSTRUCT")
     end
 
+    program.unions.each do |name, fields|
+      emit("ENUM :#{name}")
+      @indent += 1
+      fields.each do |field_name, field_type|
+        emit("VARIANT :#{field_name}")
+        @indent += 1
+        emit("TYPE #{type_s(field_type)}")
+        @indent -= 1
+      end
+      @indent -= 1
+      emit("ENDENUM")
+    end
+
     program.globals.each do |var|
       emit("GLOBAL :#{var.name}")
       @indent += 1
       emit("TYPE #{type_s(var.var_type)}")
-      if var.init
-      end
       @indent -= 1
 
       if init = var.init
