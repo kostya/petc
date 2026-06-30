@@ -969,6 +969,7 @@ class Myc::Mycc::ASTBuilder
     when .u_short?, .u_int?      then mod.typer.u32
     when .long?, .long_long?     then mod.typer.i64
     when .u_long?, .u_long_long? then mod.typer.u64
+    when .u_int128?, .int128?    then mod.typer.find("flat<i32, 4>", location(cursor))
     when .float?                 then mod.typer.f32
     when .double?                then mod.typer.f64
     when .pointer?
@@ -980,6 +981,7 @@ class Myc::Mycc::ASTBuilder
       end
     when .record?
       spelling = canonical.spelling
+      spelling = spelling.sub("const ", "").sub("volatile ", "").sub("restrict ", "")
       if spelling.starts_with?("union ")
         name = spelling.sub("union ", "")
         mod.typer.find(name, location(cursor))
@@ -1005,7 +1007,8 @@ class Myc::Mycc::ASTBuilder
           io << ", " if i > 0
           io << t.id_name
         end
-        io << ", "
+
+        io << ", " if arg_types.size > 0
         io << ret.id_name
         io << '>'
       end
@@ -1017,6 +1020,12 @@ class Myc::Mycc::ASTBuilder
       mod.typer.find(id_name, location(cursor))
     when .typedef?
       get_type(cursor, canonical.canonical_type, count)
+    when .unexposed?
+      if canonical.spelling.includes?("builtin")
+        mod.typer.voidp
+      else
+        raise error("UNKNOWN TYPE: #{canonical.kind} #{canonical.spelling}", cursor)
+      end
     else
       raise error("UNKNOWN TYPE: #{canonical.kind} #{canonical.spelling}", cursor)
     end
