@@ -430,8 +430,18 @@ module Myc::Mycc::TypedAST
   end
 
   class Function
+    class ParamInfo
+      getter name : String
+      getter type : Type
+      getter index : Int32
+      property changed = false
+
+      def initialize(@name, @type, @index)
+      end
+    end
+
     getter name : String
-    getter params : Array({String, Type})
+    getter params : Hash(String, ParamInfo)
     getter return_type : Type
     getter body : Array(Stmt)?
     getter location : Location
@@ -440,9 +450,10 @@ module Myc::Mycc::TypedAST
 
     def inspect(io : IO)
       io << "Function " << name << "("
-      params.each_with_index do |(pname, ptype), i|
+      sorted_params = params.values.sort_by(&.index)
+      sorted_params.each_with_index do |param, i|
         io << ", " if i > 0
-        io << pname << " : " << ptype.id_name
+        io << param.name << " : " << param.type.id_name
       end
       io << ") -> " << return_type.id_name
       io << " @" << location.offset

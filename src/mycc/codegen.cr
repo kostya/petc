@@ -79,7 +79,6 @@ class Myc::Mycc::CodeGenerator
     @vars.clear
     @params.clear
     @local_marks.clear
-    func.params.each_with_index { |(name, type), idx| @params[name] = idx }
 
     emit("FUNC :#{func.name}")
     @indent += 1
@@ -87,7 +86,8 @@ class Myc::Mycc::CodeGenerator
     unless func.params.empty?
       emit("ARGS")
       @indent += 1
-      func.params.each { |_, type| emit("  TYPE #{type_s(type)}") }
+      sorted_params = func.params.values.sort_by(&.index)
+      sorted_params.each { |p| emit("  TYPE #{type_s(p.type)}") }
       @indent -= 1
     end
 
@@ -101,6 +101,18 @@ class Myc::Mycc::CodeGenerator
     if body = func.body
       emit("BODY")
       @indent += 1
+
+      func.params.each_value do |param|
+        if param.changed
+          @vars[param.name] = VarInfo.new(param.type)
+          emit("PARAM #{param.index}")
+          emit_local(param.name, param.type)
+          emit("STORE")
+        else
+          @params[param.name] = param.index
+        end
+      end
+
       body.each { |stmt| generate_stmt(stmt) }
       @indent -= 1
     end

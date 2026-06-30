@@ -10,6 +10,7 @@ class Myc::Mycc::ASTBuilder
     @structs = Hash(String, Array({String, Type})).new
     @unions = {} of String => Array({String, Type})
     @current_function_name = ""
+    @current_function_params = Hash(String, TypedAST::Function::ParamInfo).new
     @globals = [] of TypedAST::VarDecl
     @enum_values = {} of String => Int64
     @enum_types = {} of String => Type
@@ -95,7 +96,7 @@ class Myc::Mycc::ASTBuilder
   private def build_function(cursor : Clang::Cursor) : TypedAST::Function
     name = cursor.spelling
     @current_function_name = name
-    params = [] of {String, Type}
+    @current_function_params.clear
     body = nil
 
     return_type = get_type(cursor, cursor.result_type)
@@ -106,13 +107,13 @@ class Myc::Mycc::ASTBuilder
       when .parm_decl?
         param_name = child.spelling
         param_type = get_type(child, child.type)
-        params << {param_name, param_type}
+        @current_function_params[param_name] = TypedAST::Function::ParamInfo.new(param_name, param_type, @current_function_params.size)
       when .compound_stmt?
         body = build_stmts(child)
       end
     end
 
-    TypedAST::Function.new(name, params, return_type, body, location(cursor))
+    TypedAST::Function.new(name, @current_function_params.dup, return_type, body, location(cursor))
   ensure
     @current_return_type = nil
   end
@@ -298,6 +299,7 @@ class Myc::Mycc::ASTBuilder
         left = build_node(children_list[0]).not_nil!
         right = build_node(children_list[1]).not_nil!
         right = auto_cast(right, left.type, location(cursor))
+        mark_param_changed(left)
         TypedAST::Assign.new(left, right, location(cursor))
       else
         expr = build_binary(cursor)
@@ -341,6 +343,7 @@ class Myc::Mycc::ASTBuilder
       left = build_node(children_list[0]).not_nil!
       right = build_node(children_list[1]).not_nil!
       right = auto_cast(right, left.type, location(cursor))
+      mark_param_changed(left)
       bin_op = BINARY_MAP[op[0].to_s]? || :add
       value = TypedAST::BinaryOp.new(bin_op, left.dup, right, left.type, location(cursor))
       TypedAST::Assign.new(left, value, location(cursor))
@@ -668,6 +671,7 @@ class Myc::Mycc::ASTBuilder
                  raise "unreachable"
                end
 
+      mark_param_changed(operand.not_nil!)
       TypedAST::UnaryOp.new(op_sym, operand.not_nil!, operand.not_nil!.type, loc, is_statement)
     else
       operand || raise error("Unknown unary operator: #{op}", cursor)
@@ -1193,5 +1197,14 @@ class Myc::Mycc::ASTBuilder
       end
     end
     false
+  end
+
+  private def mark_param_changed(node : TypedAST::VarRef)
+    if param = @current_function_params[node.name]?
+      param.changed = true
+    end
+  end
+
+  private def mark_param_changed(node : TypedAST::Node)
   end
 end
