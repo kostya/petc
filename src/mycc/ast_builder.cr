@@ -9,6 +9,8 @@ class Myc::Mycc::ASTBuilder
     @unions = {} of String => Array({String, Type})
     @current_function_name = ""
     @globals = [] of TypedAST::VarDecl
+    @enum_values = {} of String => Int64
+    @enum_types = {} of String => Type
   end
 
   def build : TypedAST::Program
@@ -46,6 +48,8 @@ class Myc::Mycc::ASTBuilder
         build_struct_decl(cursor)
       elsif cursor.kind.union_decl?
         build_union(cursor)
+      elsif cursor.kind.enum_decl?
+        build_enum(cursor)
       end
       Clang::ChildVisitResult::Continue
     end
@@ -135,6 +139,23 @@ class Myc::Mycc::ASTBuilder
     mod.type_defs[name] = Mod::TypeDef.new(node, enum_type)
 
     @unions[name] = fields
+  end
+
+  private def build_enum(cursor : Clang::Cursor)
+    name = cursor.spelling
+
+    cursor.visit_children do |child|
+      if child.kind.enum_constant_decl?
+        const_name = child.spelling
+        const_value = child.enum_constant_decl_value
+        @enum_values[const_name] = const_value
+      end
+      Clang::ChildVisitResult::Continue
+    end
+
+    unless name.empty?
+      @enum_types[name] = mod.typer.i32
+    end
   end
 
   private def build_node(cursor : Clang::Cursor) : TypedAST::Node?
@@ -538,9 +559,15 @@ class Myc::Mycc::ASTBuilder
     TypedAST::Conditional.new(condition, then_expr, else_expr, type, location(cursor))
   end
 
-  private def build_var_ref(cursor : Clang::Cursor) : TypedAST::VarRef
+  private def build_var_ref(cursor : Clang::Cursor) : TypedAST::Node
     name = cursor.spelling
     type = get_type(cursor, cursor.type)
+
+    if @enum_values.has_key?(name)
+      value = @enum_values[name]
+      return TypedAST::IntLiteral.new(value, mod.typer.i32, location(cursor))
+    end
+
     TypedAST::VarRef.new(name, type, location(cursor))
   end
 
@@ -620,7 +647,8 @@ class Myc::Mycc::ASTBuilder
       common = common_type(left.type, right.type)
       left = insert_cast(left, common) if left.type != common
       right = insert_cast(right, common) if right.type != common
-      TypedAST::BinaryOp.new(op_name, left, right, mod.typer.bool, location(cursor))
+      result = TypedAST::BinaryOp.new(op_name, left, right, mod.typer.bool, location(cursor))
+      TypedAST::Cast.new(result, mod.typer.i32, location(cursor))
     elsif left.type.is_a?(Type::PtrType) && right.type.is_a?(Type::IntType)
       right = insert_cast(right, mod.typer.i64) if right.type.as(Type::IntType).bytes_count < 8
       TypedAST::BinaryOp.new(op_name, left, right, left.type, location(cursor))
@@ -890,8 +918,19 @@ class Myc::Mycc::ASTBuilder
   private def extract_case_values(cursor : Clang::Cursor) : Array(Int64)
     values = [] of Int64
     children(cursor).each do |child|
-      if child.kind.integer_literal?
+      case child.kind
+      when .integer_literal?
         values << extract_literal_value(child).to_i64
+      when .decl_ref_expr?
+        name = child.spelling
+        values << @enum_values[name] if @enum_values.has_key?(name)
+      when .first_expr?
+        children(child).each do |inner|
+          if inner.kind.decl_ref_expr?
+            name = inner.spelling
+            values << @enum_values[name] if @enum_values.has_key?(name)
+          end
+        end
       end
     end
     values
@@ -962,7 +1001,7 @@ class Myc::Mycc::ASTBuilder
     case canonical.kind
     when .void?                  then mod.typer.void
     when .bool?                  then mod.typer.bool
-    when .char_s?, .s_char?      then mod.typer.i8
+    when .char_s?, .s_char?      then mod.typer.u8
     when .w_char?                then mod.typer.u32
     when .char_u?, .u_char?      then mod.typer.u8
     when .short?, .int?          then mod.typer.i32
@@ -1026,6 +1065,9 @@ class Myc::Mycc::ASTBuilder
       else
         raise error("UNKNOWN TYPE: #{canonical.kind} #{canonical.spelling}", cursor)
       end
+    when .enum?
+      name = canonical.spelling.sub("enum ", "")
+      @enum_types[name]? || mod.typer.i32
     else
       raise error("UNKNOWN TYPE: #{canonical.kind} #{canonical.spelling}", cursor)
     end
