@@ -5,7 +5,7 @@ int sieve_count(int limit) {
     return 0;
   }
 
-  char *primes = (char*)malloc((limit + 1) * sizeof(char));
+  char *primes = (char *)malloc((limit + 1) * sizeof(char));
   if (!primes)
     return 0;
 

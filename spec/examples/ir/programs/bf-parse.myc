@@ -15,8 +15,8 @@ ENDSTRUCT
 
 STRUCT :CStrIter
   TYPE :ptr<u8>
-  TYPE :i64
-  TYPE :i64
+  TYPE :u64
+  TYPE :u64
 ENDSTRUCT
 
 STRUCT :Program
@@ -40,7 +40,7 @@ FUNC :new_cstr_iter
     DEREF
     FIELD 0
     STORE
-    PUSH 0 :i64
+    PUSH 0 :u64
     LOCAL :iter
     DEREF
     FIELD 1
@@ -75,7 +75,7 @@ FUNC :cstr_iter_next
   ARGS
     TYPE :ptr<CStrIter>
   BODY
-    PUSH 1 :i64
+    PUSH 1 :u64
     PARAM 0
     DEREF
     FIELD 1

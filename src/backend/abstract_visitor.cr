@@ -395,7 +395,7 @@ abstract class Myc::Backend::AbstractVisitor
       when Type::IntType
         if op.op.add? || op.op.sub?
           @stack << rhs
-          visit Opcode::To.new(mod.typer.i64)
+          visit Opcode::To.new(mod.typer.u64)
           visit Opcode::Unary.new(:neg) if op.op.sub?
           rhs = pop_rhs
           self << lhs.offset(self, rhs)
@@ -629,7 +629,7 @@ abstract class Myc::Backend::AbstractVisitor
   end
 
   def visit(op : Opcode::Malloc)
-    visit Opcode::As.new(mod.typer.i64)
+    visit Opcode::As.new(mod.typer.u64)
     visit Opcode::SizeOf.new(op.type)
     visit Opcode::Stack.new(:swap2)
     visit Opcode::Call.new("calloc")
@@ -638,10 +638,10 @@ abstract class Myc::Backend::AbstractVisitor
 
   def visit(op : Opcode::SizeOf)
     if type = op.type
-      visit Opcode::Push.new(builder.layout.size_of(type).to_i64, mod.typer.i64)
+      visit Opcode::Push.new(builder.layout.size_of(type).to_i64, mod.typer.u64)
     else
       value = pop
-      visit Opcode::Push.new(builder.layout.size_of(value.type).to_i64, mod.typer.i64)
+      visit Opcode::Push.new(builder.layout.size_of(value.type).to_i64, mod.typer.u64)
     end
   end
 

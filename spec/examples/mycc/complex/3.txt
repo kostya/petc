@@ -1,0 +1,17 @@
+bla = 43
+bla = 65
+blaf = 42
+blaf = 3
+blai = 5
+blai = -10
+bla2 = 42
+bla3 = 43
+bla4 = 3
+bla5 = 7
+y = 44
+f = 5
+i = 6
+data.x = 45
+data.y = 46
+z = 45
+y == 44

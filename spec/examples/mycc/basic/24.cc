@@ -1,6 +1,6 @@
 int add(int a, int b) { return a + b; }
 
 int main() {
-    printf("%d\n", (&add)(10, 20));
-    return 0;
+  printf("%d\n", (&add)(10, 20));
+  return 0;
 }

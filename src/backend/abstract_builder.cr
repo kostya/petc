@@ -15,6 +15,7 @@ abstract class Myc::Backend::AbstractBuilder
     void = Mod::Typer::STD_TYPES["void"]
     i32 = Mod::Typer::STD_TYPES["i32"]
     i64 = Mod::Typer::STD_TYPES["i64"]
+    u64 = Mod::Typer::STD_TYPES["u64"]
     f64 = Mod::Typer::STD_TYPES["f64"]
     u8p = Mod::Typer::STD_TYPES["ptr<u8>"]
     voidp = Mod::Typer::STD_TYPES["ptr<void>"]
@@ -24,17 +25,18 @@ abstract class Myc::Backend::AbstractBuilder
     h["printf"] = Type::Fn.new([u8p], i32, vaarg: true)
     h["fprintf"] = Type::Fn.new([voidp, u8p], i32, vaarg: true)
     h["sprintf"] = Type::Fn.new([u8p, u8p], i32, vaarg: true)
-    h["malloc"] = Type::Fn.new([i64], voidp)
-    h["calloc"] = Type::Fn.new([i64, i64], voidp)
+
+    h["malloc"] = Type::Fn.new([u64], voidp)
+    h["calloc"] = Type::Fn.new([u64, u64], voidp)
+    h["realloc"] = Type::Fn.new([voidp, u64], voidp)
+    h["strncmp"] = Type::Fn.new([u8p, u8p, u64], i32)
+    h["memcpy"] = Type::Fn.new([voidp, voidp, u64], voidp)
+    h["memset"] = Type::Fn.new([voidp, i32, u64], voidp)
+    h["memcmp"] = Type::Fn.new([voidp, voidp, u64], i32)
     h["free"] = Type::Fn.new([voidp], void)
-    h["realloc"] = Type::Fn.new([voidp, i64], voidp)
-    h["strlen"] = Type::Fn.new([u8p], i64)
+    h["strlen"] = Type::Fn.new([u8p], u64)
     h["strcmp"] = Type::Fn.new([u8p, u8p], i32)
-    h["strncmp"] = Type::Fn.new([u8p, u8p, i64], i32)
     h["strcpy"] = Type::Fn.new([u8p, u8p], u8p)
-    h["memcpy"] = Type::Fn.new([voidp, voidp, i64], voidp)
-    h["memset"] = Type::Fn.new([voidp, i32, i64], voidp)
-    h["memcmp"] = Type::Fn.new([voidp, voidp, i64], i32)
     h["rand"] = Type::Fn.new([] of Type, i32)
     h["exit"] = Type::Fn.new([i32], void)
     h["abort"] = Type::Fn.new([] of Type, void)

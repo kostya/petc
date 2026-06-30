@@ -4,9 +4,9 @@ struct Bla {
   Bla *(*create)(void);
 };
 
-Bla *crea(void) { 
+Bla *crea(void) {
   printf("create \n");
-  return (Bla*)malloc(sizeof(Bla));
+  return (Bla *)malloc(sizeof(Bla));
 };
 
 int main() {

@@ -425,7 +425,6 @@ class Myc::Mycc::CodeGenerator
 
   def generate_expr(expr : TypedAST::SizeOf)
     emit("SIZEOF #{type_s(expr.target_type)}")
-    emit("AS :i32")
   end
 
   def generate_expr(expr : TypedAST::InitList)

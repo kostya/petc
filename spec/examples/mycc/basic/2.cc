@@ -1,6 +1,4 @@
-int add(int a, int b) {
-  return a + b;
-}
+int add(int a, int b) { return a + b; }
 
 int main() {
   int x = 10;
@@ -34,7 +32,8 @@ int main() {
     i = i + 1;
   }
 
-  if (x > y) printf("no\n");
+  if (x > y)
+    printf("no\n");
   else {
     printf("yes\n");
   }
