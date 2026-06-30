@@ -345,7 +345,8 @@ class Myc::Mycc::ASTBuilder
       right = build_node(children_list[1]).not_nil!
       right = auto_cast(right, left.type, location(cursor))
       mark_param_changed(left)
-      bin_op = BINARY_MAP[op[0].to_s]? || :add
+      base_op = op.ends_with?('=') ? op[0..-2] : op
+      bin_op = BINARY_MAP[base_op]? || :add
       value = TypedAST::BinaryOp.new(bin_op, left.dup, right, left.type, location(cursor))
       TypedAST::Assign.new(left, value, location(cursor))
     else
@@ -1042,6 +1043,7 @@ class Myc::Mycc::ASTBuilder
     "==" => :eq, "!=" => :not_eq, "%" => :rem,
     "&&" => :and, "||" => :or,
     "&" => :and, "|" => :or, "^" => :xor, "<<" => :shl, ">>" => :shr,
+    "<<=" => :shl, ">>=" => :shr,
   }
 
   private def location(cursor : Clang::Cursor) : Location
