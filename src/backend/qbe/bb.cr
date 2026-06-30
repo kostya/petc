@@ -309,6 +309,12 @@ class Myc::Backend::QBE::BB < Myc::Backend::AbstractBB
                 end
           to_qbe_type = from_size == 4 ? "l" : "w"
           emit "#{t} =#{to_qbe_type} #{ext} #{val}"
+
+          if to_size == 8 && from_size != 4
+            t2 = new_temp
+            emit "#{t2} =l extuw #{t}"
+            t = t2
+          end
         end
 
         wrap_res(t, to_type, value.pp)
