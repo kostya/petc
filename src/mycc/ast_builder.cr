@@ -319,21 +319,12 @@ class Myc::Mycc::ASTBuilder
         TypedAST::ExprStmt.new(expr, location(cursor))
       end
     when .unary_operator?
-      op = cursor.spelling
-      if op.empty?
-        @tu.tokenize(cursor.extent) do |token|
-          if token.kind.punctuation? && {"++", "--"}.includes?(token.spelling)
-            op = token.spelling
-            break
-          end
-        end
-      end
-
+      op = detect_unary_op(cursor)
       if op == "++" || op == "--"
-        expr = build_unary(cursor, is_statement: true)
+        expr = build_unary(cursor, is_statement: true, known_op: op)
         TypedAST::ExprStmt.new(expr, location(cursor))
       else
-        expr = build_unary(cursor)
+        expr = build_unary(cursor, known_op: op)
         TypedAST::ExprStmt.new(expr, location(cursor))
       end
     when .break_stmt?
@@ -679,16 +670,8 @@ class Myc::Mycc::ASTBuilder
     end
   end
 
-  private def build_unary(cursor : Clang::Cursor, is_statement : Bool = false) : TypedAST::Node
-    op = cursor.spelling
-    if op.empty?
-      @tu.tokenize(cursor.extent) do |token|
-        if token.kind.punctuation? && {"++", "--", "-", "!", "~", "*", "&"}.includes?(token.spelling)
-          op = token.spelling
-          break
-        end
-      end
-    end
+  private def build_unary(cursor : Clang::Cursor, is_statement : Bool = false, known_op : String? = nil) : TypedAST::Node
+    op = known_op || detect_unary_op(cursor)
 
     children_list = children(cursor)
     operand = children_list.size > 0 ? build_node(children_list[0]) : nil
@@ -741,6 +724,30 @@ class Myc::Mycc::ASTBuilder
     else
       operand || raise error("Unknown unary operator: #{op}", cursor)
     end
+  end
+
+  def detect_unary_op(cursor : Clang::Cursor) : String
+    op = cursor.spelling
+    return op unless op.empty?
+
+    tokens = [] of String
+    @tu.tokenize(cursor.extent) do |token|
+      tokens << token.spelling if token.kind.punctuation?
+    end
+
+    if {"*", "&", "-", "!", "~"}.includes?(tokens.first?)
+      return tokens.first
+    end
+
+    if {"++", "--"}.includes?(tokens.first?)
+      return tokens.first
+    end
+
+    if {"++", "--"}.includes?(tokens.last?)
+      return tokens.last
+    end
+
+    ""
   end
 
   private def build_init_list(cursor : Clang::Cursor, target_type : Type? = nil) : TypedAST::InitList

@@ -446,7 +446,7 @@ class Myc::Mycc::CodeGenerator
       emit("BINARY :#{bin_op}")
       generate_expr(expr.operand)
       emit("STORE")
-      generate_expr(expr.operand)
+      generate_expr(expr.operand) unless expr.is_statement
     end
   end
 
