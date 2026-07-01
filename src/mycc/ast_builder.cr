@@ -404,18 +404,25 @@ class Myc::Mycc::ASTBuilder
 
   private def resolve_init_list_types(init_list : TypedAST::InitList, target_type : Type) : TypedAST::InitList
     elements = [] of TypedAST::Node
-    field_types = target_type.is_a?(Type::StructType) ? target_type.data : [] of Type
+    field_types = if target_type.is_a?(Type::StructType)
+                    target_type.data
+                  elsif target_type.is_a?(Type::FlatType)
+                    target_type.elements_count.times.map { target_type.target_type }.to_a
+                  else
+                    [] of Type
+                  end
 
     init_list.elements.each_with_index do |elem, idx|
-      expected_type = field_types[idx]?
-
       if elem.is_a?(TypedAST::InitList) && elem.type.id_name == "void"
-        nested_type = expected_type || target_type
+        nested_type = field_types[idx]? || target_type
         elements << resolve_init_list_types(elem, nested_type)
-      elsif expected_type
-        elements << auto_cast(elem, expected_type, elem.location)
       else
-        elements << elem
+        expected_type = field_types[idx]?
+        if expected_type
+          elements << auto_cast(elem, expected_type, elem.location)
+        else
+          elements << elem
+        end
       end
     end
 
