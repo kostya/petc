@@ -401,6 +401,23 @@ abstract class Myc::Backend::AbstractVisitor
           self << lhs.offset(self, rhs)
           return
         end
+      when Type::PtrType
+        if ltype.target_type.eq?(rtype.target_type) && op.op.sub?
+          @stack << rhs
+          visit Opcode::As.new(mod.typer.i64)
+          @stack << lhs
+          visit Opcode::As.new(mod.typer.i64)
+          lhs = pop_rhs
+          rhs = pop_rhs
+          if res = @bb.binary(Opcode::Binary::Op::Sub, lhs, rhs)
+            self << res
+            visit Opcode::SizeOf.new(ltype.target_type)
+            visit Opcode::As.new(mod.typer.i64)
+            visit Opcode::Stack.new(:swap2)
+            visit Opcode::Binary.new(:div)
+            return
+          end
+        end
       end
     end
 

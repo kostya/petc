@@ -1,0 +1,21 @@
+FUNC :main
+  BODY
+    PUSH 10 :i32
+    PUSH 20 :i32
+    PUSH 30 :i32
+    CREATE "flat<i32, 3>"
+    LOCAL :arr "flat<i32, 3>"
+    STORE
+    LOCAL :arr
+    ADDR
+    AS :ptr<i32>
+    PUSH 2
+    AS :u64
+    LOCAL :arr
+    ADDR
+    AS :ptr<i32>
+    BINARY :add
+    BINARY :sub
+    INSPECT
+ENDFUNC
+
