@@ -46,7 +46,10 @@ class Myc::Mycc::ASTBuilder
       if cursor.kind.function_decl?
         functions << build_function(cursor)
       elsif cursor.kind.var_decl?
-        @globals << build_var_decl(cursor)
+        var_decl = build_var_decl(cursor)
+        unless @globals.any? { |g| g.name == var_decl.name }
+          @globals << var_decl
+        end
       elsif cursor.kind.struct_decl?
         build_struct_decl(cursor)
       elsif cursor.kind.union_decl?
@@ -96,6 +99,7 @@ class Myc::Mycc::ASTBuilder
 
   private def build_function(cursor : Clang::Cursor) : TypedAST::Function
     name = cursor.spelling
+    old_name = @current_function_name
     @current_function_name = name
     @current_function_params.clear
     body = nil
@@ -117,6 +121,7 @@ class Myc::Mycc::ASTBuilder
     TypedAST::Function.new(name, @current_function_params.dup, return_type, body, location(cursor))
   ensure
     @current_return_type = nil
+    @current_function_name = old_name.not_nil!
   end
 
   private def build_struct_decl(cursor : Clang::Cursor)
@@ -399,10 +404,12 @@ class Myc::Mycc::ASTBuilder
     end
 
     if is_static
-      func_name = @current_function_name || "global"
+      func_name = @current_function_name.presence || "global"
       unique_name = "#{func_name}_#{name}"
       var = TypedAST::VarDecl.new(unique_name, var_type, init, location(cursor), is_static: true, original_name: name)
-      @globals << var
+      unless @globals.any? { |g| g.name == unique_name }
+        @globals << var
+      end
       var
     else
       TypedAST::VarDecl.new(name, var_type, init, location(cursor))
