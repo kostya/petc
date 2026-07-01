@@ -606,6 +606,8 @@ class Myc::Mycc::ASTBuilder
     children_list = children(cursor)
     left = build_node(children_list[0]).not_nil!
     right = build_node(children_list[1]).not_nil!
+    left = auto_decay(left)
+    right = auto_decay(right)
     loc = location(cursor)
 
     op_name = BINARY_MAP[op]? || :add
@@ -624,7 +626,9 @@ class Myc::Mycc::ASTBuilder
       result = TypedAST::BinaryOp.new(op_name, left, right, mod.typer.bool, loc)
       auto_cast(result, mod.typer.i32, loc)
     else
-      if left.type.is_a?(Type::PtrType) && right.type.is_a?(Type::IntType)
+      if left.type.is_a?(Type::PtrType) && right.type.is_a?(Type::PtrType) && op_name == :sub
+        TypedAST::BinaryOp.new(:sub, left, right, mod.typer.i64, loc)
+      elsif left.type.is_a?(Type::PtrType) && right.type.is_a?(Type::IntType)
         right = auto_cast(right, mod.typer.u64, loc)
         TypedAST::BinaryOp.new(op_name, left, right, left.type, loc)
       elsif right.type.is_a?(Type::PtrType) && left.type.is_a?(Type::IntType)
