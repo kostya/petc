@@ -426,6 +426,12 @@ class Myc::Mycc::ASTBuilder
       end
     end
 
+    (elements.size...field_types.size).each do |idx|
+      expected_type = field_types[idx]
+      zero = TypedAST::IntLiteral.new(0_i64, expected_type, init_list.location)
+      elements << auto_cast(zero, expected_type, zero.location)
+    end
+
     TypedAST::InitList.new(elements, target_type, init_list.location)
   end
 
